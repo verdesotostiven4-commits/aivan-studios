@@ -593,3 +593,65 @@ body{overflow-x:hidden}
   .legal-shell{border-radius:26px}
   .legal-shell .wordmark{margin-bottom:38px}
 }
+
+
+/* --- Scroll performance pass: avoid expensive repaints while the page moves --- */
+.site-header.compact{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  background:rgba(248,247,243,.97);
+}
+@media(min-width:761px){
+  .site-header{
+    transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;
+  }
+  .site-header.compact{
+    top:18px;
+    width:min(calc(100% - 40px),1320px);
+    min-height:66px;
+    padding:12px 14px 12px 20px;
+    border-radius:22px;
+  }
+  .site-header.compact .wordmark{width:120px}
+  .site-header.compact .header-cta{padding:12px 16px}
+}
+@media(max-width:760px){
+  .site-header{
+    transition:background .18s ease,border-color .18s ease,box-shadow .18s ease;
+  }
+  .site-header.compact{
+    top:10px;
+    width:calc(100% - 20px);
+    min-height:66px;
+    padding:10px 10px 10px 14px;
+    border-radius:22px;
+  }
+  .mobile-menu{
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+  }
+}
+
+/* Soft radial gradients already provide the blur visually; GPU blur filters are avoided here. */
+.signal-lab:before{filter:none}
+.human-panel:before{filter:none}
+.human-visual:before{filter:none}
+.human-aurora{filter:none;opacity:.72}
+.closing-orbit{filter:none}
+.signal-grid article,.service-list span,.human-chip{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+@media(max-width:760px){
+  .brief-controls{
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+    background:rgba(255,255,255,.96);
+  }
+}
+
+/* Reveal motion stays subtle and cheap to composite. */
+[data-reveal]{
+  transform:translate3d(0,18px,0);
+  transition:opacity .46s ease,transform .46s cubic-bezier(.2,.65,.2,1);
+}
