@@ -1,6 +1,7 @@
 import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
+import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
 
 const services = [
@@ -108,6 +109,8 @@ export default function Home() {
         </div>
       </section>
 
+      <ProjectsSection />
+
       <section className="human-section">
         <div className="human-panel" data-reveal>
           <div className="human-copy">
@@ -122,20 +125,13 @@ export default function Home() {
             <span className="human-chip human-chip-production">PRODUCCIÓN</span>
             <div className="human-people">
               <img
-                src="/brand/avatars/axel-half.webp"
+                src="/brand/avatars/axel-emma-duo.webp"
                 alt=""
-                className="human-person human-person-axel"
-                width={230}
-                height={287}
+                className="human-duo"
+                width={520}
+                height={520}
                 loading="lazy"
-              />
-              <img
-                src="/brand/avatars/emma-half.webp"
-                alt=""
-                className="human-person human-person-emma"
-                width={230}
-                height={287}
-                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="human-badge">
@@ -173,7 +169,7 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <Wordmark />
+        <a href="#inicio" aria-label="Volver al inicio"><Wordmark /></a>
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
         <nav aria-label="Enlaces del pie"><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a></nav>
       </footer>
