@@ -942,3 +942,24 @@ body{overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){
   .signal-lab[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
 }
+
+
+/* Medium-width safeguard: switch to the mobile navigation before six labels can crowd. */
+@media(max-width:1040px){
+  .site-header{grid-template-columns:1fr auto}
+  .desktop-nav,.header-cta{display:none}
+  .menu-button{display:block}
+  .mobile-menu{
+    display:grid;position:absolute;top:72px;left:0;right:0;padding:12px;
+    background:rgba(249,248,245,.985);border:1px solid var(--line);border-radius:20px;
+    box-shadow:0 24px 60px rgba(20,16,26,.12)
+  }
+  .mobile-menu a{
+    min-height:48px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;
+    text-decoration:none;font-size:13px;border-bottom:1px solid var(--line-soft)
+  }
+  .mobile-menu .mobile-primary{background:#0b0b0e;color:#fff;border:0;border-radius:14px;margin-top:8px}
+}
+
+/* The current AIVAN avatar scene uses its own soft blob; clear legacy decoration. */
+.human-visual:before,.human-visual:after,.human-people:before{content:none!important}
