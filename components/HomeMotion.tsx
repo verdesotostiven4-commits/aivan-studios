@@ -6,7 +6,8 @@ export default function HomeMotion() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-    if (reduce) {
+
+    if (reduce || !("IntersectionObserver" in window)) {
       nodes.forEach((node) => node.classList.add("is-visible"));
       return;
     }
@@ -14,25 +15,42 @@ export default function HomeMotion() {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const el = entry.target as HTMLElement;
-        el.classList.add("is-visible");
-        observer.unobserve(el);
+        (entry.target as HTMLElement).classList.add("is-visible");
+        observer.unobserve(entry.target);
       }),
-      { threshold: 0.14, rootMargin: "0px 0px -5% 0px" },
+      { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
     );
     nodes.forEach((node) => observer.observe(node));
 
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    let frame = 0;
+    let nextX = 0;
+    let nextY = 0;
+    const paint = () => {
+      document.documentElement.style.setProperty("--mx", nextX.toFixed(3));
+      document.documentElement.style.setProperty("--my", nextY.toFixed(3));
+      frame = 0;
+    };
     const move = (event: PointerEvent) => {
-      const x = (event.clientX / window.innerWidth - 0.5) * 2;
-      const y = (event.clientY / window.innerHeight - 0.5) * 2;
-      document.documentElement.style.setProperty("--mx", x.toFixed(3));
-      document.documentElement.style.setProperty("--my", y.toFixed(3));
+      if (!finePointer || window.innerWidth < 900) return;
+      nextX = (event.clientX / window.innerWidth - 0.5) * 2;
+      nextY = (event.clientY / window.innerHeight - 0.5) * 2;
+      if (!frame) frame = window.requestAnimationFrame(paint);
+    };
+    const reset = () => {
+      nextX = 0; nextY = 0;
+      if (!frame) frame = window.requestAnimationFrame(paint);
     };
     window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("mouseleave", reset);
+
     return () => {
       observer.disconnect();
       window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("mouseleave", reset);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
+
   return null;
 }

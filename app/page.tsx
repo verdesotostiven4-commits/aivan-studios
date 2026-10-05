@@ -36,7 +36,7 @@ export default function Home() {
   const emailHref = `mailto:${contactEmail}?subject=${encodeURIComponent("Consulta desde la web de AIVAN STUDIOS")}`;
 
   return (
-    <main>
+    <main id="main-content">
       <HomeMotion />
       <SiteHeader />
 
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
 
         <div className="signal-lab" aria-label="Representación del método creativo AIVAN" data-reveal>
-          <div className="signal-head"><span>SEÑAL / 001</span><span>EN CONSTRUCCIÓN</span></div>
+          <div className="signal-head"><span>SEÑAL / 001</span><span>SISTEMA CREATIVO</span></div>
           <div className="signal-word">AIVAN</div>
           <div className="signal-grid">
             <article><span className="dot brand-dot" /><small>IDENTIDAD</small><strong>La marca se reconoce.</strong></article>
@@ -148,7 +148,7 @@ export default function Home() {
 
       <section className="brief-section" id="brief">
         <div className="brief-shell">
-          <div className="brief-intro" data-reveal><p className="micro-label">PRIMER CONTACTO</p><h2>Cuéntanos el problema.<br />No hace falta que sepas la solución.</h2><p>El brief llega directamente al panel interno de AIVAN. No tendrás que copiarlo a WhatsApp ni enviarlo otra vez por correo.</p><div className="brief-note"><span>↳</span><p>Responderlo toma unos minutos y nos permite llegar a la primera conversación con contexto.</p></div></div>
+          <div className="brief-intro" data-reveal><p className="micro-label">PRIMER CONTACTO</p><h2>Cuéntanos el problema.<br />No hace falta que sepas la solución.</h2><p>Tu brief llega directamente al equipo de AIVAN. No tendrás que copiarlo a WhatsApp ni enviarlo otra vez por correo.</p><div className="brief-note"><span>↳</span><p>Responderlo toma unos minutos y nos permite llegar a la primera conversación con contexto.</p></div></div>
           <BriefForm />
         </div>
       </section>
@@ -175,7 +175,7 @@ export default function Home() {
       <footer className="site-footer">
         <Wordmark />
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
-        <nav><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a><a href="/panel">Panel</a></nav>
+        <nav aria-label="Enlaces del pie"><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a></nav>
       </footer>
     </main>
   );

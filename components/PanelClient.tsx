@@ -34,16 +34,16 @@ export default function PanelClient() {
   const [noteDraft, setNoteDraft] = useState("");
   const [filter, setFilter] = useState("todos");
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);\n  const [panelMessage, setPanelMessage] = useState("");
 
   const selected = leads.find((lead) => lead.id === selectedId) || null;
 
   const loadLeads = useCallback(async () => {
     if (!supabase || !session?.user.email) return;
     const { data: adminRow } = await supabase.from("admin_users").select("email").eq("email", session.user.email.toLowerCase()).maybeSingle();
-    if (!adminRow) { setAllowed(false); setLeads([]); setLoading(false); return; }
+    if (!adminRow) { setAllowed(false); setLeads([]); setPanelMessage(""); setLoading(false); return; }
     const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(200);
-    if (error) { setAllowed(false); setLoading(false); return; }
+    if (error) { setPanelMessage("No pudimos cargar los leads. Intenta recargar el panel."); setLoading(false); return; }
     setAllowed(true);
     setLeads((data || []) as Lead[]);
     setSelectedId((current) => current || data?.[0]?.id || null);
@@ -125,7 +125,7 @@ export default function PanelClient() {
         <p>Usa tu correo autorizado. Recibirás un enlace de acceso sin contraseña.</p>
         <label><span>Correo</span><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="equipo@aivanstudios.com" required /></label>
         <button className="button button-dark" disabled={authLoading}>{authLoading ? "Enviando…" : "Enviar enlace de acceso →"}</button>
-        {authMessage && <p className="auth-message">{authMessage}</p>}<a href="/">← Volver al sitio</a>
+        {authMessage && <p className="auth-message" role="status" aria-live="polite">{authMessage}</p>}<a href="/">← Volver al sitio</a>
       </form>
     </div>
   );
@@ -138,16 +138,16 @@ export default function PanelClient() {
     <div className="crm-shell">
       <aside className="crm-sidebar">
         <a href="/"><Wordmark /></a>
-        <nav><button className="active">◉ <span>Leads</span></button><button disabled>□ <span>Proyectos</span></button><button disabled>◇ <span>Agenda</span></button><button disabled>↗ <span>Reportes</span></button></nav>
+        <nav aria-label="Panel AIVAN"><button className="active" aria-current="page">◉ <span>Leads</span></button></nav>
         <div className="crm-user"><span>{session.user.email?.slice(0,1).toUpperCase()}</span><div><strong>Equipo AIVAN</strong><small>{session.user.email}</small></div><button onClick={signOut} title="Cerrar sesión">↗</button></div>
       </aside>
 
-      <main className="crm-main">
-        <header className="crm-top"><div><p className="micro-label">PANEL DE OPORTUNIDADES</p><h1>Leads y briefs.</h1></div><a href="/" className="button button-quiet">Ver sitio ↗</a></header>
+      <main className="crm-main" id="main-content">
+        <header className="crm-top"><div><p className="micro-label">PANEL DE OPORTUNIDADES</p><h1>Leads y briefs.</h1></div><a href="/" className="button button-quiet">Ver sitio ↗</a></header>{panelMessage && <p className="crm-notice" role="status" aria-live="polite">{panelMessage}</p>}
         <section className="crm-metrics"><article><span>Nuevos</span><strong>{counts.nuevo}</strong></article><article><span>En revisión</span><strong>{counts.revision}</strong></article><article><span>Contactados</span><strong>{counts.contactado}</strong></article><article><span>Reuniones</span><strong>{counts.reunion}</strong></article></section>
         <section className="crm-workspace">
           <div className="crm-list-pane">
-            <div className="crm-filters"><input placeholder="Buscar negocio, contacto o ciudad…" value={search} onChange={(e) => setSearch(e.target.value)} /><select value={filter} onChange={(e) => setFilter(e.target.value)}><option value="todos">Todos los estados</option>{statuses.map((s) => <option key={s} value={s}>{statusLabels[s]}</option>)}</select></div>
+            <div className="crm-filters"><input aria-label="Buscar leads" placeholder="Buscar negocio, contacto o ciudad…" value={search} onChange={(e) => setSearch(e.target.value)} /><select aria-label="Filtrar por estado" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="todos">Todos los estados</option>{statuses.map((s) => <option key={s} value={s}>{statusLabels[s]}</option>)}</select></div>
             <div className="crm-list-head"><span>{filtered.length} oportunidades</span><small>Actualización en tiempo real</small></div>
             <div className="lead-list">
               {loading && <div className="crm-empty">Cargando…</div>}
@@ -156,9 +156,9 @@ export default function PanelClient() {
             </div>
           </div>
 
-          <aside className="lead-detail">
+          <aside className="lead-detail" aria-label="Detalle del lead">
             {!selected ? <div className="crm-empty"><strong>Selecciona un lead.</strong><span>Aquí aparecerá el brief completo.</span></div> : <>
-              <div className="detail-head"><div className="lead-avatar large">{selected.business_name.slice(0,2).toUpperCase()}</div><div><p className="micro-label">{serviceLabels[selected.service]}</p><h2>{selected.business_name}</h2><span>{selected.contact_name}</span></div></div>
+              <button type="button" className="detail-back" onClick={() => setSelectedId(null)}>← Volver a la lista</button><div className="detail-head"><div className="lead-avatar large">{selected.business_name.slice(0,2).toUpperCase()}</div><div><p className="micro-label">{serviceLabels[selected.service]}</p><h2>{selected.business_name}</h2><span>{selected.contact_name}</span></div></div>
               <div className="detail-status"><span>Estado</span><select value={selected.status} onChange={(e) => updateStatus(e.target.value)}>{statuses.map((s) => <option key={s} value={s}>{statusLabels[s]}</option>)}</select></div>
               <div className="detail-actions">{selected.phone && <a className="action-primary" href={`https://wa.me/${selected.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">Responder por WhatsApp ↗</a>}{selected.email && <a href={`mailto:${selected.email}`}>Enviar correo</a>}</div>
               <div className="detail-section"><h3>Contacto</h3><dl><div><dt>Nombre</dt><dd>{selected.contact_name}</dd></div><div><dt>Correo</dt><dd>{selected.email || "—"}</dd></div><div><dt>Teléfono</dt><dd>{selected.phone || "—"}</dd></div><div><dt>Ciudad</dt><dd>{selected.city || "—"}</dd></div><div><dt>Web / red</dt><dd>{selected.website || "—"}</dd></div></dl></div>

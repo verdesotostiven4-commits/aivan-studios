@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_EC",
   },
-  robots: { index: true, follow: true },
+  twitter: { card: "summary", title: "AIVAN STUDIOS", description: "Branding, estrategia y producción audiovisual con una sola dirección." },\n  robots: { index: true, follow: true },\n  formatDetection: { telephone: false, email: false, address: false },
 };
 
 export const viewport: Viewport = {
@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body><a className="skip-link" href="#main-content">Saltar al contenido</a>{children}</body>
     </html>
   );
 }
