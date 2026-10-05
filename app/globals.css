@@ -318,3 +318,137 @@ a{color:inherit}button,input,select,textarea{font:inherit}button,a,input,select,
 @media(prefers-reduced-motion:reduce){
   .human-person{transform:none!important;transition:none!important}
 }
+
+
+/* Human section visual polish v2 */
+@media(min-width:1101px){
+  .human-panel{
+    grid-template-columns:minmax(0,1.05fr) minmax(500px,.95fr);
+    gap:52px;
+  }
+  .human-visual{
+    height:420px;
+    border-radius:32px;
+    overflow:hidden;
+    isolation:isolate;
+    border:1px solid rgba(255,255,255,.08);
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.008)),
+      radial-gradient(circle at 17% 84%,rgba(216,140,0,.22),transparent 36%),
+      radial-gradient(circle at 55% 48%,rgba(199,20,93,.23),transparent 42%),
+      radial-gradient(circle at 92% 28%,rgba(91,136,255,.25),transparent 44%),
+      #111116;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.05),
+      0 28px 70px rgba(0,0,0,.24);
+  }
+  .human-visual:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.78),transparent 92%);
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.78),transparent 92%);
+    opacity:.55;
+  }
+  .human-aurora{
+    z-index:0;
+    width:92%;
+    left:57%;
+    top:50%;
+    filter:blur(58px);
+    opacity:.78;
+  }
+  .human-people:before{
+    content:"";
+    position:absolute;
+    left:18%;
+    right:5%;
+    bottom:-14%;
+    height:46%;
+    z-index:0;
+    border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(255,255,255,.15),rgba(109,94,220,.11) 34%,transparent 70%);
+    filter:blur(24px);
+  }
+  .human-person{
+    bottom:-22px;
+    width:min(50%,250px);
+    filter:drop-shadow(0 24px 34px rgba(0,0,0,.46));
+  }
+  .human-person-axel{
+    left:19%;
+    z-index:1;
+    transform:translate3d(calc(var(--mx) * 4px),calc(var(--my) * 3px),0);
+  }
+  .human-person-emma{
+    right:10%;
+    z-index:2;
+    transform:translate3d(calc(var(--mx) * -5px),calc(var(--my) * 4px),0);
+  }
+  .human-chip{
+    min-height:30px;
+    padding:0 11px;
+    background:rgba(12,12,16,.56);
+    border-color:rgba(255,255,255,.14);
+    box-shadow:0 12px 30px rgba(0,0,0,.2);
+  }
+  .human-chip-strategy{left:6%;top:17%}
+  .human-chip-creative{right:6%;top:20%}
+  .human-chip-production{right:6%;bottom:19%}
+  .human-badge{
+    left:7%;
+    bottom:18px;
+    transform:none;
+    min-width:184px;
+    padding:10px 16px 9px;
+    box-shadow:0 14px 34px rgba(0,0,0,.28);
+  }
+}
+@media(max-width:1100px) and (min-width:761px){
+  .human-visual{
+    width:min(100%,620px);
+    height:390px;
+    border-radius:30px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(circle at 18% 80%,rgba(216,140,0,.2),transparent 38%),
+      radial-gradient(circle at 58% 46%,rgba(199,20,93,.2),transparent 44%),
+      radial-gradient(circle at 88% 26%,rgba(91,136,255,.24),transparent 45%),
+      #111116;
+  }
+  .human-person{width:min(46%,240px);bottom:-18px}
+  .human-person-axel{left:20%}
+  .human-person-emma{right:13%}
+  .human-badge{left:6%;bottom:16px;transform:none}
+}
+@media(max-width:760px){
+  .human-visual{
+    height:330px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(circle at 20% 80%,rgba(216,140,0,.2),transparent 40%),
+      radial-gradient(circle at 58% 48%,rgba(199,20,93,.2),transparent 46%),
+      radial-gradient(circle at 88% 24%,rgba(91,136,255,.24),transparent 46%),
+      #111116;
+  }
+  .human-person{width:min(49%,205px);bottom:-8px}
+  .human-person-axel{left:8%}
+  .human-person-emma{right:5%}
+  .human-badge{
+    left:14px;
+    bottom:12px;
+    transform:none;
+    min-width:145px;
+  }
+  .human-chip-strategy{left:14px;top:16px}
+  .human-chip-creative{right:14px;top:54px}
+  .human-chip-production{display:none}
+}
