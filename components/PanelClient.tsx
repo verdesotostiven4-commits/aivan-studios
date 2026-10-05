@@ -34,7 +34,8 @@ export default function PanelClient() {
   const [noteDraft, setNoteDraft] = useState("");
   const [filter, setFilter] = useState("todos");
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);\n  const [panelMessage, setPanelMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [panelMessage, setPanelMessage] = useState("");
 
   const selected = leads.find((lead) => lead.id === selectedId) || null;
 
@@ -45,6 +46,7 @@ export default function PanelClient() {
     const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(200);
     if (error) { setPanelMessage("No pudimos cargar los leads. Intenta recargar el panel."); setLoading(false); return; }
     setAllowed(true);
+    setPanelMessage("");
     setLeads((data || []) as Lead[]);
     setSelectedId((current) => current || data?.[0]?.id || null);
     setLoading(false);
@@ -94,15 +96,26 @@ export default function PanelClient() {
     if (!supabase || !selected) return;
     const patch: Record<string, string | null> = { status };
     if (status === "contactado" && !selected.last_contacted_at) patch.last_contacted_at = new Date().toISOString();
+    setPanelMessage("");
     const { error } = await supabase.from("leads").update(patch).eq("id", selected.id);
-    if (!error) setLeads((current) => current.map((lead) => lead.id === selected.id ? { ...lead, ...patch } as Lead : lead));
+    if (error) { setPanelMessage("No pudimos actualizar el estado. Intenta nuevamente."); return; }
+    setLeads((current) => current.map((lead) => lead.id === selected.id ? { ...lead, ...patch } as Lead : lead));
+    setPanelMessage(`Estado actualizado: ${statusLabels[status]}.`);
   }
 
   async function addNote(event: FormEvent) {
     event.preventDefault();
     if (!supabase || !selected || !noteDraft.trim()) return;
-    const { error } = await supabase.from("lead_notes").insert({ lead_id: selected.id, body: noteDraft.trim(), author_email: session?.user.email || null });
-    if (!error) { setNoteDraft(""); loadNotes(selected.id); }
+    setPanelMessage("");
+    const { error } = await supabase.from("lead_notes").insert({
+      lead_id: selected.id,
+      body: noteDraft.trim(),
+      author_email: session?.user.email?.toLowerCase() || null,
+    });
+    if (error) { setPanelMessage("No pudimos guardar la nota. Intenta nuevamente."); return; }
+    setNoteDraft("");
+    setPanelMessage("Nota guardada.");
+    loadNotes(selected.id);
   }
 
   async function signOut() { if (supabase) await supabase.auth.signOut(); }
