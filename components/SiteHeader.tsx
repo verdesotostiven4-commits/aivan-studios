@@ -22,6 +22,7 @@ export default function SiteHeader() {
     let frame = 0;
     let lastY = window.scrollY;
     let lastCompact = lastY > 24;
+    let lastHidden = false;
     setCompact(lastCompact);
 
     const onScroll = () => {
@@ -34,9 +35,15 @@ export default function SiteHeader() {
           setCompact(nextCompact);
         }
 
-        if (y < 120) setHidden(false);
-        else if (y > lastY + 10) setHidden(true);
-        else if (y < lastY - 8) setHidden(false);
+        let nextHidden = lastHidden;
+        if (y < 120) nextHidden = false;
+        else if (y > lastY + 10) nextHidden = true;
+        else if (y < lastY - 8) nextHidden = false;
+
+        if (nextHidden !== lastHidden) {
+          lastHidden = nextHidden;
+          setHidden(nextHidden);
+        }
 
         lastY = y;
         frame = 0;

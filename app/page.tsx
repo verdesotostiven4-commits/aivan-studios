@@ -19,11 +19,18 @@ const processSteps = [
   ["05", "Evolucionamos contigo", "Leemos la respuesta, ajustamos y hacemos que el sistema madure con el negocio."],
 ];
 
+function ServiceIcon({ id }: { id: string }) {
+  if (id === "brand") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/><circle cx="12" cy="12" r="3.25"/></svg>;
+  if (id === "mark") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"/></svg>;
+  if (id === "prod") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3l8 4.5-8 4.5-8-4.5Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg>;
+}
+
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
   return (
     <article id={service.id === "packs" ? "aipacks" : undefined} className={`service-card service-${service.id}`} data-reveal>
       <div className="service-index"><span>{service.code}</span><span>↗</span></div>
-      <div className="service-title"><p>{service.label}</p><h3>{service.name}</h3></div>
+      <div className="service-title"><span className="service-symbol"><ServiceIcon id={service.id} /></span><div><p>{service.label}</p><h3>{service.name}</h3></div></div>
       <p className="service-copy">{service.copy}</p>
       <div className="service-list">{service.items.map((item) => <span key={item}>{item}</span>)}</div>
     </article>

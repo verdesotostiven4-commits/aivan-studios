@@ -975,3 +975,45 @@ body{overflow-x:hidden}
 @media(max-width:760px){
   .signal-lab[data-reveal].is-visible{transform:none}
 }
+
+
+/* === Final QA pass: cleaner service identity + smoother fixed header === */
+.site-header{will-change:transform}
+.signal-lab:before{
+  animation:none!important;
+  transform:none!important;
+}
+.service-title{
+  display:flex;
+  align-items:flex-end;
+  gap:16px;
+}
+.service-title>div{min-width:0}
+.service-symbol{
+  width:46px;height:46px;flex:0 0 46px;
+  display:grid;place-items:center;border-radius:15px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.075);
+  box-shadow:inset 0 1px rgba(255,255,255,.08);
+  transform:translateY(-2px);
+}
+.service-symbol svg{
+  width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.65;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.service-brand .service-symbol{color:#ffbd39;background:linear-gradient(145deg,rgba(216,140,0,.2),rgba(223,76,35,.08))}
+.service-mark .service-symbol{color:#f45b9b;background:linear-gradient(145deg,rgba(199,20,93,.2),rgba(109,94,220,.08))}
+.service-prod .service-symbol{color:#8fc5ff;background:linear-gradient(145deg,rgba(91,136,255,.2),rgba(150,214,253,.08))}
+.service-packs .service-symbol{color:#fff;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.03))}
+.service-card:hover .service-symbol{transform:translateY(-4px) rotate(-2deg)}
+.service-symbol{transition:transform .28s cubic-bezier(.2,.65,.2,1)}
+
+@media(max-width:760px){
+  .service-title{align-items:center;gap:12px}
+  .service-symbol{width:40px;height:40px;flex-basis:40px;border-radius:13px;transform:none}
+  .service-symbol svg{width:20px;height:20px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .service-symbol,.service-card:hover .service-symbol{transform:none!important;transition:none!important}
+}

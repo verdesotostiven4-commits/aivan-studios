@@ -20,6 +20,9 @@ const serviceLabels: Record<string,string> = { aibrand:"AIBRAND", aimark:"AIMARK
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("es-EC", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
+function externalHref(value: string) {
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
 
 export default function PanelClient() {
   const supabase = useMemo(() => getBrowserSupabase(), []);
@@ -206,10 +209,10 @@ export default function PanelClient() {
             {!selected ? <div className="crm-empty"><strong>Selecciona un lead.</strong><span>Aquí aparecerá el brief completo.</span></div> : <>
               <button type="button" className="detail-back" onClick={() => setSelectedId(null)}>← Volver a la lista</button><div className="detail-head"><div className="lead-avatar large">{selected.business_name.slice(0,2).toUpperCase()}</div><div><p className="micro-label">{serviceLabels[selected.service]}</p><h2>{selected.business_name}</h2><span>{selected.contact_name}</span></div></div>
               <div className="detail-status"><span>Estado</span><select value={selected.status} onChange={(e) => updateStatus(e.target.value)}>{statuses.map((s) => <option key={s} value={s}>{statusLabels[s]}</option>)}</select></div>
-              <div className="detail-actions">{selected.phone && <a className="action-primary" href={`https://wa.me/${selected.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">Responder por WhatsApp ↗</a>}{selected.email && <a href={`mailto:${selected.email}`}>Enviar correo</a>}</div>
+              <div className="detail-actions">{selected.phone && <a className="action-primary" href={`https://wa.me/${selected.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">Responder por WhatsApp ↗</a>}{selected.email && <a href={`mailto:${selected.email}`}>Enviar correo</a>}{selected.website && <a href={externalHref(selected.website)} target="_blank" rel="noreferrer">Abrir web / red ↗</a>}</div>
               <div className="detail-section"><h3>Contacto</h3><dl><div><dt>Nombre</dt><dd>{selected.contact_name}</dd></div><div><dt>Correo</dt><dd>{selected.email || "—"}</dd></div><div><dt>Teléfono</dt><dd>{selected.phone || "—"}</dd></div><div><dt>Ciudad</dt><dd>{selected.city || "—"}</dd></div><div><dt>Web / red</dt><dd>{selected.website || "—"}</dd></div></dl></div>
               <div className="detail-section"><h3>Brief</h3><div className="brief-answer"><span>¿A qué se dedica?</span><p>{selected.industry || "—"}</p></div><div className="brief-answer"><span>¿Qué quiere impulsar?</span><p>{selected.product_focus || "—"}</p></div><div className="brief-answer"><span>Reto principal</span><p>{selected.challenge || "—"}</p></div><div className="brief-answer"><span>Objetivo</span><p>{selected.goal || "—"}</p></div><div className="brief-answer"><span>Presupuesto</span><p>{selected.budget || "Por definir"}</p></div>{selected.networks?.length > 0 && <div className="detail-chips">{selected.networks.map((n) => <span key={n}>{n}</span>)}</div>}</div>
-              <div className="detail-section notes-section"><h3>Notas internas</h3><form onSubmit={addNote}><textarea value={noteDraft} onChange={(e) => setNoteDraft(e.target.value)} placeholder="Añade contexto para el equipo…" rows={3} /><button className="button button-dark" disabled={!noteDraft.trim()}>Guardar nota</button></form>{notes.map((note) => <article key={note.id}><p>{note.body}</p><small>{note.author_email || "AIVAN"} · {formatDate(note.created_at)}</small></article>)}</div>
+              <div className="detail-section notes-section"><h3>Notas internas</h3><form onSubmit={addNote}><textarea value={noteDraft} onChange={(e) => setNoteDraft(e.target.value)} placeholder="Añade contexto para el equipo…" rows={3} maxLength={1200} /><button className="button button-dark" disabled={!noteDraft.trim()}>Guardar nota</button></form>{notes.map((note) => <article key={note.id}><p>{note.body}</p><small>{note.author_email || "AIVAN"} · {formatDate(note.created_at)}</small></article>)}</div>
             </>}
           </aside>
         </section>
