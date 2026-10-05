@@ -17,10 +17,27 @@ export default function SiteHeader() {
   const [active, setActive] = useState("#inicio");
 
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 24);
-    onScroll();
+    let frame = 0;
+    let last = window.scrollY > 24;
+    setCompact(last);
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        const next = window.scrollY > 24;
+        if (next !== last) {
+          last = next;
+          setCompact(next);
+        }
+        frame = 0;
+      });
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
