@@ -171,7 +171,7 @@ export default function Home() {
       <footer className="site-footer">
         <a href="#inicio" aria-label="Volver al inicio"><Wordmark /></a>
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
-        <nav aria-label="Enlaces del pie"><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a></nav>
+        <nav aria-label="Enlaces del pie"><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a><a href="/privacidad">Privacidad</a></nav>
       </footer>
     </main>
   );

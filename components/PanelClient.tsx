@@ -36,6 +36,7 @@ export default function PanelClient() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [panelMessage, setPanelMessage] = useState("");
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission | "unsupported">("unsupported");
 
   const selected = leads.find((lead) => lead.id === selectedId) || null;
 
@@ -66,6 +67,14 @@ export default function PanelClient() {
   }, [supabase]);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setNotificationPermission("unsupported");
+      return;
+    }
+    setNotificationPermission(Notification.permission);
+  }, []);
+
+  useEffect(() => {
     if (!session) { setAllowed(null); setLoading(false); return; }
     setLoading(true);
     loadLeads();
@@ -76,7 +85,18 @@ export default function PanelClient() {
   useEffect(() => {
     if (!supabase || !session || allowed !== true) return;
     const channel = supabase.channel("aivan-leads")
-      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => loadLeads())
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, (payload) => {
+        const lead = payload.new as Lead;
+        if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
+          new Notification(`Nuevo brief · ${lead.business_name || "AIVAN"}`, {
+            body: `${lead.contact_name || "Nuevo contacto"} · ${serviceLabels[lead.service] || "Servicio por definir"}`,
+            tag: `aivan-lead-${lead.id}`,
+          });
+        }
+        setPanelMessage(`Nuevo brief recibido: ${lead.business_name || "sin nombre"}.`);
+        loadLeads();
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "leads" }, () => loadLeads())
       .on("postgres_changes", { event: "*", schema: "public", table: "lead_notes" }, () => loadNotes(selectedId))
       .subscribe();
     return () => { supabase.removeChannel(channel); };
@@ -118,6 +138,19 @@ export default function PanelClient() {
     loadNotes(selected.id);
   }
 
+  async function requestNotifications() {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setNotificationPermission("unsupported");
+      setPanelMessage("Este navegador no admite avisos del sistema.");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    setNotificationPermission(permission);
+    setPanelMessage(permission === "granted"
+      ? "Avisos activados en este dispositivo mientras el panel esté abierto."
+      : "Los avisos no fueron habilitados. El panel seguirá actualizándose en tiempo real.");
+  }
+
   async function signOut() { if (supabase) await supabase.auth.signOut(); }
 
   const filtered = leads.filter((lead) => {
@@ -156,7 +189,7 @@ export default function PanelClient() {
       </aside>
 
       <main className="crm-main" id="main-content">
-        <header className="crm-top"><div><p className="micro-label">PANEL DE OPORTUNIDADES</p><h1>Leads y briefs.</h1></div><a href="/" className="button button-quiet">Ver sitio ↗</a></header>{panelMessage && <p className="crm-notice" role="status" aria-live="polite">{panelMessage}</p>}
+        <header className="crm-top"><div><p className="micro-label">PANEL DE OPORTUNIDADES</p><h1>Leads y briefs.</h1></div><div className="crm-top-actions">{notificationPermission === "default" && <button type="button" className="button button-quiet" onClick={requestNotifications}>Activar avisos</button>}{notificationPermission === "granted" && <span className="crm-live-indicator" title="Avisos activados"><i /> Avisos activos</span>}<a href="/" className="button button-quiet">Ver sitio ↗</a></div></header>{panelMessage && <p className="crm-notice" role="status" aria-live="polite">{panelMessage}</p>}
         <section className="crm-metrics"><article><span>Nuevos</span><strong>{counts.nuevo}</strong></article><article><span>En revisión</span><strong>{counts.revision}</strong></article><article><span>Contactados</span><strong>{counts.contactado}</strong></article><article><span>Reuniones</span><strong>{counts.reunion}</strong></article></section>
         <section className="crm-workspace">
           <div className="crm-list-pane">

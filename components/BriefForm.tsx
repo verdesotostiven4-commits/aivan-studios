@@ -163,7 +163,7 @@ export default function BriefForm() {
             <Field label="WhatsApp / teléfono"><input value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+593 …" inputMode="tel" autoComplete="tel" maxLength={40} /></Field>
           </div>
           <label className="hp-field" aria-hidden="true">Website<input tabIndex={-1} autoComplete="off" value={form.companyWebsite} onChange={(e) => update("companyWebsite", e.target.value)} /></label>
-          <p className="privacy-note">Al enviar autorizas a AIVAN a usar estos datos únicamente para revisar tu solicitud y contactarte sobre este proyecto.</p>
+          <p className="privacy-note">Al enviar autorizas a AIVAN a usar estos datos únicamente para revisar tu solicitud y contactarte sobre este proyecto. <a href="/privacidad" target="_blank" rel="noreferrer">Ver aviso de privacidad ↗</a></p>
         </>}
       </div>
 
