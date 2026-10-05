@@ -110,8 +110,29 @@ export default function Home() {
 
       <section className="human-section">
         <div className="human-panel" data-reveal>
-          <div className="human-copy"><p className="micro-label">UNA MARCA CON CARA HUMANA</p><h2>El sistema puede ser preciso.<br />La relación no tiene que ser fría.</h2><p>AIVAN se presenta a través de sus propios representantes, conversa con el cliente y explica decisiones sin esconderse detrás de una “agencia” distante.</p></div>
-          <div className="human-visual" aria-hidden="true"><div className="portrait-card portrait-a"><span>ESTRATEGIA</span><strong>A</strong></div><div className="portrait-card portrait-e"><span>CREATIVIDAD</span><strong>E</strong></div><div className="asset-note">AXEL + EMMA<br/><small>assets oficiales pendientes</small></div></div>
+          <div className="human-copy">
+            <p className="micro-label">UNA MARCA CON CARA HUMANA</p>
+            <h2>El sistema puede ser preciso.<br />La relación no tiene que ser fría.</h2>
+            <p>AIVAN se presenta a través de sus propios representantes, conversa con el cliente y explica decisiones sin esconderse detrás de una “agencia” distante.</p>
+          </div>
+          <div className="human-visual" aria-hidden="true">
+            <div className="human-aurora" />
+            <span className="human-chip human-chip-strategy">ESTRATEGIA</span>
+            <span className="human-chip human-chip-creative">CREATIVIDAD</span>
+            <span className="human-chip human-chip-production">PRODUCCIÓN</span>
+            <img
+              src="/brand/avatars/axel-emma-duo.webp"
+              alt=""
+              className="human-avatar"
+              width={600}
+              height={740}
+              loading="lazy"
+            />
+            <div className="human-badge">
+              <strong>AXEL + EMMA</strong>
+              <span>La cara digital de AIVAN</span>
+            </div>
+          </div>
         </div>
       </section>
 
