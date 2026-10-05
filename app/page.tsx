@@ -44,10 +44,13 @@ export default function Home() {
       <section className="hero" id="inicio">
         <div className="hero-copy" data-reveal>
           <p className="micro-label">ESTUDIO CREATIVO · GALÁPAGOS</p>
-          <h1>Tu marca no necesita más ruido.<br /><span>Necesita dirección.</span></h1>
-          <p className="hero-lead">Branding, estrategia de marketing y producción audiovisual trabajando como un solo sistema para que tu negocio se vea claro, se entienda rápido y avance con intención.</p>
+          <h1>
+            <span className="hero-line">Tu negocio no necesita un cambio.</span>
+            <span className="hero-line hero-gradient">Necesita una evolución.</span>
+          </h1>
+          <p className="hero-lead">Estrategia, creatividad y producción digital trabajando como un solo sistema para que tu marca crezca, conecte y evolucione con intención.</p>
           <div className="hero-actions">
-            <a className="button button-dark" href="#brief">Quiero una dirección clara <span>↗</span></a>
+            <a className="button button-dark" href="#brief">Quiero que analicen mi negocio <span>↗</span></a>
             <a className="button button-quiet hero-secondary" href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined}>Hablar con AIVAN</a>
           </div>
           <div className="hero-proof">
@@ -70,6 +73,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="human-section" id="aivan">
+        <div className="human-panel" data-reveal>
+          <div className="human-copy">
+            <p className="micro-label">QUÉ ES AIVAN</p>
+            <h2>Somos un estudio <span>creativo</span><br />que transforma negocios.</h2>
+            <p>Combinamos estrategia, diseño y producción digital para ayudar a marcas a crecer, conectar y evolucionar en un mundo visual.</p>
+            <div className="human-values" aria-label="Pilares de AIVAN">
+              <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
+            </div>
+          </div>
+          <div className="human-visual">
+            <div className="human-blob" aria-hidden="true" />
+            <div className="human-people">
+              <img src="/brand/avatars/axel-half.webp" alt="Axel, representante digital de AIVAN" className="human-person human-person-axel" width={230} height={287} loading="lazy" decoding="async" />
+              <img src="/brand/avatars/emma-half.webp" alt="Emma, representante digital de AIVAN" className="human-person human-person-emma" width={230} height={287} loading="lazy" decoding="async" />
+            </div>
+            <span className="avatar-name avatar-name-axel">Axel</span>
+            <span className="avatar-name avatar-name-emma">Emma</span>
+          </div>
+        </div>
+      </section>
+
       <section className="statement" id="enfoque">
         <div className="statement-inner" data-reveal>
           <p className="micro-label">NUESTRA FORMA DE TRABAJAR</p>
@@ -78,6 +103,13 @@ export default function Home() {
             <p>Una marca puede tener fotos bonitas y seguir sin decir nada. Puede publicar todos los días y seguir sin tener dirección. AIVAN existe para ordenar primero la idea y construir después la ejecución.</p>
             <p>Así branding, marketing y audiovisual dejan de competir entre sí y empiezan a empujar el mismo negocio.</p>
           </div>
+        </div>
+      </section>
+
+      <section className="brand-marquee" aria-label="Lenguaje creativo de AIVAN">
+        <div className="marquee-track">
+          <span>AIBRAND</span><b>✦</b><em>IDENTIDAD</em><b>✦</b><span>AIMARK</span><b>✦</b><em>ESTRATEGIA</em><b>✦</b><span>AIPROD</span><b>✦</b><em>PRODUCCIÓN</em><b>✦</b><span>AIPACKS</span><b>✦</b><em>EVOLUCIÓN</em><b>✦</b>
+          <span aria-hidden="true">AIBRAND</span><b aria-hidden="true">✦</b><em aria-hidden="true">IDENTIDAD</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIMARK</span><b aria-hidden="true">✦</b><em aria-hidden="true">ESTRATEGIA</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIPROD</span><b aria-hidden="true">✦</b><em aria-hidden="true">PRODUCCIÓN</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIPACKS</span><b aria-hidden="true">✦</b><em aria-hidden="true">EVOLUCIÓN</em><b aria-hidden="true">✦</b>
         </div>
       </section>
 
@@ -95,7 +127,7 @@ export default function Home() {
           <h2>Es saber <em>cuándo</em> usarlo.</h2>
         </div>
         <div className="bridge-visual" data-reveal>
-          <div className="bridge-node node-a">MARCA</div><span>→</span><div className="bridge-node node-b">ESTRATEGIA</div><span>→</span><div className="bridge-node node-c">CONTENIDO</div><span>→</span><div className="bridge-node node-d">RESULTADO</div>
+          <div className="bridge-node node-a"><strong>MARCA</strong><small>Se reconoce</small></div><span>→</span><div className="bridge-node node-b"><strong>ESTRATEGIA</strong><small>Encuentra foco</small></div><span>→</span><div className="bridge-node node-c"><strong>CONTENIDO</strong><small>Demuestra valor</small></div><span>→</span><div className="bridge-node node-d"><strong>RESULTADO</strong><small>Hace avanzar</small></div>
         </div>
       </section>
 
@@ -104,43 +136,12 @@ export default function Home() {
           <div><p className="micro-label">PROCESO</p><h2>De la conversación<br />a algo que funciona.</h2></div>
           <p>Un proceso entendible también es parte de una buena experiencia. Sabes qué estamos haciendo, por qué y qué viene después.</p>
         </div>
-        <div className="process-rail">
-          {processSteps.map(([n, title, copy]) => <article key={n} data-reveal><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
+        <div className="process-rail" data-reveal>
+          {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
         </div>
       </section>
 
       <ProjectsSection />
-
-      <section className="human-section">
-        <div className="human-panel" data-reveal>
-          <div className="human-copy">
-            <p className="micro-label">UNA MARCA CON CARA HUMANA</p>
-            <h2>El sistema puede ser preciso.<br />La relación no tiene que ser fría.</h2>
-            <p>AIVAN se presenta a través de sus propios representantes, conversa con el cliente y explica decisiones sin esconderse detrás de una “agencia” distante.</p>
-          </div>
-          <div className="human-visual" aria-hidden="true">
-            <div className="human-aurora" />
-            <span className="human-chip human-chip-strategy">ESTRATEGIA</span>
-            <span className="human-chip human-chip-creative">CREATIVIDAD</span>
-            <span className="human-chip human-chip-production">PRODUCCIÓN</span>
-            <div className="human-people">
-              <img
-                src="/brand/avatars/axel-emma-duo.webp"
-                alt=""
-                className="human-duo"
-                width={520}
-                height={520}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div className="human-badge">
-              <strong>AXEL + EMMA</strong>
-              <span>La cara digital de AIVAN</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="brief-section" id="brief">
         <div className="brief-shell">

@@ -18,7 +18,7 @@ export default function HomeMotion() {
         (entry.target as HTMLElement).classList.add("is-visible");
         observer.unobserve(entry.target);
       }),
-      { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
     );
     nodes.forEach((node) => observer.observe(node));
 
@@ -32,15 +32,17 @@ export default function HomeMotion() {
       frame = 0;
     };
     const move = (event: PointerEvent) => {
-      if (!finePointer || window.innerWidth < 900) return;
+      if (!finePointer || window.innerWidth < 980) return;
       nextX = (event.clientX / window.innerWidth - 0.5) * 2;
       nextY = (event.clientY / window.innerHeight - 0.5) * 2;
       if (!frame) frame = window.requestAnimationFrame(paint);
     };
     const reset = () => {
-      nextX = 0; nextY = 0;
+      nextX = 0;
+      nextY = 0;
       if (!frame) frame = window.requestAnimationFrame(paint);
     };
+
     window.addEventListener("pointermove", move, { passive: true });
     document.documentElement.addEventListener("mouseleave", reset);
 

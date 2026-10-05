@@ -15,20 +15,29 @@ export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const [active, setActive] = useState("#inicio");
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     let frame = 0;
-    let last = window.scrollY > 24;
-    setCompact(last);
+    let lastY = window.scrollY;
+    let lastCompact = lastY > 24;
+    setCompact(lastCompact);
 
     const onScroll = () => {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
-        const next = window.scrollY > 24;
-        if (next !== last) {
-          last = next;
-          setCompact(next);
+        const y = window.scrollY;
+        const nextCompact = y > 24;
+        if (nextCompact !== lastCompact) {
+          lastCompact = nextCompact;
+          setCompact(nextCompact);
         }
+
+        if (y < 120) setHidden(false);
+        else if (y > lastY + 10) setHidden(true);
+        else if (y < lastY - 8) setHidden(false);
+
+        lastY = y;
         frame = 0;
       });
     };
@@ -69,7 +78,7 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className={`site-header${compact ? " compact" : ""}`}>
+    <header className={`site-header${compact ? " compact" : ""}${hidden && !open ? " header-hidden" : ""}`}>
       <a href="#inicio" className="brand-link" aria-label="AIVAN STUDIOS — Inicio" onClick={() => setOpen(false)}>
         <Wordmark />
       </a>
