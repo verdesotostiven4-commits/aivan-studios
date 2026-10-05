@@ -120,14 +120,24 @@ export default function Home() {
             <span className="human-chip human-chip-strategy">ESTRATEGIA</span>
             <span className="human-chip human-chip-creative">CREATIVIDAD</span>
             <span className="human-chip human-chip-production">PRODUCCIÓN</span>
-            <img
-              src="/brand/avatars/axel-emma-duo.webp"
-              alt=""
-              className="human-avatar"
-              width={600}
-              height={740}
-              loading="lazy"
-            />
+            <div className="human-people">
+              <img
+                src="/brand/avatars/axel-half.webp"
+                alt=""
+                className="human-person human-person-axel"
+                width={230}
+                height={287}
+                loading="lazy"
+              />
+              <img
+                src="/brand/avatars/emma-half.webp"
+                alt=""
+                className="human-person human-person-emma"
+                width={230}
+                height={287}
+                loading="lazy"
+              />
+            </div>
             <div className="human-badge">
               <strong>AXEL + EMMA</strong>
               <span>La cara digital de AIVAN</span>
