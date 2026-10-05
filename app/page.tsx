@@ -30,8 +30,10 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
 }
 
 export default function Home() {
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-  const whatsappHref = whatsapp ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hola AIVAN, vi su web y quiero conversar sobre mi negocio.")}` : "#brief";
+  const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "593990601620").replace(/\D/g, "");
+  const contactEmail = "aivanstudiosgps@gmail.com";
+  const whatsappHref = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hola AIVAN, vi su web y quiero conversar sobre mi negocio.")}`;
+  const emailHref = `mailto:${contactEmail}?subject=${encodeURIComponent("Consulta desde la web de AIVAN STUDIOS")}`;
 
   return (
     <main>
@@ -120,6 +122,20 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="contact-section" id="contacto">
+        <div className="contact-shell" data-reveal>
+          <div>
+            <p className="micro-label">CONTACTO DIRECTO</p>
+            <h2>¿Prefieres hablar<br />sin llenar el brief?</h2>
+            <p>Escríbenos directamente por WhatsApp o correo. Si ya tienes claro lo que necesitas, este es el camino más rápido.</p>
+          </div>
+          <div className="contact-links">
+            <a href={whatsappHref} target="_blank" rel="noreferrer"><span>WhatsApp</span><strong>+593 99 060 1620</strong><b>↗</b></a>
+            <a href={emailHref}><span>Correo</span><strong>{contactEmail}</strong><b>↗</b></a>
+          </div>
+        </div>
+      </section>
+
       <section className="closing-section">
         <div className="closing-orbit orbit-one" /><div className="closing-orbit orbit-two" />
         <div className="closing-content" data-reveal><p className="micro-label light-label">AIVAN STUDIOS</p><h2>La siguiente versión<br />de tu marca puede empezar hoy.</h2><div><a href="#brief" className="button button-light">Analizar mi negocio <span>↗</span></a><a href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined} className="button button-outline">Hablar directamente</a></div></div>
@@ -128,7 +144,7 @@ export default function Home() {
       <footer className="site-footer">
         <Wordmark />
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
-        <nav><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Contacto</a><a href="/panel">Panel</a></nav>
+        <nav><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a><a href="/panel">Panel</a></nav>
       </footer>
     </main>
   );
