@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Wordmark from "./Wordmark";
 
 const links = [
-  ["Enfoque", "#enfoque"],
+  ["Qué es AIVAN", "#aivan"],
   ["Servicios", "#servicios"],
-  ["Proceso", "#proceso"],
+  ["Nuestro método", "#proceso"],
+  ["Acompañamientos", "#aipacks"],
   ["Brief", "#brief"],
   ["Contacto", "#contacto"],
 ] as const;

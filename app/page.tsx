@@ -5,23 +5,23 @@ import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
 
 const services = [
-  { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad, sistemas visuales y piezas que hacen que una marca deje de parecer improvisada.", items: ["Identidad de marca", "Diseño publicitario", "Ilustración", "Modelado 3D"] },
-  { code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo", copy: "Dirección para que el contenido tenga una razón de existir y una ruta para crecer.", items: ["Estrategia de contenidos", "Gestión de redes", "Diagnóstico", "Asesoría"] },
-  { code: "03", id: "prod", name: "AIPROD", label: "Producción audiovisual", copy: "Fotografía, video y motion pensados para comunicar valor, no solo para llenar el feed.", items: ["Fotografía", "Edición audiovisual", "Motion graphics", "Producción"] },
-  { code: "04", id: "packs", name: "AIPACKS", label: "Acompañamiento integral", copy: "Combinamos disciplinas cuando tu negocio necesita continuidad en lugar de una pieza aislada.", items: ["Mini", "Pro", "Ultra", "Plan a medida"] },
+  { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
+  { code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo", copy: "Dirección estratégica para que el contenido tenga una razón de existir y una ruta para crecer.", items: ["Estrategia de contenidos", "Gestión de redes sociales", "Diagnóstico de marca", "Asesoría estratégica"] },
+  { code: "03", id: "prod", name: "AIPROD", label: "Producción audiovisual", copy: "Fotografía, edición y motion pensados para comunicar valor y convertir ideas en contenido real.", items: ["Estrategia de contenidos", "Fotografía profesional", "Edición audiovisual", "Motion Graphics"] },
+  { code: "04", id: "packs", name: "AIPACKS", label: "Paquetes AIVAN", copy: "Acompañamientos que combinan disciplinas cuando tu negocio necesita continuidad y evolución.", items: ["AIPACK Mini", "AIPACK Pro", "AIPACK Ultra"] },
 ];
 
 const processSteps = [
-  ["01", "Entender", "Negocio, contexto y problema antes de hablar de soluciones."],
-  ["02", "Enfocar", "Elegimos qué mover primero y qué todavía no necesitas."],
-  ["03", "Construir", "Estrategia, diseño y producción bajo una sola dirección."],
-  ["04", "Activar", "Lanzamos materiales listos para vivir en el mundo real."],
-  ["05", "Evolucionar", "Aprendemos de la respuesta y hacemos que el sistema madure."],
+  ["01", "Conocemos", "Entendemos el negocio, su contexto y el problema antes de hablar de soluciones."],
+  ["02", "Analizamos", "Detectamos qué mover primero, qué está frenando la marca y qué todavía no necesita."],
+  ["03", "Direccionamos", "Definimos la ruta que alinea estrategia, creatividad y producción."],
+  ["04", "Creamos", "Convertimos la dirección en piezas, contenido y materiales listos para el mundo real."],
+  ["05", "Evolucionamos contigo", "Leemos la respuesta, ajustamos y hacemos que el sistema madure con el negocio."],
 ];
 
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
   return (
-    <article className={`service-card service-${service.id}`} data-reveal>
+    <article id={service.id === "packs" ? "aipacks" : undefined} className={`service-card service-${service.id}`} data-reveal>
       <div className="service-index"><span>{service.code}</span><span>↗</span></div>
       <div className="service-title"><p>{service.label}</p><h3>{service.name}</h3></div>
       <p className="service-copy">{service.copy}</p>
@@ -79,6 +79,7 @@ export default function Home() {
             <p className="micro-label">QUÉ ES AIVAN</p>
             <h2>Somos un estudio <span>creativo</span><br />que transforma negocios.</h2>
             <p>Combinamos estrategia, diseño y producción digital para ayudar a marcas a crecer, conectar y evolucionar en un mundo visual.</p>
+            <a className="human-cta" href="#servicios">Conoce cómo trabaja AIVAN <span aria-hidden="true">→</span></a>
             <div className="human-values" aria-label="Pilares de AIVAN">
               <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
             </div>
@@ -115,7 +116,7 @@ export default function Home() {
 
       <section className="services-section" id="servicios">
         <div className="section-intro" data-reveal>
-          <div><p className="micro-label">ECOSISTEMA AIVAN</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
+          <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
           <p>Entramos por el punto que tu negocio necesita hoy y dejamos espacio para que el sistema crezca mañana.</p>
         </div>
         <div className="services-grid">{services.map((service) => <ServiceCard key={service.name} service={service} />)}</div>
@@ -133,7 +134,7 @@ export default function Home() {
 
       <section className="process-section" id="proceso">
         <div className="section-intro" data-reveal>
-          <div><p className="micro-label">PROCESO</p><h2>De la conversación<br />a algo que funciona.</h2></div>
+          <div><p className="micro-label">NUESTRO MÉTODO</p><h2>De la conversación<br />a algo que funciona.</h2></div>
           <p>Un proceso entendible también es parte de una buena experiencia. Sabes qué estamos haciendo, por qué y qué viene después.</p>
         </div>
         <div className="process-rail" data-reveal>

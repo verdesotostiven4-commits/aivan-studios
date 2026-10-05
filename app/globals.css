@@ -858,3 +858,87 @@ body{overflow-x:hidden}
   .bridge-visual:before,.process-rail:before{transform:none!important;transition:none!important}
   .human-person{transform:none!important;transition:none!important}
 }
+
+
+/* === Final AIVAN polish: official taxonomy, hierarchy and premium rhythm === */
+#servicios,#proceso,#aipacks,#brief,#contacto,#aivan{scroll-margin-top:104px}
+
+.desktop-nav{gap:22px}
+.desktop-nav a{font-size:11px}
+@media(max-width:1180px){
+  .desktop-nav{gap:16px}
+  .desktop-nav a{font-size:10.5px}
+}
+
+.human-cta{
+  display:inline-flex;align-items:center;gap:16px;margin-top:26px;padding:11px 15px;
+  border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:11px;font-weight:780;
+  background:rgba(255,255,255,.72);transition:transform .24s ease,border-color .24s ease,background .24s ease;
+}
+.human-cta:hover{transform:translateY(-2px);border-color:rgba(9,9,11,.2);background:#fff}
+.human-cta span{transition:transform .24s ease}.human-cta:hover span{transform:translateX(3px)}
+
+.service-card[id="aipacks"]{scroll-margin-top:110px}
+.service-title p{letter-spacing:.01em}
+.service-list{max-width:92%}
+.service-list span{line-height:1.2}
+.service-brand .service-index span:first-child{color:#f0a320}
+.service-mark .service-index span:first-child{color:#dd3a7f}
+.service-prod .service-index span:first-child{color:#75a9ff}
+.service-packs .service-index span:first-child{color:#c6c6cb}
+
+/* Quiet editorial separators give the long page a stronger rhythm without adding clutter. */
+.statement-inner,.services-section,.bridge-section,.process-section>.section-intro,.brief-shell,.contact-shell{
+  position:relative;
+}
+.services-section:before,.brief-section:before{
+  content:"";display:block;position:absolute;left:50%;transform:translateX(-50%);
+  width:min(calc(100% - 128px),1312px);height:1px;background:var(--line-soft);top:0;
+}
+.services-section,.brief-section{position:relative}
+
+/* Hero signal panel enters after the copy, like a directed presentation. */
+.signal-lab[data-reveal]{
+  opacity:0;transform:translate3d(22px,14px,0) scale(.985);
+  transition:opacity .72s ease .22s,transform .72s cubic-bezier(.18,.72,.2,1) .22s;
+}
+.signal-lab[data-reveal].is-visible{
+  opacity:1;transform:perspective(1200px) rotateY(calc(var(--mx)*1.2deg)) rotateX(calc(var(--my)*-.9deg));
+}
+
+/* Stronger service-card entrance stagger without expensive scroll effects. */
+.services-grid .service-card:nth-child(1){transition-delay:.02s}
+.services-grid .service-card:nth-child(2){transition-delay:.08s}
+.services-grid .service-card:nth-child(3){transition-delay:.14s}
+.services-grid .service-card:nth-child(4){transition-delay:.20s}
+
+/* Method labels can breathe even with the longer official wording. */
+.process-rail h3{font-size:clamp(18px,1.55vw,22px);line-height:1.05}
+.process-rail article:last-child h3{max-width:160px}
+
+/* Closing scene gets a small brand signature instead of another giant effect. */
+.closing-section:after{
+  content:"AIVAN · ESTRATEGIA · CREATIVIDAD · PRODUCCIÓN · RESULTADOS";
+  position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+  white-space:nowrap;font-size:8px;letter-spacing:.22em;color:rgba(255,255,255,.38);
+}
+
+/* Mobile: keep the supplied structure usable and minimal. */
+@media(max-width:760px){
+  #servicios,#proceso,#aipacks,#brief,#contacto,#aivan{scroll-margin-top:82px}
+  .human-cta{margin-top:20px}
+  .human-values{gap:7px}
+  .service-list{max-width:100%}
+  .services-section:before,.brief-section:before{width:calc(100% - 32px)}
+  .closing-section:after{font-size:7px;letter-spacing:.13em;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+}
+@media(max-width:480px){
+  .human-values span{font-size:8px}
+  .service-title h3{font-size:38px}
+  .service-copy{font-size:14px}
+}
+
+/* No animation should become mandatory. */
+@media(prefers-reduced-motion:reduce){
+  .signal-lab[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+}
