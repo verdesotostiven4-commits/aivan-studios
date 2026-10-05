@@ -8,6 +8,7 @@ const links = [
   ["Servicios", "#servicios"],
   ["Proceso", "#proceso"],
   ["Brief", "#brief"],
+  ["Contacto", "#contacto"],
 ];
 
 export default function SiteHeader() {
