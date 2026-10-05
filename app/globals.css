@@ -963,3 +963,15 @@ body{overflow-x:hidden}
 
 /* The current AIVAN avatar scene uses its own soft blob; clear legacy decoration. */
 .human-visual:before,.human-visual:after,.human-people:before{content:none!important}
+
+
+/* Hero hierarchy: only the evolution line carries the AIVAN gradient. */
+.hero-line:not(.hero-gradient){
+  background:none!important;
+  -webkit-background-clip:border-box!important;
+  background-clip:border-box!important;
+  color:var(--ink)!important;
+}
+@media(max-width:760px){
+  .signal-lab[data-reveal].is-visible{transform:none}
+}
