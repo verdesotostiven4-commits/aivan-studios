@@ -1017,3 +1017,184 @@ body{overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){
   .service-symbol,.service-card:hover .service-symbol{transform:none!important;transition:none!important}
 }
+
+
+/* === Axel + Emma living brand system — layered transparent assets === */
+.avatar-showcase{
+  appearance:none;
+  -webkit-appearance:none;
+  display:block;
+  padding:0;
+  cursor:pointer;
+  isolation:isolate;
+  overflow:hidden;
+  text-align:initial;
+  color:inherit;
+  background:
+    radial-gradient(circle at 20% 22%,rgba(216,140,0,.055),transparent 32%),
+    radial-gradient(circle at 78% 20%,rgba(199,20,93,.045),transparent 34%),
+    linear-gradient(145deg,#fbfaf8 0%,#f4f3f6 100%);
+  border:1px solid rgba(11,11,14,.07);
+  box-shadow:inset 0 1px rgba(255,255,255,.8),0 24px 60px rgba(25,20,35,.07);
+}
+.avatar-showcase:focus-visible{
+  outline:2px solid #5b88ff;
+  outline-offset:5px;
+}
+.avatar-atmosphere{
+  position:absolute;
+  z-index:0;
+  inset:12% 11% 8%;
+  border-radius:46% 54% 58% 42% / 48% 42% 58% 52%;
+  background:
+    radial-gradient(circle at 22% 28%,rgba(216,140,0,.13),transparent 38%),
+    radial-gradient(circle at 53% 43%,rgba(199,20,93,.11),transparent 43%),
+    radial-gradient(circle at 78% 66%,rgba(91,136,255,.13),transparent 41%);
+  transform:translate3d(calc(var(--mx) * -3px),calc(var(--my) * -2px),0);
+}
+.blob-stack,.avatar-stack{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+.avatar-stack{z-index:2}
+.blob-layer,.avatar-layer{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 1.15s ease,transform 1.15s cubic-bezier(.2,.65,.2,1);
+}
+.blob-layer{transform:scale(.985)}
+.blob-layer.is-active{opacity:.96;transform:scale(1)}
+.blob-layer img{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:96%;
+  height:88%;
+  object-fit:contain;
+  transform:translate3d(calc(-50% + (var(--mx) * -5px)),calc(-50% + (var(--my) * -4px)),0) scale(1.03);
+  filter:drop-shadow(0 18px 32px rgba(102,68,170,.08));
+  animation:avatarBlobDrift 18s ease-in-out infinite alternate;
+  will-change:transform;
+}
+.blob-layer-2 img{width:91%;height:91%}
+.blob-layer-3 img{width:73%;height:104%}
+.blob-layer-4 img{width:92%;height:90%}
+
+.avatar-layer{
+  transform:translate3d(0,10px,0) scale(.992);
+}
+.avatar-layer.is-active{
+  opacity:1;
+  transform:none;
+}
+.avatar-layer img{
+  position:absolute;
+  left:50%;
+  bottom:-13%;
+  width:min(72%,520px);
+  max-height:112%;
+  object-fit:contain;
+  object-position:center bottom;
+  transform:translate3d(calc(-50% + (var(--mx) * 3px)),calc(var(--my) * 2px),0);
+  filter:drop-shadow(0 24px 27px rgba(28,22,39,.17));
+  transition:transform .28s ease-out;
+  will-change:transform;
+}
+.avatar-showcase:hover .avatar-layer.is-active img{
+  transform:translate3d(calc(-50% + (var(--mx) * 4px)),calc(-4px + (var(--my) * 3px)),0) scale(1.008);
+}
+
+.avatar-caption{
+  position:absolute;
+  z-index:5;
+  left:18px;
+  bottom:16px;
+  display:grid;
+  gap:2px;
+  min-width:202px;
+  padding:11px 14px;
+  border:1px solid rgba(11,11,14,.08);
+  border-radius:16px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 12px 30px rgba(26,20,36,.08);
+}
+.avatar-caption strong{
+  font-size:9px;
+  letter-spacing:.13em;
+}
+.avatar-caption>span{
+  font-size:9px;
+  color:#77747d;
+}
+.avatar-state{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+
+@keyframes avatarBlobDrift{
+  from{transform:translate3d(calc(-50% + (var(--mx) * -5px)),calc(-50% + (var(--my) * -4px) - 3px),0) scale(1.015) rotate(-.35deg)}
+  to{transform:translate3d(calc(-50% + (var(--mx) * -5px)),calc(-50% + (var(--my) * -4px) + 4px),0) scale(1.045) rotate(.35deg)}
+}
+
+@media(max-width:1100px){
+  .avatar-showcase{height:430px}
+  .avatar-layer img{width:min(67%,500px);bottom:-12%}
+  .blob-layer img{width:88%;height:88%}
+}
+
+@media(max-width:760px){
+  .avatar-showcase{
+    height:355px;
+    border-radius:26px;
+  }
+  .blob-layer{opacity:0!important}
+  .blob-layer-3{
+    opacity:1!important;
+    transform:scale(1)!important;
+  }
+  .blob-layer-3 img{
+    width:87%;
+    height:108%;
+    animation-duration:20s;
+  }
+  .avatar-layer img{
+    width:min(85%,385px);
+    max-height:105%;
+    bottom:-10%;
+    transform:translateX(-50%);
+  }
+  .avatar-showcase:hover .avatar-layer.is-active img{
+    transform:translateX(-50%);
+  }
+  .avatar-caption{
+    left:12px;
+    bottom:12px;
+    min-width:auto;
+    padding:9px 11px;
+    border-radius:14px;
+  }
+  .avatar-caption>span{display:none}
+}
+
+@media(max-width:480px){
+  .avatar-showcase{height:322px}
+  .avatar-layer img{width:min(91%,350px);bottom:-8%}
+  .blob-layer-3 img{width:93%;height:110%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .blob-layer,.avatar-layer{transition:none!important}
+  .blob-layer img{animation:none!important;transform:translate(-50%,-50%)!important}
+  .avatar-layer img,.avatar-showcase:hover .avatar-layer.is-active img{transform:translateX(-50%)!important;transition:none!important}
+  .avatar-atmosphere{transform:none!important}
+}

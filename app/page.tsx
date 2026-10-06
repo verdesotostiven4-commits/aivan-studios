@@ -1,3 +1,4 @@
+import AvatarShowcase from "@/components/AvatarShowcase";
 import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
@@ -91,15 +92,7 @@ export default function Home() {
               <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
             </div>
           </div>
-          <div className="human-visual">
-            <div className="human-blob" aria-hidden="true" />
-            <div className="human-people">
-              <img src="/brand/avatars/axel-half.webp" alt="Axel, representante digital de AIVAN" className="human-person human-person-axel" width={230} height={287} loading="lazy" decoding="async" />
-              <img src="/brand/avatars/emma-half.webp" alt="Emma, representante digital de AIVAN" className="human-person human-person-emma" width={230} height={287} loading="lazy" decoding="async" />
-            </div>
-            <span className="avatar-name avatar-name-axel">Axel</span>
-            <span className="avatar-name avatar-name-emma">Emma</span>
-          </div>
+          <AvatarShowcase />
         </div>
       </section>
 
