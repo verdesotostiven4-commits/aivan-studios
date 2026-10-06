@@ -1562,3 +1562,112 @@ body{overflow-x:hidden}
   .blob-layer.is-active img{animation:none!important}
   .avatar-layer.is-active,.blob-layer.is-active{animation:none!important}
 }
+
+
+/* === Avatar transition refinement: single-frame swaps, no double silhouettes === */
+@media(min-width:1181px){
+  .avatar-showcase{
+    transform:translateX(64px);
+    width:calc(100% - 12px);
+  }
+}
+@media(min-width:1041px) and (max-width:1180px){
+  .avatar-showcase{
+    transform:translateX(34px);
+    width:calc(100% - 6px);
+  }
+}
+
+.avatar-layer,
+.blob-layer{
+  opacity:0!important;
+  animation:none!important;
+  pointer-events:none;
+}
+
+.avatar-layer{
+  transform:translate3d(0,6px,0) scale(.997)!important;
+  transition:
+    opacity .21s ease,
+    transform .38s cubic-bezier(.2,.7,.2,1)!important;
+}
+
+.avatar-layer.is-visible{
+  opacity:1!important;
+  transform:none!important;
+}
+
+.avatar-layer img{
+  opacity:1;
+}
+
+.blob-layer{
+  transform:scale(.992)!important;
+  transition:
+    opacity .32s ease,
+    transform .72s cubic-bezier(.2,.7,.2,1)!important;
+}
+
+.blob-layer.is-visible{
+  opacity:.96!important;
+  transform:scale(1)!important;
+}
+
+/* The blob never crossfades with a second blob; one asset fades down, swaps, then fades back in. */
+.blob-layer img{
+  animation:avatarBlobOrganic 15.8s cubic-bezier(.42,0,.25,1) infinite!important;
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+
+.blob-variant-0 img{animation-duration:14.6s!important;animation-direction:alternate!important}
+.blob-variant-1 img{animation-duration:17.2s!important;animation-direction:alternate-reverse!important}
+.blob-variant-2 img{animation-duration:15.1s!important;animation-direction:alternate!important}
+.blob-variant-3 img{animation-duration:18.4s!important;animation-direction:alternate-reverse!important}
+
+@keyframes avatarBlobOrganic{
+  0%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) - 5px),calc(-50% + (var(--ay) * -4px) - 3px),0) scale(1.02) rotate(-1.15deg)
+  }
+  23%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) + 4px),calc(-50% + (var(--ay) * -4px) - 5px),0) scale(1.038) rotate(.45deg)
+  }
+  57%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) + 7px),calc(-50% + (var(--ay) * -4px) + 3px),0) scale(1.05) rotate(-.35deg)
+  }
+  82%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) - 2px),calc(-50% + (var(--ay) * -4px) + 6px),0) scale(1.032) rotate(1.25deg)
+  }
+  100%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) - 6px),calc(-50% + (var(--ay) * -4px) + 1px),0) scale(1.025) rotate(.15deg)
+  }
+}
+
+/* Keep hover/parallax smooth while the visible pose remains a single image. */
+.avatar-layer.is-visible img{
+  transition:transform .18s ease-out!important;
+}
+.avatar-showcase.is-returning .avatar-layer.is-visible img{
+  transition:transform .72s cubic-bezier(.2,.72,.2,1)!important;
+}
+
+@media(max-width:760px){
+  .avatar-layer{
+    transform:none!important;
+    transition:opacity .2s ease!important;
+  }
+  .blob-layer{
+    transform:none!important;
+    transition:opacity .3s ease!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .avatar-layer,
+  .blob-layer{
+    transition:none!important;
+  }
+  .blob-layer img{
+    animation:none!important;
+  }
+}

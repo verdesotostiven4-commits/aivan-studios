@@ -32,13 +32,18 @@ function nextBlob(current: number) {
 
 export default function AvatarShowcase() {
   const stageRef = useRef<HTMLButtonElement>(null);
-  const fadeAvatarTimer = useRef<number | null>(null);
-  const fadeBlobTimer = useRef<number | null>(null);
   const pointerFrame = useRef<number | null>(null);
+  const avatarSwapTimer = useRef<number | null>(null);
+  const avatarUnlockTimer = useRef<number | null>(null);
+  const blobSwapTimer = useRef<number | null>(null);
+  const blobUnlockTimer = useRef<number | null>(null);
+  const avatarSwitching = useRef(false);
+  const blobSwitching = useRef(false);
+
   const [avatarIndex, setAvatarIndex] = useState(0);
-  const [previousAvatar, setPreviousAvatar] = useState<number | null>(null);
+  const [avatarVisible, setAvatarVisible] = useState(true);
   const [blobIndex, setBlobIndex] = useState(0);
-  const [previousBlob, setPreviousBlob] = useState<number | null>(null);
+  const [blobVisible, setBlobVisible] = useState(true);
   const [inView, setInView] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -64,46 +69,78 @@ export default function AvatarShowcase() {
     return () => observer.disconnect();
   }, []);
 
-  function changeAvatar(next: number) {
-    if (next === avatarIndex) return;
-    setPreviousAvatar(avatarIndex);
-    setAvatarIndex(next);
-    if (fadeAvatarTimer.current) window.clearTimeout(fadeAvatarTimer.current);
-    fadeAvatarTimer.current = window.setTimeout(() => setPreviousAvatar(null), 1050);
+  function swapAvatar(next: number) {
+    if (next === avatarIndex || avatarSwitching.current) return;
+
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = avatars[next];
+
+    if (reduceMotion) {
+      setAvatarIndex(next);
+      return;
+    }
+
+    avatarSwitching.current = true;
+    setAvatarVisible(false);
+
+    if (avatarSwapTimer.current) window.clearTimeout(avatarSwapTimer.current);
+    if (avatarUnlockTimer.current) window.clearTimeout(avatarUnlockTimer.current);
+
+    avatarSwapTimer.current = window.setTimeout(() => {
+      setAvatarIndex(next);
+      window.requestAnimationFrame(() => setAvatarVisible(true));
+      avatarUnlockTimer.current = window.setTimeout(() => {
+        avatarSwitching.current = false;
+      }, 520);
+    }, 210);
   }
 
-  function changeBlob(next: number) {
-    if (next === blobIndex) return;
-    setPreviousBlob(blobIndex);
-    setBlobIndex(next);
-    if (fadeBlobTimer.current) window.clearTimeout(fadeBlobTimer.current);
-    fadeBlobTimer.current = window.setTimeout(() => setPreviousBlob(null), 1450);
+  function swapBlob(next: number) {
+    if (next === blobIndex || blobSwitching.current) return;
+
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = blobs[next];
+
+    if (reduceMotion) {
+      setBlobIndex(next);
+      return;
+    }
+
+    blobSwitching.current = true;
+    setBlobVisible(false);
+
+    if (blobSwapTimer.current) window.clearTimeout(blobSwapTimer.current);
+    if (blobUnlockTimer.current) window.clearTimeout(blobUnlockTimer.current);
+
+    blobSwapTimer.current = window.setTimeout(() => {
+      setBlobIndex(next);
+      window.requestAnimationFrame(() => setBlobVisible(true));
+      blobUnlockTimer.current = window.setTimeout(() => {
+        blobSwitching.current = false;
+      }, 760);
+    }, 320);
   }
 
   useEffect(() => {
     if (!inView || reduceMotion) return;
-    const next = nextAutoAvatar(avatarIndex);
-    const preload = new Image();
-    preload.decoding = "async";
-    preload.src = avatars[next];
-    const timer = window.setTimeout(() => changeAvatar(next), 14000);
+    const timer = window.setTimeout(() => swapAvatar(nextAutoAvatar(avatarIndex)), 14000);
     return () => window.clearTimeout(timer);
   }, [avatarIndex, inView, reduceMotion]);
 
   useEffect(() => {
     if (!inView || reduceMotion) return;
-    const next = nextBlob(blobIndex);
-    const preload = new Image();
-    preload.decoding = "async";
-    preload.src = blobs[next];
-    const timer = window.setTimeout(() => changeBlob(next), 21000);
+    const timer = window.setTimeout(() => swapBlob(nextBlob(blobIndex)), 21000);
     return () => window.clearTimeout(timer);
   }, [blobIndex, inView, reduceMotion]);
 
   useEffect(() => () => {
-    if (fadeAvatarTimer.current) window.clearTimeout(fadeAvatarTimer.current);
-    if (fadeBlobTimer.current) window.clearTimeout(fadeBlobTimer.current);
     if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
+    if (avatarSwapTimer.current) window.clearTimeout(avatarSwapTimer.current);
+    if (avatarUnlockTimer.current) window.clearTimeout(avatarUnlockTimer.current);
+    if (blobSwapTimer.current) window.clearTimeout(blobSwapTimer.current);
+    if (blobUnlockTimer.current) window.clearTimeout(blobUnlockTimer.current);
   }, []);
 
   function updatePointer(clientX: number, clientY: number) {
@@ -120,6 +157,7 @@ export default function AvatarShowcase() {
     if (event.pointerType === "touch") return;
     const x = event.clientX;
     const y = event.clientY;
+
     if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
     pointerFrame.current = window.requestAnimationFrame(() => {
       updatePointer(x, y);
@@ -137,7 +175,7 @@ export default function AvatarShowcase() {
   }
 
   function cycleAvatar() {
-    changeAvatar((avatarIndex + 1) % avatars.length);
+    swapAvatar((avatarIndex + 1) % avatars.length);
   }
 
   return (
@@ -154,23 +192,13 @@ export default function AvatarShowcase() {
       <span className="avatar-atmosphere" aria-hidden="true" />
 
       <span className="blob-stack" aria-hidden="true">
-        {previousBlob !== null && (
-          <span className="blob-layer is-previous">
-            <img src={blobs[previousBlob]} alt="" decoding="async" />
-          </span>
-        )}
-        <span className="blob-layer is-active" key={blobs[blobIndex]}>
+        <span className={`blob-layer blob-variant-${blobIndex}${blobVisible ? " is-visible" : ""}`}>
           <img src={blobs[blobIndex]} alt="" loading="lazy" decoding="async" />
         </span>
       </span>
 
       <span className="avatar-stack" aria-hidden="true">
-        {previousAvatar !== null && (
-          <span className="avatar-layer is-previous">
-            <img src={avatars[previousAvatar]} alt="" decoding="async" />
-          </span>
-        )}
-        <span className="avatar-layer is-active" key={avatars[avatarIndex]}>
+        <span className={`avatar-layer${avatarVisible ? " is-visible" : ""}`}>
           <img src={avatars[avatarIndex]} alt="" loading="lazy" decoding="async" />
         </span>
       </span>
