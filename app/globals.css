@@ -1412,3 +1412,153 @@ body{overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){
   .avatar-atmosphere{animation:none!important}
 }
+
+
+/* === Interaction + performance correction === */
+
+/* Header stays visible at all times. */
+.site-header.compact{
+  transform:translateX(-50%)!important;
+}
+.site-header.header-hidden{
+  transform:translateX(-50%)!important;
+}
+
+/* Keep the copy above the visual layer and prevent the gradient word from clipping. */
+.human-copy{
+  position:relative;
+  z-index:6;
+  overflow:visible;
+}
+.human-copy h2{
+  overflow:visible;
+}
+.human-copy h2 span{
+  display:inline-block;
+  padding-right:.11em;
+  margin-right:-.03em;
+  overflow:visible;
+}
+
+/* Create clearer separation between copy and characters on wide screens. */
+@media(min-width:1181px){
+  .avatar-showcase{
+    transform:translateX(48px);
+    width:calc(100% - 18px);
+  }
+}
+@media(min-width:1041px) and (max-width:1180px){
+  .avatar-showcase{
+    transform:translateX(26px);
+    width:calc(100% - 10px);
+  }
+}
+@media(max-width:1040px){
+  .avatar-showcase{transform:none;width:min(100%,820px)}
+}
+
+/* Local pointer variables: only this scene reacts to the cursor. */
+.avatar-showcase{
+  --ax:0;
+  --ay:0;
+}
+.avatar-atmosphere{
+  transform:translate3d(calc(var(--ax) * -3px),calc(var(--ay) * -2px),0);
+}
+.avatar-layer img{
+  transform:translate3d(calc(-50% + (var(--ax) * 4px)),calc(var(--ay) * 2px),0);
+  transition:transform .16s ease-out;
+  filter:none;
+  will-change:auto;
+}
+.avatar-layer.is-active img{will-change:transform}
+.avatar-showcase:hover .avatar-layer.is-active img{
+  transform:translate3d(calc(-50% + (var(--ax) * 5px)),calc(-3px + (var(--ay) * 3px)),0) scale(1.008);
+}
+.avatar-showcase.is-returning .avatar-layer.is-active img{
+  transition:transform .72s cubic-bezier(.2,.72,.2,1)!important;
+}
+.avatar-showcase.is-returning .avatar-atmosphere{
+  transition:transform .72s cubic-bezier(.2,.72,.2,1)!important;
+}
+
+/* Only the visible blob animates. Hidden blobs do zero continuous work. */
+.blob-layer img{
+  animation:none!important;
+  filter:none;
+  will-change:auto;
+  transform:translate3d(-50%,-50%,0) scale(1.02);
+}
+.blob-layer.is-active img{
+  animation:avatarBlobDriftLocal 11s ease-in-out infinite alternate!important;
+  will-change:transform;
+}
+.blob-layer.is-previous img{
+  animation:none!important;
+}
+
+/* Render only active + outgoing layers during crossfade. */
+.avatar-layer,.blob-layer{
+  opacity:0;
+}
+.avatar-layer.is-active,.blob-layer.is-active{
+  opacity:1;
+  z-index:2;
+  animation:aivanLayerIn .9s ease both;
+}
+.avatar-layer.is-previous,.blob-layer.is-previous{
+  opacity:1;
+  z-index:1;
+}
+.blob-layer.is-active{animation-duration:1.15s}
+
+@keyframes aivanLayerIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes avatarBlobDriftLocal{
+  0%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) - 6px),calc(-50% + (var(--ay) * -4px) - 4px),0) scale(1.02) rotate(-.45deg)
+  }
+  50%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) + 5px),calc(-50% + (var(--ay) * -4px) + 2px),0) scale(1.045) rotate(.3deg)
+  }
+  100%{
+    transform:translate3d(calc(-50% + (var(--ax) * -5px) - 1px),calc(-50% + (var(--ay) * -4px) + 5px),0) scale(1.03) rotate(.55deg)
+  }
+}
+
+/* Remove global pointer-driven transforms and other unnecessary repaint hints. */
+.signal-lab,
+.signal-lab[data-reveal].is-visible{
+  transform:none!important;
+}
+.site-header{will-change:auto}
+.service-card{will-change:auto}
+
+/* The long page should stay cheap while scrolling. */
+.statement,
+.services-section,
+.bridge-section,
+.process-section,
+.brief-section,
+.contact-section,
+.closing-section{
+  contain:layout paint style;
+}
+
+/* Keep mobile interaction simple and smooth. */
+@media(max-width:760px){
+  .avatar-layer img,
+  .avatar-showcase:hover .avatar-layer.is-active img,
+  .avatar-showcase.is-returning .avatar-layer.is-active img{
+    transform:translateX(-50%)!important;
+    transition:opacity .35s ease!important;
+  }
+  .avatar-atmosphere{transform:none!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .blob-layer.is-active img{animation:none!important}
+  .avatar-layer.is-active,.blob-layer.is-active{animation:none!important}
+}

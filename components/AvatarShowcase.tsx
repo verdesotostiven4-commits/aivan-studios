@@ -32,10 +32,14 @@ function nextBlob(current: number) {
 
 export default function AvatarShowcase() {
   const stageRef = useRef<HTMLButtonElement>(null);
+  const fadeAvatarTimer = useRef<number | null>(null);
+  const fadeBlobTimer = useRef<number | null>(null);
+  const pointerFrame = useRef<number | null>(null);
   const [avatarIndex, setAvatarIndex] = useState(0);
+  const [previousAvatar, setPreviousAvatar] = useState<number | null>(null);
   const [blobIndex, setBlobIndex] = useState(0);
+  const [previousBlob, setPreviousBlob] = useState<number | null>(null);
   const [inView, setInView] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
@@ -54,32 +58,86 @@ export default function AvatarShowcase() {
     }
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.18 },
+      { threshold: 0.16 },
     );
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!inView || paused || reduceMotion) return;
-    const timer = window.setTimeout(
-      () => setAvatarIndex((current) => nextAutoAvatar(current)),
-      14000,
-    );
-    return () => window.clearTimeout(timer);
-  }, [avatarIndex, inView, paused, reduceMotion]);
+  function changeAvatar(next: number) {
+    if (next === avatarIndex) return;
+    setPreviousAvatar(avatarIndex);
+    setAvatarIndex(next);
+    if (fadeAvatarTimer.current) window.clearTimeout(fadeAvatarTimer.current);
+    fadeAvatarTimer.current = window.setTimeout(() => setPreviousAvatar(null), 1050);
+  }
+
+  function changeBlob(next: number) {
+    if (next === blobIndex) return;
+    setPreviousBlob(blobIndex);
+    setBlobIndex(next);
+    if (fadeBlobTimer.current) window.clearTimeout(fadeBlobTimer.current);
+    fadeBlobTimer.current = window.setTimeout(() => setPreviousBlob(null), 1450);
+  }
 
   useEffect(() => {
-    if (!inView || paused || reduceMotion) return;
-    const timer = window.setTimeout(
-      () => setBlobIndex((current) => nextBlob(current)),
-      21000,
-    );
+    if (!inView || reduceMotion) return;
+    const next = nextAutoAvatar(avatarIndex);
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = avatars[next];
+    const timer = window.setTimeout(() => changeAvatar(next), 14000);
     return () => window.clearTimeout(timer);
-  }, [blobIndex, inView, paused, reduceMotion]);
+  }, [avatarIndex, inView, reduceMotion]);
+
+  useEffect(() => {
+    if (!inView || reduceMotion) return;
+    const next = nextBlob(blobIndex);
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = blobs[next];
+    const timer = window.setTimeout(() => changeBlob(next), 21000);
+    return () => window.clearTimeout(timer);
+  }, [blobIndex, inView, reduceMotion]);
+
+  useEffect(() => () => {
+    if (fadeAvatarTimer.current) window.clearTimeout(fadeAvatarTimer.current);
+    if (fadeBlobTimer.current) window.clearTimeout(fadeBlobTimer.current);
+    if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
+  }, []);
+
+  function updatePointer(clientX: number, clientY: number) {
+    const stage = stageRef.current;
+    if (!stage || reduceMotion) return;
+    const rect = stage.getBoundingClientRect();
+    const x = Math.max(-1, Math.min(1, ((clientX - rect.left) / rect.width - 0.5) * 2));
+    const y = Math.max(-1, Math.min(1, ((clientY - rect.top) / rect.height - 0.5) * 2));
+    stage.style.setProperty("--ax", x.toFixed(3));
+    stage.style.setProperty("--ay", y.toFixed(3));
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLButtonElement>) {
+    if (event.pointerType === "touch") return;
+    const x = event.clientX;
+    const y = event.clientY;
+    if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
+    pointerFrame.current = window.requestAnimationFrame(() => {
+      updatePointer(x, y);
+      pointerFrame.current = null;
+    });
+  }
+
+  function onPointerLeave() {
+    const stage = stageRef.current;
+    if (!stage) return;
+    stage.classList.add("is-returning");
+    stage.style.setProperty("--ax", "0");
+    stage.style.setProperty("--ay", "0");
+    window.setTimeout(() => stage.classList.remove("is-returning"), 760);
+  }
 
   function cycleAvatar() {
-    setAvatarIndex((current) => (current + 1) % avatars.length);
+    changeAvatar((avatarIndex + 1) % avatars.length);
   }
 
   return (
@@ -90,40 +148,38 @@ export default function AvatarShowcase() {
       aria-label="Cambiar pose de Axel y Emma"
       title="Axel + Emma"
       onClick={cycleAvatar}
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
     >
       <span className="avatar-atmosphere" aria-hidden="true" />
 
       <span className="blob-stack" aria-hidden="true">
-        {blobs.map((src, index) => (
-          <span
-            className={`blob-layer blob-layer-${index + 1}${blobIndex === index ? " is-active" : ""}`}
-            key={src}
-          >
-            <img src={src} alt="" loading="lazy" decoding="async" />
+        {previousBlob !== null && (
+          <span className="blob-layer is-previous">
+            <img src={blobs[previousBlob]} alt="" decoding="async" />
           </span>
-        ))}
+        )}
+        <span className="blob-layer is-active" key={blobs[blobIndex]}>
+          <img src={blobs[blobIndex]} alt="" loading="lazy" decoding="async" />
+        </span>
       </span>
 
       <span className="avatar-stack" aria-hidden="true">
-        {avatars.map((src, index) => (
-          <span
-            className={`avatar-layer${avatarIndex === index ? " is-active" : ""}`}
-            key={src}
-          >
-            <img src={src} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+        {previousAvatar !== null && (
+          <span className="avatar-layer is-previous">
+            <img src={avatars[previousAvatar]} alt="" decoding="async" />
           </span>
-        ))}
+        )}
+        <span className="avatar-layer is-active" key={avatars[avatarIndex]}>
+          <img src={avatars[avatarIndex]} alt="" loading="lazy" decoding="async" />
+        </span>
       </span>
 
       <span className="avatar-caption">
         <strong>AXEL + EMMA</strong>
         <span>Representantes digitales de AIVAN</span>
       </span>
-      <span className="avatar-state" aria-live="polite">
-        Pose {labels[avatarIndex]}
-      </span>
+      <span className="avatar-state" aria-live="polite">Pose {labels[avatarIndex]}</span>
     </button>
   );
 }

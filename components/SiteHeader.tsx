@@ -14,48 +14,7 @@ const links = [
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const [compact, setCompact] = useState(false);
   const [active, setActive] = useState("#inicio");
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
-    let frame = 0;
-    let lastY = window.scrollY;
-    let lastCompact = lastY > 24;
-    let lastHidden = false;
-    setCompact(lastCompact);
-
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const nextCompact = y > 24;
-        if (nextCompact !== lastCompact) {
-          lastCompact = nextCompact;
-          setCompact(nextCompact);
-        }
-
-        let nextHidden = lastHidden;
-        if (y < 120) nextHidden = false;
-        else if (y > lastY + 10) nextHidden = true;
-        else if (y < lastY - 8) nextHidden = false;
-
-        if (nextHidden !== lastHidden) {
-          lastHidden = nextHidden;
-          setHidden(nextHidden);
-        }
-
-        lastY = y;
-        frame = 0;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
 
   useEffect(() => {
     const sections = ["#inicio", ...links.map(([, href]) => href)]
@@ -86,7 +45,7 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className={`site-header${compact ? " compact" : ""}${hidden && !open ? " header-hidden" : ""}`}>
+    <header className="site-header compact">
       <a href="#inicio" className="brand-link" aria-label="AIVAN STUDIOS — Inicio" onClick={() => setOpen(false)}>
         <Wordmark />
       </a>
