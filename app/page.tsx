@@ -54,7 +54,7 @@ export default function Home() {
           <p className="micro-label">ESTUDIO CREATIVO · GALÁPAGOS</p>
           <h1>
             <span className="hero-line">Tu negocio no necesita un cambio.</span>
-            <span className="hero-line hero-gradient">Necesita una evolución.</span>
+            <span className="hero-line hero-evolution-line">Necesita una <em>evolución.</em></span>
           </h1>
           <p className="hero-lead">Estrategia, creatividad y producción digital trabajando como un solo sistema para que tu marca crezca, conecte y evolucione con intención.</p>
           <div className="hero-actions">
