@@ -1671,3 +1671,122 @@ body{overflow-x:hidden}
     animation:none!important;
   }
 }
+
+
+/* === Motion refinement: eased pointer + soft dissolve + visible organic rotation === */
+@media(min-width:1181px){
+  .avatar-showcase{
+    transform:translateX(76px);
+  }
+}
+@media(min-width:1041px) and (max-width:1180px){
+  .avatar-showcase{
+    transform:translateX(42px);
+  }
+}
+
+/* Pointer movement is smoothed in JS; CSS no longer snaps on hover enter/leave. */
+.avatar-layer.is-visible img{
+  transform:translate3d(
+    calc(-50% + (var(--ax) * 5px)),
+    calc(var(--ay) * 3px),
+    0
+  ) scale(1.006);
+  transition:none!important;
+}
+.avatar-atmosphere{
+  transform:translate3d(
+    calc(var(--ax) * -2.5px),
+    calc(var(--ay) * -2px),
+    0
+  );
+  transition:none!important;
+}
+
+/* Soft dissolve: blur is only used for the short swap window, never continuously. */
+.avatar-layer{
+  opacity:0!important;
+  filter:blur(7px);
+  transform:translate3d(0,8px,0) scale(.992)!important;
+  transition:
+    opacity .30s ease,
+    filter .34s ease,
+    transform .48s cubic-bezier(.2,.72,.2,1)!important;
+}
+.avatar-layer.is-visible{
+  opacity:1!important;
+  filter:blur(0);
+  transform:none!important;
+}
+
+.blob-layer{
+  opacity:0!important;
+  filter:blur(11px);
+  transform:scale(.982)!important;
+  transition:
+    opacity .38s ease,
+    filter .46s ease,
+    transform .76s cubic-bezier(.2,.72,.2,1)!important;
+}
+.blob-layer.is-visible{
+  opacity:.96!important;
+  filter:blur(0);
+  transform:scale(1)!important;
+}
+
+/* More visible rotation: still slow, but now clearly noticeable. */
+.blob-layer img{
+  animation:avatarBlobRotateAlive 16.8s cubic-bezier(.45,.02,.28,.98) infinite!important;
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+.blob-variant-0 img{animation-duration:15.4s!important;animation-direction:alternate!important}
+.blob-variant-1 img{animation-duration:18.6s!important;animation-direction:alternate-reverse!important}
+.blob-variant-2 img{animation-duration:16.1s!important;animation-direction:alternate!important}
+.blob-variant-3 img{animation-duration:19.7s!important;animation-direction:alternate-reverse!important}
+
+@keyframes avatarBlobRotateAlive{
+  0%{
+    transform:translate3d(calc(-50% - 8px),calc(-50% - 3px),0) scale(1.018) rotate(-3.4deg)
+  }
+  19%{
+    transform:translate3d(calc(-50% + 5px),calc(-50% - 7px),0) scale(1.038) rotate(-.8deg)
+  }
+  41%{
+    transform:translate3d(calc(-50% + 9px),calc(-50% + 2px),0) scale(1.052) rotate(2.7deg)
+  }
+  66%{
+    transform:translate3d(calc(-50% + 1px),calc(-50% + 7px),0) scale(1.032) rotate(-1.6deg)
+  }
+  84%{
+    transform:translate3d(calc(-50% - 6px),calc(-50% + 4px),0) scale(1.046) rotate(3.8deg)
+  }
+  100%{
+    transform:translate3d(calc(-50% - 9px),calc(-50% - 1px),0) scale(1.024) rotate(.6deg)
+  }
+}
+
+@media(max-width:760px){
+  .avatar-layer{
+    filter:blur(5px);
+    transform:none!important;
+  }
+  .avatar-layer.is-visible{filter:blur(0)}
+  .blob-layer{
+    filter:blur(8px);
+    transform:none!important;
+  }
+  .blob-layer.is-visible{filter:blur(0)}
+  .avatar-layer.is-visible img{
+    transform:translateX(-50%) scale(1.004)!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .avatar-layer,.blob-layer{
+    filter:none!important;
+  }
+  .blob-layer img{
+    animation:none!important;
+  }
+}

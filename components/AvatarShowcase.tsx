@@ -33,6 +33,9 @@ function nextBlob(current: number) {
 export default function AvatarShowcase() {
   const stageRef = useRef<HTMLButtonElement>(null);
   const pointerFrame = useRef<number | null>(null);
+  const targetPointer = useRef({ x: 0, y: 0 });
+  const currentPointer = useRef({ x: 0, y: 0 });
+
   const avatarSwapTimer = useRef<number | null>(null);
   const avatarUnlockTimer = useRef<number | null>(null);
   const blobSwapTimer = useRef<number | null>(null);
@@ -69,6 +72,40 @@ export default function AvatarShowcase() {
     return () => observer.disconnect();
   }, []);
 
+  function runPointerEase() {
+    if (pointerFrame.current || reduceMotion) return;
+
+    const tick = () => {
+      const stage = stageRef.current;
+      if (!stage) {
+        pointerFrame.current = null;
+        return;
+      }
+
+      const current = currentPointer.current;
+      const target = targetPointer.current;
+      const easing = 0.085;
+
+      current.x += (target.x - current.x) * easing;
+      current.y += (target.y - current.y) * easing;
+
+      if (Math.abs(target.x - current.x) < 0.0015) current.x = target.x;
+      if (Math.abs(target.y - current.y) < 0.0015) current.y = target.y;
+
+      stage.style.setProperty("--ax", current.x.toFixed(4));
+      stage.style.setProperty("--ay", current.y.toFixed(4));
+
+      if (current.x === target.x && current.y === target.y) {
+        pointerFrame.current = null;
+        return;
+      }
+
+      pointerFrame.current = window.requestAnimationFrame(tick);
+    };
+
+    pointerFrame.current = window.requestAnimationFrame(tick);
+  }
+
   function swapAvatar(next: number) {
     if (next === avatarIndex || avatarSwitching.current) return;
 
@@ -92,8 +129,8 @@ export default function AvatarShowcase() {
       window.requestAnimationFrame(() => setAvatarVisible(true));
       avatarUnlockTimer.current = window.setTimeout(() => {
         avatarSwitching.current = false;
-      }, 520);
-    }, 210);
+      }, 680);
+    }, 300);
   }
 
   function swapBlob(next: number) {
@@ -119,8 +156,8 @@ export default function AvatarShowcase() {
       window.requestAnimationFrame(() => setBlobVisible(true));
       blobUnlockTimer.current = window.setTimeout(() => {
         blobSwitching.current = false;
-      }, 760);
-    }, 320);
+      }, 920);
+    }, 380);
   }
 
   useEffect(() => {
@@ -143,35 +180,23 @@ export default function AvatarShowcase() {
     if (blobUnlockTimer.current) window.clearTimeout(blobUnlockTimer.current);
   }, []);
 
-  function updatePointer(clientX: number, clientY: number) {
-    const stage = stageRef.current;
-    if (!stage || reduceMotion) return;
-    const rect = stage.getBoundingClientRect();
-    const x = Math.max(-1, Math.min(1, ((clientX - rect.left) / rect.width - 0.5) * 2));
-    const y = Math.max(-1, Math.min(1, ((clientY - rect.top) / rect.height - 0.5) * 2));
-    stage.style.setProperty("--ax", x.toFixed(3));
-    stage.style.setProperty("--ay", y.toFixed(3));
-  }
-
   function onPointerMove(event: React.PointerEvent<HTMLButtonElement>) {
-    if (event.pointerType === "touch") return;
-    const x = event.clientX;
-    const y = event.clientY;
+    if (event.pointerType === "touch" || reduceMotion) return;
 
-    if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
-    pointerFrame.current = window.requestAnimationFrame(() => {
-      updatePointer(x, y);
-      pointerFrame.current = null;
-    });
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    targetPointer.current = {
+      x: Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2)),
+      y: Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2)),
+    };
+    runPointerEase();
   }
 
   function onPointerLeave() {
-    const stage = stageRef.current;
-    if (!stage) return;
-    stage.classList.add("is-returning");
-    stage.style.setProperty("--ax", "0");
-    stage.style.setProperty("--ay", "0");
-    window.setTimeout(() => stage.classList.remove("is-returning"), 760);
+    targetPointer.current = { x: 0, y: 0 };
+    runPointerEase();
   }
 
   function cycleAvatar() {
