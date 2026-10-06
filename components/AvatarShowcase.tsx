@@ -25,15 +25,15 @@ function nextAutoAvatar(current: number) {
 }
 
 function nextBlob(current: number) {
-  if (current === 1) return 0;
   if (current === 0) return 3;
-  return 1;
+  if (current === 3) return 1;
+  return 0;
 }
 
 export default function AvatarShowcase() {
   const stageRef = useRef<HTMLButtonElement>(null);
   const [avatarIndex, setAvatarIndex] = useState(0);
-  const [blobIndex, setBlobIndex] = useState(1);
+  const [blobIndex, setBlobIndex] = useState(0);
   const [inView, setInView] = useState(false);
   const [paused, setPaused] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
