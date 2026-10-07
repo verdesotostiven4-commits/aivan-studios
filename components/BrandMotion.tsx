@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const palette = ["#d88c00","#e4711a","#df4c23","#d52e55","#c7145d","#a6208e","#7d55d8","#5b88ff","#50a4fd","#67b3fd"];
-
 export function HeroFlipWord({ text }: { text: string }) {
   return (
     <span className="hero-flip-word" aria-label={text}>
@@ -14,8 +12,7 @@ export function HeroFlipWord({ text }: { text: string }) {
           data-char={char}
           key={`${char}-${index}`}
           style={{
-            ["--flip-delay" as string]: `${0.42 + index * 0.055}s`,
-            ["--char-color" as string]: palette[Math.min(index, palette.length - 1)],
+            ["--flip-delay" as string]: `${0.18 + index * 0.07}s`,
           }}
         >
           {char === " " ? "\u00a0" : char}
