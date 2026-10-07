@@ -2607,3 +2607,75 @@ body{overflow-x:hidden}
     animation:none!important;
   }
 }
+
+
+/* === Fix evolution reveal specificity inside hero h1 ===
+   The generic .hero h1 span rule was overriding the wipe and gradient backgrounds. */
+.hero h1 .hero-flip-word{
+  position:relative;
+  display:inline-block;
+  isolation:isolate;
+  color:var(--ink)!important;
+  background:none!important;
+  padding-bottom:.035em;
+  overflow:visible;
+}
+.hero h1 .hero-flip-base{
+  position:relative;
+  z-index:1;
+  display:inline-flex;
+  white-space:nowrap;
+  perspective:900px;
+  background:none!important;
+  color:var(--ink)!important;
+}
+.hero h1 .hero-evolution-color{
+  position:absolute;
+  z-index:2;
+  inset:0;
+  display:block;
+  white-space:nowrap;
+  color:transparent!important;
+  background:linear-gradient(90deg,#ff9418 0%,#ff5b3e 22%,#ed2b78 43%,#b43edd 63%,#7957e8 79%,#4d91ff 100%)!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent;
+  clip-path:inset(100% 0 0 0);
+  opacity:0;
+  transform:translateY(.035em) scale(.998);
+  filter:blur(2px);
+  pointer-events:none;
+}
+.hero h1 .hero-evolution-wipe{
+  position:absolute;
+  z-index:3;
+  left:-.015em;
+  right:-.015em;
+  bottom:-.02em;
+  height:calc(100% + .12em);
+  border-radius:.025em;
+  background:linear-gradient(90deg,#ff9418 0%,#ff5b3e 22%,#ed2b78 43%,#b43edd 63%,#7957e8 79%,#4d91ff 100%)!important;
+  transform-origin:left bottom;
+  transform:scaleX(0);
+  clip-path:inset(calc(100% - .055em) 0 0 0);
+  opacity:0;
+  pointer-events:none;
+}
+.hero-copy.is-visible .hero-evolution-wipe{
+  animation:evolutionWipeUp 1.22s 1.02s cubic-bezier(.18,.82,.2,1) both!important;
+}
+.hero-copy.is-visible .hero-evolution-color{
+  animation:
+    evolutionColorReveal .66s 1.58s cubic-bezier(.16,.84,.22,1) forwards,
+    evolutionSettle .48s 2.16s cubic-bezier(.2,.72,.2,1) both!important;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero h1 .hero-evolution-color{
+    opacity:1!important;
+    clip-path:inset(0)!important;
+    transform:none!important;
+    filter:none!important;
+    animation:none!important;
+  }
+}
