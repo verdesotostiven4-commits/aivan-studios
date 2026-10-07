@@ -3599,3 +3599,94 @@ body{overflow-x:hidden}
     transition:none!important;
   }
 }
+
+
+/* === Statement lens v4: the roaming probe chases any cursor inside the panel === */
+@media(hover:hover) and (pointer:fine){
+  .statement-mask.is-fine-pointer{
+    cursor:default;
+  }
+
+  /* Any pointer position inside the panel wakes the probe. It flies to that point first,
+     then the lens opens once it gets close enough. */
+  .statement-mask.is-pointer-active .statement-orb{
+    animation:none!important;
+    left:var(--mask-x)!important;
+    top:var(--mask-y)!important;
+    opacity:1!important;
+    pointer-events:none!important;
+    transform:translateZ(0) scale(.84)!important;
+    transition:
+      opacity .18s ease,
+      transform .2s cubic-bezier(.2,.72,.2,1),
+      left .04s linear,
+      top .04s linear!important;
+  }
+  .statement-mask.is-pointer-active .statement-orb-core{
+    animation:statementOrbChasePulse .72s ease-in-out infinite!important;
+    box-shadow:
+      0 0 0 6px rgba(123,93,232,.08),
+      0 0 26px rgba(102,76,196,.2);
+  }
+  .statement-mask.is-pointer-active .statement-orb-ring{
+    animation:statementOrbChaseRing .72s ease-out infinite!important;
+  }
+  .statement-mask.is-pointer-active .statement-orb-spark.spark-a{
+    animation:statementSparkA .9s ease-in-out infinite!important;
+  }
+  .statement-mask.is-pointer-active .statement-orb-spark.spark-b{
+    animation:statementSparkB 1.1s ease-in-out infinite!important;
+  }
+
+  /* Leaving the panel or scrolling closes the reveal first, then returns the probe
+     to the first waypoint before its autonomous roam resumes. */
+  .statement-mask.is-returning .statement-orb{
+    animation:none!important;
+    left:15%!important;
+    top:73%!important;
+    opacity:1!important;
+    transform:translateZ(0) scale(.92)!important;
+    transition:
+      left .68s cubic-bezier(.2,.78,.22,1),
+      top .68s cubic-bezier(.2,.78,.22,1),
+      transform .42s ease,
+      opacity .32s ease!important;
+  }
+
+  .statement-mask.is-pointer-active .statement-mask-hint,
+  .statement-mask.is-mask-active .statement-mask-hint{
+    opacity:0!important;
+    transform:translateY(4px);
+  }
+
+  .statement-mask.is-mask-active .statement-mask-reveal{
+    transition:
+      clip-path .22s cubic-bezier(.2,.72,.2,1),
+      -webkit-clip-path .22s cubic-bezier(.2,.72,.2,1)!important;
+  }
+}
+
+@keyframes statementOrbChasePulse{
+  0%,100%{transform:scale(.88);filter:saturate(1)}
+  50%{transform:scale(1.14);filter:saturate(1.16)}
+}
+@keyframes statementOrbChaseRing{
+  0%{opacity:.5;transform:scale(.68)}
+  100%{opacity:0;transform:scale(1.55)}
+}
+
+/* On touch devices the existing roaming/tap behavior stays intact. */
+@media(hover:none), (pointer:coarse){
+  .statement-mask.is-pointer-active .statement-orb,
+  .statement-mask.is-returning .statement-orb{
+    animation:statementOrbRoam 10.5s cubic-bezier(.45,.02,.28,.98) infinite alternate!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .statement-mask.is-pointer-active .statement-orb,
+  .statement-mask.is-returning .statement-orb{
+    animation:none!important;
+    transition:none!important;
+  }
+}

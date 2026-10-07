@@ -60,8 +60,11 @@ export function HeroBeams() {
 
 export function StatementMaskReveal() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<HTMLSpanElement>(null);
   const frameRef = useRef<number | null>(null);
+  const returnTimerRef = useRef<number | null>(null);
   const engagedRef = useRef(false);
+  const lensLiveRef = useRef(false);
   const currentRef = useRef({ x: 50, y: 50 });
   const targetRef = useRef({ x: 50, y: 50 });
   const [finePointer, setFinePointer] = useState(false);
@@ -88,7 +91,8 @@ export function StatementMaskReveal() {
       setInView(entry.isIntersecting);
       if (!entry.isIntersecting) {
         engagedRef.current = false;
-        node.classList.remove("is-mask-active", "is-pointer-active");
+        lensLiveRef.current = false;
+        node.classList.remove("is-mask-active", "is-pointer-active", "is-returning");
       }
     }, { threshold: 0.18, rootMargin: "10% 0px 10% 0px" });
 
@@ -96,8 +100,44 @@ export function StatementMaskReveal() {
     return () => observer.disconnect();
   }, []);
 
+  const clearReturnTimer = () => {
+    if (returnTimerRef.current) {
+      window.clearTimeout(returnTimerRef.current);
+      returnTimerRef.current = null;
+    }
+  };
+
+  const releaseLens = () => {
+    if (!finePointer || reduced) return;
+    const node = rootRef.current;
+    if (!node) return;
+
+    engagedRef.current = false;
+    lensLiveRef.current = false;
+    node.classList.remove("is-mask-active", "is-pointer-active");
+    node.classList.add("is-returning");
+
+    clearReturnTimer();
+    returnTimerRef.current = window.setTimeout(() => {
+      node.classList.remove("is-returning");
+      returnTimerRef.current = null;
+    }, 720);
+  };
+
+  useEffect(() => {
+    if (!finePointer || reduced || !inView) return;
+
+    const closeOnScroll = () => {
+      if (engagedRef.current) releaseLens();
+    };
+
+    window.addEventListener("scroll", closeOnScroll, { passive: true });
+    return () => window.removeEventListener("scroll", closeOnScroll);
+  }, [finePointer, reduced, inView]);
+
   useEffect(() => () => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    clearReturnTimer();
   }, []);
 
   const writePosition = () => {
@@ -106,11 +146,17 @@ export function StatementMaskReveal() {
 
     const current = currentRef.current;
     const target = targetRef.current;
-    current.x += (target.x - current.x) * 0.17;
-    current.y += (target.y - current.y) * 0.17;
+    current.x += (target.x - current.x) * 0.22;
+    current.y += (target.y - current.y) * 0.22;
 
     node.style.setProperty("--mask-x", `${current.x}%`);
     node.style.setProperty("--mask-y", `${current.y}%`);
+
+    const distance = Math.hypot(target.x - current.x, target.y - current.y);
+    if (engagedRef.current && !lensLiveRef.current && distance < 9) {
+      lensLiveRef.current = true;
+      node.classList.add("is-mask-active");
+    }
 
     if (Math.abs(target.x - current.x) > 0.08 || Math.abs(target.y - current.y) > 0.08) {
       frameRef.current = requestAnimationFrame(writePosition);
@@ -136,27 +182,46 @@ export function StatementMaskReveal() {
     schedulePosition();
   };
 
-  const engageLens = (event: React.PointerEvent<HTMLSpanElement>) => {
+  const engageFromAnywhere = (clientX: number, clientY: number) => {
     if (!finePointer || reduced) return;
+    const node = rootRef.current;
+    const orb = orbRef.current;
+    if (!node || !orb) return;
+
+    clearReturnTimer();
+
+    if (!engagedRef.current) {
+      const nodeRect = node.getBoundingClientRect();
+      const orbRect = orb.getBoundingClientRect();
+      currentRef.current = {
+        x: Math.max(0, Math.min(100, (((orbRect.left + orbRect.width / 2) - nodeRect.left) / nodeRect.width) * 100)),
+        y: Math.max(0, Math.min(100, (((orbRect.top + orbRect.height / 2) - nodeRect.top) / nodeRect.height) * 100)),
+      };
+      node.style.setProperty("--mask-x", `${currentRef.current.x}%`);
+      node.style.setProperty("--mask-y", `${currentRef.current.y}%`);
+    }
 
     engagedRef.current = true;
-    const node = rootRef.current;
-    node?.classList.add("is-mask-active", "is-pointer-active");
-    setTargetFromPointer(event.clientX, event.clientY);
+    node.classList.remove("is-returning");
+    node.classList.add("is-pointer-active");
+    setTargetFromPointer(clientX, clientY);
+  };
+
+  const handlePointerEnter = (event: React.PointerEvent<HTMLDivElement>) => {
+    engageFromAnywhere(event.clientX, event.clientY);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!finePointer || reduced || !engagedRef.current) return;
+    if (!finePointer || reduced) return;
+    if (!engagedRef.current) {
+      engageFromAnywhere(event.clientX, event.clientY);
+      return;
+    }
     setTargetFromPointer(event.clientX, event.clientY);
   };
 
-  const handlePointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!finePointer || reduced) return;
-
-    engagedRef.current = false;
-    event.currentTarget.classList.remove("is-mask-active", "is-pointer-active");
-    targetRef.current = { x: 50, y: 50 };
-    schedulePosition();
+  const handlePointerLeave = () => {
+    releaseLens();
   };
 
   const handleTouchToggle = () => {
@@ -168,6 +233,7 @@ export function StatementMaskReveal() {
     <div
       ref={rootRef}
       className={`statement-mask${finePointer ? " is-fine-pointer" : " is-touch-mode"}${inView ? " is-orb-visible" : ""}${touchExpanded ? " is-touch-expanded" : ""}`}
+      onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       onClick={handleTouchToggle}
@@ -187,11 +253,7 @@ export function StatementMaskReveal() {
         </div>
       </div>
 
-      <span
-        className="statement-orb"
-        aria-hidden="true"
-        onPointerEnter={engageLens}
-      >
+      <span ref={orbRef} className="statement-orb" aria-hidden="true">
         <i className="statement-orb-core" />
         <i className="statement-orb-ring" />
         <i className="statement-orb-spark spark-a" />
@@ -199,7 +261,7 @@ export function StatementMaskReveal() {
       </span>
 
       <div className="statement-mask-hint" aria-hidden="true">
-        <span className="hint-desktop">PASA POR EL PUNTO PARA MIRAR MÁS PROFUNDO</span>
+        <span className="hint-desktop">MUEVE EL CURSOR PARA MIRAR MÁS PROFUNDO</span>
         <span className="hint-touch">{touchExpanded ? "TOCA PARA VOLVER" : "TOCA PARA DESCUBRIR"}</span>
       </div>
     </div>
