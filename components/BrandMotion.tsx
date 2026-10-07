@@ -78,19 +78,69 @@ export function HeroMediaFrame() {
   return (
     <div className="hero-media-shell" data-reveal aria-label="Espacio preparado para el próximo brand reel de AIVAN">
       <div className="hero-media-glow" aria-hidden="true" />
+
       <div className="hero-media-card">
         <div className="hero-media-top">
           <span className="hero-media-brand">AIVAN <small>STUDIOS</small></span>
-          <span className="hero-media-status">BRAND REEL / PRÓXIMAMENTE</span>
+          <span className="hero-media-status">BRAND REEL / 01</span>
         </div>
 
         <div className="hero-media-art" aria-hidden="true">
-          <span className="hero-wave hero-wave-a" />
-          <span className="hero-wave hero-wave-b" />
-          <span className="hero-wave hero-wave-c" />
-          <span className="hero-wave hero-wave-d" />
-          <span className="hero-wave-light hero-wave-light-a" />
-          <span className="hero-wave-light hero-wave-light-b" />
+          <svg className="hero-media-svg" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice" role="presentation">
+            <defs>
+              <linearGradient id="heroWaveA" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ffb22f" />
+                <stop offset="26%" stopColor="#ff7a3f" />
+                <stop offset="51%" stopColor="#ef3585" />
+                <stop offset="75%" stopColor="#8c59ef" />
+                <stop offset="100%" stopColor="#5596ff" />
+              </linearGradient>
+              <linearGradient id="heroWaveB" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ffd178" />
+                <stop offset="31%" stopColor="#ff8759" />
+                <stop offset="55%" stopColor="#f155a2" />
+                <stop offset="79%" stopColor="#936ff1" />
+                <stop offset="100%" stopColor="#78baff" />
+              </linearGradient>
+              <linearGradient id="heroWaveC" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ffbd42" />
+                <stop offset="34%" stopColor="#ff6248" />
+                <stop offset="61%" stopColor="#d53aa0" />
+                <stop offset="82%" stopColor="#6f67ef" />
+                <stop offset="100%" stopColor="#4c91ff" />
+              </linearGradient>
+              <linearGradient id="heroWaveD" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ffe2a5" />
+                <stop offset="36%" stopColor="#ff9e72" />
+                <stop offset="68%" stopColor="#d76ee5" />
+                <stop offset="100%" stopColor="#86a8ff" />
+              </linearGradient>
+              <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity=".84" />
+                <stop offset="58%" stopColor="#ffffff" stopOpacity=".18" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            <g className="hero-svg-wave hero-svg-wave-back">
+              <path d="M-60 124 C 124 36, 240 44, 366 106 C 500 172, 572 200, 720 142 C 803 109, 870 76, 964 104 L 964 251 C 807 274, 692 269, 575 230 C 417 177, 301 170, 179 224 C 85 265, 13 277,-60 252 Z" fill="url(#heroWaveD)" opacity=".72" />
+            </g>
+
+            <g className="hero-svg-wave hero-svg-wave-main">
+              <path d="M-80 210 C 70 164, 168 151, 283 184 C 399 217, 450 302, 558 312 C 671 323, 744 222, 854 195 C 914 181, 958 185, 1000 194 L 1000 344 C 872 370, 776 367, 684 340 C 570 307, 508 290, 402 320 C 298 350, 201 380, 95 364 C 28 354,-30 334,-80 314 Z" fill="url(#heroWaveA)" />
+            </g>
+
+            <g className="hero-svg-wave hero-svg-wave-mid">
+              <path d="M-50 304 C 79 245, 182 238, 301 275 C 422 313, 477 376, 582 375 C 685 375, 755 293, 853 278 C 912 269, 958 281, 1004 302 L 1004 418 C 870 438, 755 425, 653 407 C 528 385, 443 381, 333 413 C 210 449, 108 450,-50 407 Z" fill="url(#heroWaveB)" opacity=".86" />
+            </g>
+
+            <g className="hero-svg-wave hero-svg-wave-front">
+              <path d="M-70 366 C 87 315, 212 314, 330 352 C 451 391, 512 444, 625 430 C 742 416, 799 350, 892 347 C 939 346, 973 354, 1008 368 L 1008 526 L-70 526 Z" fill="url(#heroWaveC)" opacity=".88" />
+            </g>
+
+            <ellipse className="hero-svg-glow" cx="530" cy="258" rx="255" ry="190" fill="url(#heroGlow)" />
+            <path className="hero-svg-highlight" d="M61 248 C 235 190, 343 225, 461 286 C 559 337, 650 341, 786 255" fill="none" stroke="rgba(255,255,255,.58)" strokeWidth="3" strokeLinecap="round" />
+          </svg>
         </div>
 
         <div className="hero-media-chip hero-media-chip-left">

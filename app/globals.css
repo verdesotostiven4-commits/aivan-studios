@@ -5428,3 +5428,309 @@ svg{
     animation:none!important;
   }
 }
+
+
+/* === Hero compact viewport pass + reel fidelity refinement ===
+   Keeps the same hero concept, but fits normal browser windows without F11. */
+@media(min-width:981px){
+  .hero{
+    max-width:1500px;
+    min-height:0!important;
+    padding-top:112px!important;
+    padding-bottom:44px!important;
+    grid-template-columns:.93fr 1.07fr!important;
+    gap:42px!important;
+    align-items:center!important;
+  }
+  .hero-copy{
+    max-width:700px!important;
+  }
+  .hero h1{
+    max-width:700px!important;
+    font-size:clamp(54px,min(5.7vw,9.4vh),88px)!important;
+    line-height:.885!important;
+    margin-top:14px!important;
+    margin-bottom:22px!important;
+  }
+  .hero-lead{
+    max-width:620px!important;
+    font-size:16px!important;
+    line-height:1.48!important;
+  }
+  .hero-actions{
+    margin-top:26px!important;
+    margin-bottom:24px!important;
+  }
+  .hero-proof{
+    max-width:650px!important;
+  }
+  .hero-proof div{
+    padding-top:14px!important;
+  }
+
+  .hero-media-shell{
+    width:min(100%,760px)!important;
+    aspect-ratio:1.45 / 1!important;
+    justify-self:end!important;
+    align-self:center!important;
+  }
+}
+
+/* Normal laptop/browser heights get an extra compact pass. */
+@media(min-width:981px) and (max-height:900px){
+  .hero{
+    padding-top:102px!important;
+    padding-bottom:34px!important;
+    gap:34px!important;
+  }
+  .hero h1{
+    font-size:clamp(52px,min(5.5vw,9.1vh),82px)!important;
+    margin-bottom:18px!important;
+  }
+  .hero-lead{
+    font-size:15.5px!important;
+  }
+  .hero-actions{
+    margin-top:22px!important;
+    margin-bottom:20px!important;
+  }
+  .hero-proof div{
+    padding-top:12px!important;
+  }
+  .hero-media-shell{
+    width:min(100%,720px)!important;
+    aspect-ratio:1.48 / 1!important;
+  }
+}
+@media(min-width:981px) and (max-height:760px){
+  .hero{
+    padding-top:94px!important;
+    padding-bottom:28px!important;
+  }
+  .hero h1{
+    font-size:clamp(48px,min(5.15vw,8.7vh),74px)!important;
+  }
+  .hero-media-shell{
+    width:min(100%,675px)!important;
+  }
+  .hero-proof{
+    font-size:10px!important;
+  }
+}
+
+/* Reel frame now follows the chosen reference more closely. */
+.hero-media-card{
+  border-radius:32px!important;
+  background:
+    radial-gradient(circle at 20% 16%,rgba(255,184,70,.12),transparent 28%),
+    radial-gradient(circle at 65% 24%,rgba(255,83,161,.10),transparent 31%),
+    radial-gradient(circle at 88% 72%,rgba(90,141,255,.14),transparent 34%),
+    linear-gradient(145deg,#fffdfa 0%,#fffafd 44%,#f4f7ff 100%)!important;
+}
+.hero-media-art{
+  inset:7.5% 0 10.5%!important;
+}
+.hero-media-svg{
+  width:100%;
+  height:100%;
+  display:block;
+  overflow:visible;
+}
+.hero-svg-wave{
+  transform-box:fill-box;
+  transform-origin:center;
+  will-change:transform;
+}
+.hero-svg-wave-back{
+  animation:heroSvgWaveBack 10.6s ease-in-out infinite alternate;
+}
+.hero-svg-wave-main{
+  animation:heroSvgWaveMain 8.8s ease-in-out infinite alternate;
+}
+.hero-svg-wave-mid{
+  animation:heroSvgWaveMid 11.2s ease-in-out infinite alternate;
+}
+.hero-svg-wave-front{
+  animation:heroSvgWaveFront 12.4s ease-in-out infinite alternate;
+}
+.hero-svg-glow{
+  animation:heroSvgGlow 7.6s ease-in-out infinite alternate;
+}
+.hero-svg-highlight{
+  opacity:.8;
+}
+@keyframes heroSvgWaveBack{
+  from{transform:translate3d(-1.5%,1%,0) scale(1.01)}
+  to{transform:translate3d(1.5%,-1%,0) scale(1.035)}
+}
+@keyframes heroSvgWaveMain{
+  from{transform:translate3d(-1.8%,1.4%,0) scale(1.015)}
+  to{transform:translate3d(2.2%,-1.2%,0) scale(1.045)}
+}
+@keyframes heroSvgWaveMid{
+  from{transform:translate3d(1.2%,-.7%,0) scale(1.01)}
+  to{transform:translate3d(-1.8%,1.1%,0) scale(1.035)}
+}
+@keyframes heroSvgWaveFront{
+  from{transform:translate3d(-1%,0,0) scale(1.01)}
+  to{transform:translate3d(1.8%,-.8%,0) scale(1.03)}
+}
+@keyframes heroSvgGlow{
+  from{opacity:.48;transform:scale(.96)}
+  to{opacity:.78;transform:scale(1.05)}
+}
+
+.hero-media-top{
+  left:24px!important;
+  right:24px!important;
+  top:20px!important;
+}
+.hero-media-brand{
+  font-size:17px!important;
+}
+.hero-media-status{
+  font-size:7px!important;
+}
+.hero-media-chip{
+  padding:11px 13px!important;
+  border-radius:15px!important;
+  font-size:9px!important;
+  line-height:1.2!important;
+  background:rgba(255,255,255,.76)!important;
+  box-shadow:0 12px 28px rgba(35,26,50,.07)!important;
+}
+.hero-media-chip-left{
+  left:24px!important;
+  bottom:31%!important;
+}
+.hero-media-chip-right{
+  right:24px!important;
+  top:25%!important;
+}
+.hero-media-play{
+  width:80px!important;
+  height:80px!important;
+  background:rgba(255,255,255,.76)!important;
+  box-shadow:
+    0 14px 40px rgba(34,22,54,.12),
+    0 0 0 8px rgba(255,255,255,.12)!important;
+}
+.hero-media-play i{
+  border-top-width:11px!important;
+  border-bottom-width:11px!important;
+  border-left-width:18px!important;
+}
+.hero-media-controls{
+  left:18px!important;
+  right:18px!important;
+  bottom:16px!important;
+  min-height:46px!important;
+  border-radius:16px!important;
+  grid-template-columns:auto auto 1fr auto!important;
+  gap:12px!important;
+  background:rgba(255,255,255,.78)!important;
+}
+.hero-control-track{
+  height:2px!important;
+  border-radius:999px;
+}
+.hero-control-track i{
+  width:20%;
+  border-radius:999px;
+}
+
+/* Remove the older CSS-strip artwork from layout; SVG now owns the poster art. */
+.hero-wave,
+.hero-wave-light{
+  display:none!important;
+}
+
+/* Keep tablet/mobile composition faithful but tighter. */
+@media(max-width:980px){
+  .hero{
+    padding-top:118px!important;
+    padding-bottom:58px!important;
+    gap:36px!important;
+  }
+  .hero-media-shell{
+    width:min(100%,760px)!important;
+    aspect-ratio:1.45 / 1!important;
+  }
+}
+@media(max-width:760px){
+  .hero{
+    padding-top:104px!important;
+    padding-bottom:48px!important;
+    gap:30px!important;
+  }
+  .hero h1{
+    margin-bottom:20px!important;
+  }
+  .hero-lead{
+    font-size:15px!important;
+    line-height:1.48!important;
+  }
+  .hero-actions{
+    margin-top:24px!important;
+    margin-bottom:22px!important;
+  }
+  .hero-media-shell{
+    aspect-ratio:1.18 / 1!important;
+  }
+  .hero-media-card{
+    border-radius:24px!important;
+  }
+  .hero-media-top{
+    left:16px!important;
+    right:16px!important;
+    top:15px!important;
+  }
+  .hero-media-chip-left{
+    left:12px!important;
+    bottom:27%!important;
+  }
+  .hero-media-chip-right{
+    right:12px!important;
+    top:25%!important;
+  }
+  .hero-media-play{
+    width:64px!important;
+    height:64px!important;
+  }
+  .hero-media-controls{
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    min-height:42px!important;
+  }
+}
+@media(max-width:520px){
+  .hero-media-shell{
+    aspect-ratio:1.06 / 1!important;
+  }
+  .hero-media-chip{
+    font-size:7.5px!important;
+    padding:8px 9px!important;
+  }
+  .hero-media-chip-right{
+    top:22%!important;
+  }
+  .hero-media-chip-left{
+    bottom:24%!important;
+  }
+  .hero-media-status{
+    max-width:120px;
+    text-align:right;
+  }
+  .hero-control-tag{
+    display:none!important;
+  }
+}
+
+/* Mobile/browser performance: SVG motion remains subtle and cheap. */
+@media(prefers-reduced-motion:reduce){
+  .hero-svg-wave,
+  .hero-svg-glow{
+    animation:none!important;
+  }
+}
