@@ -3256,53 +3256,232 @@ body{overflow-x:hidden}
 }
 
 
-/* === Pointer mask discoverability refinement ===
-   Desktop keeps the original cursor-controlled reveal. During scroll, if the
-   stationary cursor is already over the section, the reveal wakes up under it. */
-@media(hover:hover) and (pointer:fine){
-  .statement-mask.is-scroll-cursor{
-    --mask-radius:188px;
-  }
-  .statement-mask.is-scroll-cursor .statement-mask-reveal{
-    transition:
-      clip-path .22s cubic-bezier(.2,.72,.2,1),
-      -webkit-clip-path .22s cubic-bezier(.2,.72,.2,1);
-  }
-  .statement-mask.is-scroll-cursor:after{
-    content:"";
-    position:absolute;
-    z-index:4;
-    left:var(--mask-x);
-    top:var(--mask-y);
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(255,255,255,.88);
-    box-shadow:
-      0 0 0 6px rgba(255,255,255,.06),
-      0 0 30px rgba(122,92,231,.24);
-    pointer-events:none;
-    animation:statementCursorWake .68s cubic-bezier(.2,.72,.2,1) both;
-  }
-  .statement-mask.is-pointer-active:after{
-    display:none;
-  }
+/* === Statement lens v3: small living probe -> pointer reveal -> graceful return === */
+.statement-mask{
+  --mask-x:50%;
+  --mask-y:50%;
+  --mask-radius:0px;
+  position:relative;
 }
-@keyframes statementCursorWake{
-  from{opacity:0;transform:translate(-50%,-50%) scale(.45)}
-  55%{opacity:1;transform:translate(-50%,-50%) scale(1.14)}
-  to{opacity:.82;transform:translate(-50%,-50%) scale(1)}
+.statement-mask-reveal{
+  -webkit-clip-path:circle(var(--mask-radius) at var(--mask-x) var(--mask-y))!important;
+  clip-path:circle(var(--mask-radius) at var(--mask-x) var(--mask-y))!important;
+  transition:
+    clip-path .34s cubic-bezier(.2,.72,.2,1),
+    -webkit-clip-path .34s cubic-bezier(.2,.72,.2,1)!important;
+}
+.statement-mask.is-mask-active{
+  --mask-radius:216px;
+}
+.statement-mask.is-pointer-active .statement-mask-reveal{
+  transition:
+    clip-path .15s ease-out,
+    -webkit-clip-path .15s ease-out!important;
 }
 
-/* Mobile remains intentionally gesture-free: the original one-shot reveal plays
-   when the section enters view, then the content stays accessible. */
+/* Idle probe: deliberately small, animated and discoverable without revealing a giant dark area. */
+.statement-orb{
+  position:absolute;
+  z-index:5;
+  left:16%;
+  top:72%;
+  width:52px;
+  height:52px;
+  margin:-26px 0 0 -26px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  opacity:0;
+  pointer-events:none;
+  transform:translateZ(0) scale(.8);
+  transition:opacity .38s ease,transform .38s ease;
+  animation-play-state:paused;
+  cursor:pointer;
+}
+.statement-mask.is-orb-visible .statement-orb{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateZ(0) scale(1);
+  animation:statementOrbRoam 10.5s cubic-bezier(.45,.02,.28,.98) infinite alternate;
+  animation-play-state:running;
+}
+.statement-mask.is-pointer-active .statement-orb{
+  opacity:0;
+  pointer-events:none;
+  animation-play-state:paused;
+}
+
+.statement-orb-core{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#f3a021 0%,#dc3477 42%,#795de8 72%,#5b9cff 100%);
+  box-shadow:
+    0 0 0 5px rgba(123,93,232,.07),
+    0 8px 24px rgba(72,54,110,.16);
+  animation:statementOrbPulse 2.1s ease-in-out infinite;
+}
+.statement-orb-ring{
+  position:absolute;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid rgba(110,90,178,.26);
+  animation:statementOrbRing 2.1s ease-out infinite;
+}
+.statement-orb-spark{
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#fff;
+  border:1px solid rgba(114,91,197,.22);
+  box-shadow:0 4px 14px rgba(74,58,119,.12);
+}
+.statement-orb-spark.spark-a{
+  transform:translate(17px,-13px);
+  animation:statementSparkA 3.4s ease-in-out infinite;
+}
+.statement-orb-spark.spark-b{
+  transform:translate(-18px,12px) scale(.72);
+  animation:statementSparkB 4.1s ease-in-out infinite;
+}
+
+@keyframes statementOrbRoam{
+  0%{left:15%;top:73%;transform:translateZ(0) rotate(-4deg)}
+  18%{left:28%;top:32%;transform:translateZ(0) rotate(2deg)}
+  39%{left:52%;top:46%;transform:translateZ(0) rotate(-2deg)}
+  61%{left:76%;top:28%;transform:translateZ(0) rotate(4deg)}
+  82%{left:86%;top:68%;transform:translateZ(0) rotate(-3deg)}
+  100%{left:62%;top:77%;transform:translateZ(0) rotate(1deg)}
+}
+@keyframes statementOrbPulse{
+  0%,100%{transform:scale(.92);filter:saturate(.98)}
+  50%{transform:scale(1.08);filter:saturate(1.12)}
+}
+@keyframes statementOrbRing{
+  0%{opacity:.42;transform:scale(.76)}
+  70%{opacity:.12}
+  100%{opacity:0;transform:scale(1.4)}
+}
+@keyframes statementSparkA{
+  0%,100%{transform:translate(17px,-13px) scale(.72);opacity:.46}
+  50%{transform:translate(21px,-17px) scale(1);opacity:.95}
+}
+@keyframes statementSparkB{
+  0%,100%{transform:translate(-18px,12px) scale(.62);opacity:.28}
+  50%{transform:translate(-23px,16px) scale(.9);opacity:.7}
+}
+
+/* The target is easier to catch than it looks, while remaining visually tiny. */
+.statement-orb:before{
+  content:"";
+  position:absolute;
+  inset:-10px;
+  border-radius:50%;
+}
+.statement-orb:after{
+  content:"EXPLORAR";
+  position:absolute;
+  left:44px;
+  top:50%;
+  transform:translateY(-50%) translateX(-4px);
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  color:#85828b;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.13em;
+  opacity:0;
+  white-space:nowrap;
+  box-shadow:0 8px 24px rgba(20,16,28,.05);
+  transition:opacity .22s ease,transform .22s ease;
+}
+.statement-orb:hover:after{
+  opacity:1;
+  transform:translateY(-50%) translateX(0);
+}
+
+.statement-mask.is-pointer-active .statement-mask-hint{
+  opacity:0;
+}
+.statement-mask-hint{
+  transition:opacity .28s ease,transform .28s ease;
+}
+
+/* Desktop: nothing reveals by itself. The moving probe advertises the interaction;
+   hovering it hands control to the real cursor-driven lens. */
+@media(hover:hover) and (pointer:fine){
+  .statement-mask{cursor:default}
+  .statement-mask.is-pointer-active{cursor:crosshair}
+}
+
+/* Mobile/tablet: the same probe roams, with a small synchronized peek instead of hover.
+   Tapping anywhere on the panel expands/collapses the full reveal without blocking scroll. */
+@media(hover:none), (pointer:coarse){
+  .statement-mask{
+    cursor:pointer;
+  }
+  .statement-orb{
+    width:46px;
+    height:46px;
+    margin:-23px 0 0 -23px;
+  }
+  .statement-orb:after{display:none}
+  .statement-orb-core{width:16px;height:16px}
+  .statement-orb-ring{width:32px;height:32px}
+
+  .statement-mask.is-orb-visible:not(.is-touch-expanded) .statement-mask-reveal{
+    animation:statementTouchPeek 10.5s cubic-bezier(.45,.02,.28,.98) infinite alternate!important;
+  }
+  .statement-mask.is-touch-expanded{
+    --mask-radius:140vmax;
+  }
+  .statement-mask.is-touch-expanded .statement-orb{
+    opacity:.35;
+  }
+  .statement-mask.is-touch-expanded .statement-mask-reveal{
+    animation:none!important;
+    -webkit-clip-path:circle(140vmax at 50% 50%)!important;
+    clip-path:circle(140vmax at 50% 50%)!important;
+  }
+
+  @keyframes statementTouchPeek{
+    0%{-webkit-clip-path:circle(0 at 15% 73%);clip-path:circle(0 at 15% 73%)}
+    10%{-webkit-clip-path:circle(64px at 15% 73%);clip-path:circle(64px at 15% 73%)}
+    18%{-webkit-clip-path:circle(54px at 28% 32%);clip-path:circle(54px at 28% 32%)}
+    39%{-webkit-clip-path:circle(68px at 52% 46%);clip-path:circle(68px at 52% 46%)}
+    61%{-webkit-clip-path:circle(58px at 76% 28%);clip-path:circle(58px at 76% 28%)}
+    82%{-webkit-clip-path:circle(66px at 86% 68%);clip-path:circle(66px at 86% 68%)}
+    100%{-webkit-clip-path:circle(0 at 62% 77%);clip-path:circle(0 at 62% 77%)}
+  }
+}
+
 @media(max-width:760px){
-  .statement-mask-hint .hint-touch{
-    display:inline;
+  .statement-mask-hint{
+    max-width:190px;
+    text-align:right;
+    line-height:1.35;
   }
 }
 
 @media(prefers-reduced-motion:reduce){
-  .statement-mask.is-scroll-cursor:after{display:none!important}
+  .statement-orb{
+    left:78%!important;
+    top:70%!important;
+    opacity:.75!important;
+    animation:none!important;
+    transform:none!important;
+  }
+  .statement-orb-core,.statement-orb-ring,.statement-orb-spark{
+    animation:none!important;
+  }
+  .statement-mask-reveal{
+    -webkit-clip-path:circle(0 at 50% 50%)!important;
+    clip-path:circle(0 at 50% 50%)!important;
+    animation:none!important;
+  }
 }

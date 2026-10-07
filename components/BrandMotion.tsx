@@ -61,13 +61,12 @@ export function HeroBeams() {
 export function StatementMaskReveal() {
   const rootRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
-  const scrollFrameRef = useRef<number | null>(null);
+  const engagedRef = useRef(false);
   const currentRef = useRef({ x: 50, y: 50 });
   const targetRef = useRef({ x: 50, y: 50 });
-  const pointerRef = useRef({ x: -1, y: -1, known: false });
-  const localPointerRef = useRef(false);
   const [finePointer, setFinePointer] = useState(false);
-  const [touchActive, setTouchActive] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [touchExpanded, setTouchExpanded] = useState(false);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -78,107 +77,27 @@ export function StatementMaskReveal() {
     return () => media.removeEventListener("change", sync);
   }, []);
 
-  /* Desktop discoverability:
-     remember the cursor globally, but do no visual work here. When this section
-     scrolls under a stationary cursor, a local scroll RAF reveals the mask exactly
-     where that cursor already is. */
   useEffect(() => {
-    if (!finePointer || reduced) return;
-
-    const rememberPointer = (event: PointerEvent) => {
-      pointerRef.current = { x: event.clientX, y: event.clientY, known: true };
-    };
-
-    window.addEventListener("pointermove", rememberPointer, { passive: true });
-    return () => window.removeEventListener("pointermove", rememberPointer);
-  }, [finePointer, reduced]);
-
-  useEffect(() => {
-    if (!finePointer || reduced) return;
-    const node = rootRef.current;
-    if (!node || !("IntersectionObserver" in window)) return;
-
-    let observing = false;
-
-    const paintFromScroll = () => {
-      scrollFrameRef.current = null;
-      if (!observing || localPointerRef.current) return;
-
-      const pointer = pointerRef.current;
-      if (!pointer.known) return;
-
-      const rect = node.getBoundingClientRect();
-      const inside =
-        pointer.x >= rect.left &&
-        pointer.x <= rect.right &&
-        pointer.y >= rect.top &&
-        pointer.y <= rect.bottom;
-
-      if (!inside) {
-        node.classList.remove("is-mask-active", "is-scroll-cursor");
-        return;
-      }
-
-      const x = Math.max(0, Math.min(100, ((pointer.x - rect.left) / rect.width) * 100));
-      const y = Math.max(0, Math.min(100, ((pointer.y - rect.top) / rect.height) * 100));
-
-      currentRef.current = { x, y };
-      targetRef.current = { x, y };
-      node.style.setProperty("--mask-x", `${x}%`);
-      node.style.setProperty("--mask-y", `${y}%`);
-      node.classList.add("is-mask-active", "is-scroll-cursor");
-    };
-
-    const requestPaint = () => {
-      if (scrollFrameRef.current) return;
-      scrollFrameRef.current = requestAnimationFrame(paintFromScroll);
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      observing = entry.isIntersecting;
-      if (observing) {
-        window.addEventListener("scroll", requestPaint, { passive: true });
-        window.addEventListener("resize", requestPaint);
-        requestPaint();
-      } else {
-        window.removeEventListener("scroll", requestPaint);
-        window.removeEventListener("resize", requestPaint);
-        node.classList.remove("is-mask-active", "is-scroll-cursor");
-      }
-    }, { rootMargin: "18% 0px 18% 0px", threshold: 0 });
-
-    observer.observe(node);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", requestPaint);
-      window.removeEventListener("resize", requestPaint);
-      if (scrollFrameRef.current) cancelAnimationFrame(scrollFrameRef.current);
-    };
-  }, [finePointer, reduced]);
-
-  /* Mobile keeps the previous one-shot reveal: no drag gesture competes with scrolling. */
-  useEffect(() => {
-    if (finePointer || reduced) return;
     const node = rootRef.current;
     if (!node || !("IntersectionObserver" in window)) {
-      setTouchActive(true);
+      setInView(true);
       return;
     }
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setTouchActive(true);
-      observer.disconnect();
-    }, { threshold: 0.36, rootMargin: "0px 0px -8% 0px" });
+      setInView(entry.isIntersecting);
+      if (!entry.isIntersecting) {
+        engagedRef.current = false;
+        node.classList.remove("is-mask-active", "is-pointer-active");
+      }
+    }, { threshold: 0.18, rootMargin: "10% 0px 10% 0px" });
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [finePointer, reduced]);
+  }, []);
 
   useEffect(() => () => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    if (scrollFrameRef.current) cancelAnimationFrame(scrollFrameRef.current);
   }, []);
 
   const writePosition = () => {
@@ -187,8 +106,8 @@ export function StatementMaskReveal() {
 
     const current = currentRef.current;
     const target = targetRef.current;
-    current.x += (target.x - current.x) * 0.16;
-    current.y += (target.y - current.y) * 0.16;
+    current.x += (target.x - current.x) * 0.17;
+    current.y += (target.y - current.y) * 0.17;
 
     node.style.setProperty("--mask-x", `${current.x}%`);
     node.style.setProperty("--mask-y", `${current.y}%`);
@@ -205,38 +124,53 @@ export function StatementMaskReveal() {
     frameRef.current = requestAnimationFrame(writePosition);
   };
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const setTargetFromPointer = (clientX: number, clientY: number) => {
+    const node = rootRef.current;
+    if (!node) return;
+
+    const rect = node.getBoundingClientRect();
+    targetRef.current = {
+      x: Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100)),
+      y: Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100)),
+    };
+    schedulePosition();
+  };
+
+  const engageLens = (event: React.PointerEvent<HTMLSpanElement>) => {
     if (!finePointer || reduced) return;
 
-    localPointerRef.current = true;
-    pointerRef.current = { x: event.clientX, y: event.clientY, known: true };
+    engagedRef.current = true;
+    const node = rootRef.current;
+    node?.classList.add("is-mask-active", "is-pointer-active");
+    setTargetFromPointer(event.clientX, event.clientY);
+  };
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    targetRef.current = {
-      x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
-      y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
-    };
-
-    event.currentTarget.classList.remove("is-scroll-cursor");
-    event.currentTarget.classList.add("is-mask-active", "is-pointer-active");
-    schedulePosition();
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!finePointer || reduced || !engagedRef.current) return;
+    setTargetFromPointer(event.clientX, event.clientY);
   };
 
   const handlePointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!finePointer || reduced) return;
 
-    localPointerRef.current = false;
-    event.currentTarget.classList.remove("is-mask-active", "is-pointer-active", "is-scroll-cursor");
+    engagedRef.current = false;
+    event.currentTarget.classList.remove("is-mask-active", "is-pointer-active");
     targetRef.current = { x: 50, y: 50 };
     schedulePosition();
+  };
+
+  const handleTouchToggle = () => {
+    if (finePointer || reduced) return;
+    setTouchExpanded((value) => !value);
   };
 
   return (
     <div
       ref={rootRef}
-      className={`statement-mask${finePointer ? " is-fine-pointer" : ""}${touchActive ? " is-touch-active" : ""}`}
+      className={`statement-mask${finePointer ? " is-fine-pointer" : " is-touch-mode"}${inView ? " is-orb-visible" : ""}${touchExpanded ? " is-touch-expanded" : ""}`}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
+      onClick={handleTouchToggle}
       aria-label="No empezamos publicando. Empezamos entendiendo: estrategia, contexto, dirección y propósito."
     >
       <div className="statement-mask-base" aria-hidden="true">
@@ -253,9 +187,20 @@ export function StatementMaskReveal() {
         </div>
       </div>
 
+      <span
+        className="statement-orb"
+        aria-hidden="true"
+        onPointerEnter={engageLens}
+      >
+        <i className="statement-orb-core" />
+        <i className="statement-orb-ring" />
+        <i className="statement-orb-spark spark-a" />
+        <i className="statement-orb-spark spark-b" />
+      </span>
+
       <div className="statement-mask-hint" aria-hidden="true">
-        <span className="hint-desktop">MUEVE PARA MIRAR MÁS PROFUNDO</span>
-        <span className="hint-touch">MIRAMOS MÁS ALLÁ DE LO EVIDENTE</span>
+        <span className="hint-desktop">PASA POR EL PUNTO PARA MIRAR MÁS PROFUNDO</span>
+        <span className="hint-touch">{touchExpanded ? "TOCA PARA VOLVER" : "TOCA PARA DESCUBRIR"}</span>
       </div>
     </div>
   );
