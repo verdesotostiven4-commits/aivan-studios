@@ -1948,3 +1948,311 @@ body{overflow-x:hidden}
   .signal-foot{display:none}
   .signal-line{display:none}
 }
+
+
+/* === AIVAN motion language: adapted from the interaction references === */
+
+/* 1 — Hero flip text: one authored 3D flip, then it stays still. */
+.hero-flip-word{
+  display:inline-flex;
+  white-space:nowrap;
+  perspective:900px;
+  vertical-align:baseline;
+}
+.hero-flip-char{
+  --char-color:#5b88ff;
+  position:relative;
+  display:inline-block;
+  color:var(--char-color);
+  transform-style:preserve-3d;
+  transform-origin:center 68%;
+  animation:aivanHeroFlip .82s var(--flip-delay) cubic-bezier(.2,.72,.18,1) both;
+}
+@keyframes aivanHeroFlip{
+  0%{opacity:0;transform:rotateX(-88deg) translateY(14px)}
+  58%{opacity:1}
+  100%{opacity:1;transform:rotateX(0) translateY(0)}
+}
+
+/* 2 — Hero entrance sequence: staged, not noisy. */
+.hero-copy.is-visible>.micro-label{
+  animation:heroMicroIn .58s .04s both;
+}
+.hero-copy.is-visible .hero-line:first-child{
+  animation:heroLineIn .72s .12s both;
+}
+.hero-copy.is-visible .hero-line:nth-child(2){
+  animation:heroLineIn .76s .24s both;
+}
+.hero-copy.is-visible .hero-lead{
+  animation:heroSoftIn .62s .48s both;
+}
+.hero-copy.is-visible .hero-actions{
+  animation:heroSoftIn .58s .58s both;
+}
+.hero-copy.is-visible .hero-proof{
+  animation:heroSoftIn .62s .7s both;
+}
+@keyframes heroMicroIn{
+  from{opacity:0;transform:translateY(8px);letter-spacing:.28em}
+  to{opacity:1;transform:none;letter-spacing:.16em}
+}
+@keyframes heroLineIn{
+  from{opacity:0;transform:translateY(28px);clip-path:inset(0 0 100% 0)}
+  to{opacity:1;transform:none;clip-path:inset(0)}
+}
+@keyframes heroSoftIn{
+  from{opacity:0;transform:translateY(13px)}
+  to{opacity:1;transform:none}
+}
+
+/* 3 — Liquid-text reference, reduced to a lightweight animated ink instead of a GPU displacement filter. */
+.liquid-word{
+  color:transparent!important;
+  background:linear-gradient(110deg,#d88c00 0%,#df4c23 20%,#c7145d 42%,#9638b3 61%,#6d5edc 78%,#5b88ff 100%)!important;
+  background-size:220% 100%!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  animation:aivanLiquidInk 7.5s ease-in-out infinite alternate;
+}
+@keyframes aivanLiquidInk{
+  0%{background-position:0% 50%}
+  45%{background-position:62% 50%}
+  100%{background-position:100% 50%}
+}
+
+/* 4 — MorphText reference: one controlled word in the editorial statement. */
+.morph-word{
+  display:inline-grid;
+  width:var(--morph-width);
+  max-width:100%;
+  vertical-align:baseline;
+}
+.morph-word>span{
+  grid-area:1/1;
+  animation:aivanMorphIn .64s cubic-bezier(.2,.72,.2,1) both;
+}
+@keyframes aivanMorphIn{
+  from{opacity:0;transform:translateY(.28em) skewY(2deg)}
+  to{opacity:1;transform:none}
+}
+
+/* 5 — Services use a staggered-grid entrance without changing their layout. */
+.service-card[data-reveal]{
+  transition-duration:.68s;
+  transition-timing-function:cubic-bezier(.2,.72,.2,1);
+}
+.service-card[data-reveal].is-visible{transition-delay:var(--service-delay,0ms)}
+.service-stagger-1{--service-delay:0ms}
+.service-stagger-2{--service-delay:85ms}
+.service-stagger-3{--service-delay:170ms}
+.service-stagger-4{--service-delay:255ms}
+.service-card.is-visible .service-symbol{
+  animation:serviceSymbolIn .62s calc(var(--service-delay,0ms) + 140ms) cubic-bezier(.2,.72,.2,1) both;
+}
+.service-card.is-visible .service-list span{
+  animation:serviceTagIn .48s cubic-bezier(.2,.72,.2,1) both;
+}
+.service-card.is-visible .service-list span:nth-child(1){animation-delay:calc(var(--service-delay,0ms) + 210ms)}
+.service-card.is-visible .service-list span:nth-child(2){animation-delay:calc(var(--service-delay,0ms) + 255ms)}
+.service-card.is-visible .service-list span:nth-child(3){animation-delay:calc(var(--service-delay,0ms) + 300ms)}
+.service-card.is-visible .service-list span:nth-child(4){animation-delay:calc(var(--service-delay,0ms) + 345ms)}
+.service-card.is-visible .service-list span:nth-child(5){animation-delay:calc(var(--service-delay,0ms) + 390ms)}
+@keyframes serviceSymbolIn{
+  from{opacity:0;transform:scale(.72) rotate(-7deg)}
+  to{opacity:1;transform:none}
+}
+@keyframes serviceTagIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+/* 6 — PerspectiveGrid reference: subtle atmosphere behind the method, not a demo grid. */
+.process-section{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.process-section:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:7%;
+  right:7%;
+  top:72px;
+  height:420px;
+  background:
+    linear-gradient(rgba(20,20,24,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,20,24,.055) 1px,transparent 1px);
+  background-size:54px 54px;
+  transform:perspective(780px) rotateX(63deg) scale(1.16);
+  transform-origin:center top;
+  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.58),transparent 86%);
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.58),transparent 86%);
+  opacity:.5;
+  pointer-events:none;
+}
+
+/* 7 — AnimatedRays reference: one signal travels through the process rail. */
+.process-rail{
+  position:relative;
+}
+.process-rail:before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  left:0;
+  right:0;
+  top:-1px;
+  height:2px;
+  background:linear-gradient(90deg,#d88c00 0%,#c7145d 38%,#6d5edc 68%,#5b88ff 100%);
+  transform:scaleX(0);
+  transform-origin:left;
+  opacity:.68;
+}
+.process-rail.is-visible:before{
+  animation:processRayDraw 1.55s .18s cubic-bezier(.2,.72,.2,1) forwards;
+}
+.process-rail:after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  top:-5px;
+  left:0;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid #c7145d;
+  opacity:0;
+}
+.process-rail.is-visible:after{
+  animation:processRayPulse 1.55s .18s cubic-bezier(.2,.72,.2,1) forwards;
+}
+.process-rail.is-visible article{
+  animation:processStepIn .58s cubic-bezier(.2,.72,.2,1) both;
+}
+.process-rail.is-visible article:nth-child(1){animation-delay:.22s}
+.process-rail.is-visible article:nth-child(2){animation-delay:.38s}
+.process-rail.is-visible article:nth-child(3){animation-delay:.54s}
+.process-rail.is-visible article:nth-child(4){animation-delay:.70s}
+.process-rail.is-visible article:nth-child(5){animation-delay:.86s}
+@keyframes processRayDraw{to{transform:scaleX(1)}}
+@keyframes processRayPulse{
+  0%{opacity:0;left:0}
+  8%{opacity:1}
+  92%{opacity:1}
+  100%{opacity:0;left:calc(100% - 10px)}
+}
+@keyframes processStepIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+/* 8 — TypingKeyboard reference adapted into a tiny live process signal, not a literal keyboard. */
+.process-intro-copy{
+  display:grid;
+  gap:18px;
+  align-content:end;
+}
+.process-intro-copy>p{
+  font-size:16px;
+  line-height:1.65;
+  color:#65646b;
+  max-width:480px;
+  margin:0;
+}
+.typing-signal{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width:100%;
+  min-height:34px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  color:#6c6972;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:10px;
+  letter-spacing:.01em;
+}
+.typing-signal i{
+  width:1px;
+  height:12px;
+  margin-left:3px;
+  background:#c7145d;
+  animation:typingCaret .82s steps(1) infinite;
+}
+@keyframes typingCaret{50%{opacity:0}}
+
+/* 9 — GenerateButton reference adapted to our real CTA. */
+.button-dark,.header-cta{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.button-dark:before,.header-cta:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:115px;
+  height:115px;
+  border-radius:50%;
+  left:-68px;
+  top:50%;
+  transform:translateY(-50%) scale(.55);
+  background:radial-gradient(circle,rgba(91,136,255,.7) 0%,rgba(199,20,93,.32) 38%,transparent 70%);
+  opacity:0;
+  transition:opacity .34s ease,transform .48s cubic-bezier(.2,.72,.2,1);
+}
+.button-dark:hover:before,.button-dark:focus-visible:before,
+.header-cta:hover:before,.header-cta:focus-visible:before{
+  opacity:.78;
+  transform:translateY(-50%) translateX(58px) scale(1.25);
+}
+
+/* 10 — FlipFadeText reference: quiet motion in the closing scene. */
+.closing-cycle{
+  margin:14px 0 4px;
+  color:#a9a7b0;
+  font-size:14px;
+}
+.flip-fade-word{
+  display:inline-grid;
+  width:var(--flipfade-width);
+  color:#fff;
+}
+.flip-fade-word>span{
+  grid-area:1/1;
+  animation:aivanFlipFade .58s cubic-bezier(.2,.72,.2,1) both;
+}
+@keyframes aivanFlipFade{
+  from{opacity:0;transform:perspective(500px) rotateX(-48deg) translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:980px){
+  .process-section:before{height:320px;opacity:.35}
+}
+@media(max-width:760px){
+  .morph-word{width:auto}
+  .process-section:before{display:none}
+  .process-rail:before,.process-rail:after{display:none}
+  .typing-signal{font-size:9px}
+  .hero-flip-char{animation-duration:.68s}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-flip-char,
+  .liquid-word,
+  .morph-word>span,
+  .service-card.is-visible .service-symbol,
+  .service-card.is-visible .service-list span,
+  .process-rail.is-visible article,
+  .typing-signal i,
+  .flip-fade-word>span{
+    animation:none!important;
+  }
+  .process-rail:before{transform:scaleX(1)!important}
+  .process-rail:after{display:none!important}
+}

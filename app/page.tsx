@@ -4,6 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
+import { FlipFadeWord, HeroFlipWord, MorphWord, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -27,9 +28,9 @@ function ServiceIcon({ id }: { id: string }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3l8 4.5-8 4.5-8-4.5Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg>;
 }
 
-function ServiceCard({ service }: { service: (typeof services)[number] }) {
+function ServiceCard({ service, index }: { service: (typeof services)[number]; index: number }) {
   return (
-    <article id={service.id === "packs" ? "aipacks" : undefined} className={`service-card service-${service.id}`} data-reveal>
+    <article id={service.id === "packs" ? "aipacks" : undefined} className={`service-card service-${service.id} service-stagger-${index + 1}`} data-reveal>
       <div className="service-index"><span>{service.code}</span><span>↗</span></div>
       <div className="service-title"><span className="service-symbol"><ServiceIcon id={service.id} /></span><div><p>{service.label}</p><h3>{service.name}</h3></div></div>
       <p className="service-copy">{service.copy}</p>
@@ -54,7 +55,7 @@ export default function Home() {
           <p className="micro-label">ESTUDIO CREATIVO · GALÁPAGOS</p>
           <h1>
             <span className="hero-line">Tu negocio no necesita un cambio.</span>
-            <span className="hero-line hero-evolution-line">Necesita una <em>evolución.</em></span>
+            <span className="hero-line hero-evolution-line">Necesita una <HeroFlipWord text="evolución." /></span>
           </h1>
           <p className="hero-lead">Estrategia, creatividad y producción digital trabajando como un solo sistema para que tu marca crezca, conecte y evolucione con intención.</p>
           <div className="hero-actions">
@@ -85,7 +86,7 @@ export default function Home() {
         <div className="human-panel" data-reveal>
           <div className="human-copy">
             <p className="micro-label">QUÉ ES AIVAN</p>
-            <h2>Somos un estudio <span>creativo</span><br />que transforma negocios.</h2>
+            <h2>Somos un estudio <span className="liquid-word">creativo</span><br />que transforma negocios.</h2>
             <p>Combinamos estrategia, diseño y producción digital para ayudar a marcas a crecer, conectar y evolucionar en un mundo visual.</p>
             <a className="human-cta" href="#servicios">Conoce cómo trabaja AIVAN <span aria-hidden="true">→</span></a>
             <div className="human-values" aria-label="Pilares de AIVAN">
@@ -99,7 +100,7 @@ export default function Home() {
       <section className="statement" id="enfoque">
         <div className="statement-inner" data-reveal>
           <p className="micro-label">NUESTRA FORMA DE TRABAJAR</p>
-          <h2>No empezamos publicando.<br /><span>Empezamos entendiendo.</span></h2>
+          <h2>No empezamos publicando.<br /><span>Empezamos <MorphWord words={["entendiendo.", "ordenando.", "dirigiendo."]} /></span></h2>
           <div className="statement-copy">
             <p>Una marca puede tener fotos bonitas y seguir sin decir nada. Puede publicar todos los días y seguir sin tener dirección. AIVAN existe para ordenar primero la idea y construir después la ejecución.</p>
             <p>Así branding, marketing y audiovisual dejan de competir entre sí y empiezan a empujar el mismo negocio.</p>
@@ -119,7 +120,7 @@ export default function Home() {
           <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
           <p>Entramos por el punto que tu negocio necesita hoy y dejamos espacio para que el sistema crezca mañana.</p>
         </div>
-        <div className="services-grid">{services.map((service) => <ServiceCard key={service.name} service={service} />)}</div>
+        <div className="services-grid">{services.map((service, index) => <ServiceCard key={service.name} service={service} index={index} />)}</div>
       </section>
 
       <section className="bridge-section">
@@ -135,7 +136,7 @@ export default function Home() {
       <section className="process-section" id="proceso">
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">NUESTRO MÉTODO</p><h2>De la conversación<br />a algo que funciona.</h2></div>
-          <p>Un proceso entendible también es parte de una buena experiencia. Sabes qué estamos haciendo, por qué y qué viene después.</p>
+          <div className="process-intro-copy"><p>Un proceso entendible también es parte de una buena experiencia. Sabes qué estamos haciendo, por qué y qué viene después.</p><TypingSignal text="entender → enfocar → construir → activar → evolucionar" /></div>
         </div>
         <div className="process-rail" data-reveal>
           {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
@@ -167,7 +168,7 @@ export default function Home() {
 
       <section className="closing-section">
         <div className="closing-orbit orbit-one" /><div className="closing-orbit orbit-two" />
-        <div className="closing-content" data-reveal><p className="micro-label light-label">AIVAN STUDIOS</p><h2>La siguiente versión<br />de tu marca puede empezar hoy.</h2><div><a href="#brief" className="button button-light">Analizar mi negocio <span>↗</span></a><a href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined} className="button button-outline">Hablar directamente</a></div></div>
+        <div className="closing-content" data-reveal><p className="micro-label light-label">AIVAN STUDIOS</p><p className="closing-cycle">Para marcas que quieren <FlipFadeWord words={["crecer.", "conectar.", "evolucionar."]} /></p><h2>La siguiente versión<br />de tu marca puede empezar hoy.</h2><div><a href="#brief" className="button button-light">Analizar mi negocio <span>↗</span></a><a href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined} className="button button-outline">Hablar directamente</a></div></div>
       </section>
 
       <footer className="site-footer">
