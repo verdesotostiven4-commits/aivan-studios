@@ -3746,17 +3746,16 @@ body{overflow-x:hidden}
 
 /* === AIVAN bridge sequence: one idea activates the next, then the system resets === */
 .bridge-sequence{
+  --flow-progress:0;
   position:relative;
-  margin-top:64px;
-  padding-top:4px;
   display:block;
   min-height:150px;
+  margin-top:64px;
+  padding-top:4px;
   isolation:isolate;
   overflow:visible;
 }
-.bridge-sequence:before{
-  display:none!important;
-}
+.bridge-sequence:before{display:none!important}
 .bridge-flow-content{
   position:relative;
   z-index:2;
@@ -3772,50 +3771,64 @@ body{overflow-x:hidden}
   right:7%;
   top:50%;
   height:1px;
-  background:rgba(22,20,26,.08);
+  background:rgba(22,20,26,.075);
   overflow:hidden;
 }
 .bridge-flow-track i{
   display:block;
   width:100%;
   height:100%;
-  transform:scaleX(0);
-  transform-origin:left;
   background:linear-gradient(90deg,#e6a129 0%,#d83f7f 37%,#786fe7 69%,#73baf8 100%);
+  transform:scaleX(var(--flow-progress));
+  transform-origin:left;
+  transition:transform .42s cubic-bezier(.2,.72,.2,1),opacity .32s ease;
 }
-.bridge-sequence.is-flowing .bridge-flow-track i{
-  animation:bridgeTrackCycle 7.2s cubic-bezier(.2,.72,.2,1) both;
+.bridge-sequence.is-exiting .bridge-flow-track i{
+  transform:scaleX(0);
+  transform-origin:right;
+  opacity:.18;
 }
 
 .bridge-sequence .bridge-flow-card{
-  --enter-delay:calc(.18s + (var(--flow-i) * .82s));
-  --exit-delay:calc(5.35s + (var(--flow-i) * .08s));
   position:relative;
-  min-height:150px;
   z-index:2;
+  min-height:150px;
   opacity:0;
-  transform:translate3d(0,28px,0) scale(.965);
+  transform:translate3d(0,26px,0) scale(.972);
+  filter:blur(4px);
   border-color:rgba(20,18,24,.10);
   box-shadow:0 18px 50px rgba(24,19,34,.035);
-  transition:none!important;
+  transition:
+    opacity .48s ease,
+    transform .62s cubic-bezier(.16,.84,.22,1),
+    filter .48s ease,
+    box-shadow .5s ease,
+    border-color .4s ease!important;
   will-change:transform,opacity;
 }
-.bridge-sequence.is-flowing .bridge-flow-card{
-  animation:bridgeCardCycle 7.2s cubic-bezier(.16,.84,.22,1) both;
-  animation-delay:0s;
+.bridge-sequence .bridge-flow-card.is-active{
+  opacity:1;
+  transform:none;
+  filter:blur(0);
+}
+.bridge-sequence .bridge-flow-card.is-active:before{
+  animation:bridgeCardSheen .72s cubic-bezier(.2,.72,.2,1) both;
 }
 .bridge-sequence .bridge-flow-card:before{
   content:"";
   position:absolute;
-  z-index:0;
+  z-index:1;
   inset:0;
   border-radius:inherit;
-  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,255,255,.72));
-  opacity:0;
   pointer-events:none;
+  opacity:0;
+  background:linear-gradient(115deg,transparent 12%,rgba(255,255,255,.88) 42%,transparent 68%);
+  transform:translateX(-46%);
 }
-.bridge-sequence.is-flowing .bridge-flow-card:before{
-  animation:bridgeCardSheen 7.2s ease both;
+@keyframes bridgeCardSheen{
+  0%{opacity:0;transform:translateX(-46%)}
+  34%{opacity:.52}
+  100%{opacity:0;transform:translateX(52%)}
 }
 .bridge-sequence .bridge-flow-card>*{
   position:relative;
@@ -3825,21 +3838,35 @@ body{overflow-x:hidden}
   position:absolute!important;
   left:18px;
   top:16px;
-  font-size:8px;
-  letter-spacing:.12em;
   color:#aaa7ae;
+  font-size:8px;
   font-weight:700;
+  letter-spacing:.12em;
 }
 .bridge-sequence .bridge-flow-card:after{
-  transform:translate3d(18px,18px,0) scale(.72);
   opacity:0;
+  transform:translate3d(16px,18px,0) scale(.76);
+  transition:
+    opacity .48s ease .08s,
+    transform .68s cubic-bezier(.16,.84,.22,1) .08s;
 }
-.bridge-sequence.is-flowing .bridge-flow-card:after{
-  animation:bridgeAccentWake 7.2s ease both;
+.bridge-sequence .bridge-flow-card.is-active:after{
+  opacity:.82;
+  transform:none;
+}
+.bridge-sequence .bridge-flow-card.is-active{
+  box-shadow:0 20px 54px rgba(24,19,34,.055);
+}
+.bridge-sequence .node-d.is-active strong{
+  animation:bridgeResultBeat .56s .18s ease both;
+}
+@keyframes bridgeResultBeat{
+  0%{letter-spacing:.15em}
+  48%{letter-spacing:.19em}
+  100%{letter-spacing:.15em}
 }
 
 .bridge-flow-arrow{
-  --arrow-delay:calc(.69s + (var(--flow-i) * .82s));
   position:relative;
   z-index:3;
   width:30px;
@@ -3851,139 +3878,62 @@ body{overflow-x:hidden}
   border:1px solid var(--line);
   color:#77747d;
   opacity:0;
-  transform:translateX(-9px) scale(.72);
-  transition:none!important;
+  transform:translateX(-9px) scale(.74);
+  transition:
+    opacity .36s ease,
+    transform .48s cubic-bezier(.16,.84,.22,1)!important;
 }
-.bridge-sequence.is-flowing .bridge-flow-arrow{
-  animation:bridgeArrowCycle 7.2s cubic-bezier(.2,.72,.2,1) both;
+.bridge-flow-arrow.is-active{
+  opacity:1;
+  transform:none;
 }
 .bridge-flow-arrow:after{
   content:"";
   position:absolute;
   inset:-5px;
   border-radius:50%;
-  border:1px solid rgba(120,96,220,.13);
+  border:1px solid rgba(120,96,220,.14);
   opacity:0;
 }
-.bridge-sequence.is-flowing .bridge-flow-arrow:after{
-  animation:bridgeArrowPulse 7.2s ease both;
+.bridge-flow-arrow.is-active:after{
+  animation:bridgeArrowPulse .62s ease both;
+}
+@keyframes bridgeArrowPulse{
+  0%{opacity:0;transform:scale(.68)}
+  42%{opacity:.52;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.55)}
 }
 
-/* The timings are encoded per item so the sequence reads:
-   MARCA -> ESTRATEGIA -> CONTENIDO -> RESULTADO -> hold -> fall/reset. */
-@keyframes bridgeCardCycle{
-  0%{opacity:0;transform:translate3d(0,28px,0) scale(.965);filter:blur(5px)}
-  calc((var(--enter-delay) / 7.2s) * 100%){opacity:0;transform:translate3d(0,28px,0) scale(.965);filter:blur(5px)}
-  16%{opacity:1;transform:none;filter:blur(0)}
-  73%{opacity:1;transform:none;filter:blur(0)}
-  78%{opacity:0;transform:translate3d(0,38px,0) scale(.975) rotate(.35deg);filter:blur(2px)}
-  100%{opacity:0;transform:translate3d(0,38px,0) scale(.975);filter:blur(2px)}
+/* After the full system is visible, everything drops as one controlled reset.
+   A tiny 55ms stagger keeps the exit physical rather than abrupt. */
+.bridge-sequence.is-exiting .bridge-flow-card{
+  opacity:0!important;
+  transform:translate3d(0,42px,0) scale(.975) rotate(.25deg)!important;
+  filter:blur(2px)!important;
+  transition-delay:calc(var(--flow-i) * 55ms)!important;
+  transition-duration:.48s!important;
+}
+.bridge-sequence.is-exiting .bridge-flow-arrow{
+  opacity:0!important;
+  transform:translateY(18px) scale(.82)!important;
+  transition-delay:calc(var(--flow-i) * 45ms)!important;
+}
+.bridge-sequence.is-exiting .bridge-flow-card:after{
+  opacity:0!important;
+  transform:translate3d(8px,14px,0) scale(.82)!important;
 }
 
-/* Browsers cannot interpolate custom-time math consistently inside keyframe selectors,
-   so per-card delays below establish the authored rhythm. */
-.bridge-sequence.is-flowing .bridge-flow-card:nth-of-type(1){animation-delay:.10s}
-.bridge-sequence.is-flowing .bridge-flow-card:nth-of-type(2){animation-delay:.92s}
-.bridge-sequence.is-flowing .bridge-flow-card:nth-of-type(3){animation-delay:1.74s}
-.bridge-sequence.is-flowing .bridge-flow-card:nth-of-type(4){animation-delay:2.56s}
-
-/* Override the generic cycle above with a compact animation whose delay does the sequencing. */
-.bridge-sequence.is-flowing .bridge-flow-card{
-  animation-name:bridgeCardStage;
-  animation-duration:4.5s;
-  animation-fill-mode:both;
-  animation-timing-function:cubic-bezier(.16,.84,.22,1);
-}
-@keyframes bridgeCardStage{
-  0%{opacity:0;transform:translate3d(0,28px,0) scale(.965);filter:blur(5px)}
-  13%{opacity:1;transform:none;filter:blur(0)}
-  68%{opacity:1;transform:none;filter:blur(0)}
-  80%{opacity:1;transform:none;filter:blur(0)}
-  100%{opacity:0;transform:translate3d(0,42px,0) scale(.974) rotate(.25deg);filter:blur(2px)}
-}
-.bridge-sequence.is-flowing .bridge-flow-card:before{
-  animation-name:bridgeCardSheenStage;
-  animation-duration:4.5s;
-  animation-fill-mode:both;
-}
-@keyframes bridgeCardSheenStage{
-  0%,8%{opacity:0}
-  18%{opacity:.65}
-  34%,100%{opacity:0}
-}
-.bridge-sequence.is-flowing .bridge-flow-card:after{
-  animation-name:bridgeAccentStage;
-  animation-duration:4.5s;
-  animation-fill-mode:both;
-}
-@keyframes bridgeAccentStage{
-  0%{opacity:0;transform:translate3d(18px,18px,0) scale(.72)}
-  16%{opacity:.82;transform:none}
-  70%{opacity:.78;transform:none}
-  100%{opacity:0;transform:translate3d(8px,14px,0) scale(.82)}
-}
-
-.bridge-sequence.is-flowing .bridge-flow-arrow:nth-of-type(2){animation-delay:.68s}
-.bridge-sequence.is-flowing .bridge-flow-arrow:nth-of-type(4){animation-delay:1.50s}
-.bridge-sequence.is-flowing .bridge-flow-arrow:nth-of-type(6){animation-delay:2.32s}
-.bridge-sequence.is-flowing .bridge-flow-arrow{
-  animation-name:bridgeArrowStage;
-  animation-duration:3.9s;
-  animation-fill-mode:both;
-}
-@keyframes bridgeArrowStage{
-  0%{opacity:0;transform:translateX(-9px) scale(.72)}
-  14%{opacity:1;transform:none}
-  72%{opacity:1;transform:none}
-  100%{opacity:0;transform:translateY(18px) scale(.82)}
-}
-.bridge-sequence.is-flowing .bridge-flow-arrow:after{
-  animation-name:bridgeArrowPulseStage;
-  animation-duration:3.9s;
-  animation-fill-mode:both;
-}
-@keyframes bridgeArrowPulseStage{
-  0%,8%{opacity:0;transform:scale(.68)}
-  19%{opacity:.5;transform:scale(1)}
-  31%{opacity:0;transform:scale(1.55)}
-  100%{opacity:0}
-}
-
-@keyframes bridgeTrackCycle{
-  0%,2%{transform:scaleX(0);opacity:.25}
-  48%{transform:scaleX(1);opacity:1}
-  72%{transform:scaleX(1);opacity:1}
-  82%{transform:scaleX(0);transform-origin:right;opacity:.35}
-  100%{transform:scaleX(0);transform-origin:right;opacity:0}
-}
-
-/* Small completion beat after RESULTADO appears. */
-.bridge-sequence.is-flowing .node-d{
-  box-shadow:0 18px 50px rgba(24,19,34,.035),0 0 0 0 rgba(91,156,255,0);
-}
-.bridge-sequence.is-flowing .node-d strong{
-  animation:bridgeResultBeat 4.5s 2.56s ease both;
-}
-@keyframes bridgeResultBeat{
-  0%,18%{letter-spacing:.15em}
-  27%{letter-spacing:.18em}
-  35%,100%{letter-spacing:.15em}
-}
-
-/* Static accessible state for reduced motion. */
-.bridge-sequence.is-reduced .bridge-flow-content{
-  display:grid;
-}
+/* Reduced-motion stays fully readable and static. */
 .bridge-sequence.is-reduced .bridge-flow-card,
 .bridge-sequence.is-reduced .bridge-flow-arrow{
   opacity:1!important;
   transform:none!important;
   filter:none!important;
-  animation:none!important;
+  transition:none!important;
 }
 .bridge-sequence.is-reduced .bridge-flow-track i{
-  transform:scaleX(1);
-  animation:none!important;
+  transform:scaleX(1)!important;
+  transition:none!important;
 }
 
 @media(max-width:760px){
@@ -4005,35 +3955,31 @@ body{overflow-x:hidden}
   .bridge-flow-track i{
     width:100%;
     height:100%;
-    transform:scaleY(0);
+    transform:scaleY(var(--flow-progress));
     transform-origin:top;
   }
-  .bridge-sequence.is-flowing .bridge-flow-track i{
-    animation:bridgeTrackMobile 7.2s cubic-bezier(.2,.72,.2,1) both;
-  }
-  @keyframes bridgeTrackMobile{
-    0%,2%{transform:scaleY(0);opacity:.25}
-    48%{transform:scaleY(1);opacity:1}
-    72%{transform:scaleY(1);opacity:1}
-    82%,100%{transform:scaleY(0);transform-origin:bottom;opacity:0}
+  .bridge-sequence.is-exiting .bridge-flow-track i{
+    transform:scaleY(0);
+    transform-origin:bottom;
   }
   .bridge-sequence .bridge-flow-card{
     min-height:112px;
     align-items:flex-start;
     padding-left:56px;
+    transform:translate3d(0,20px,0) scale(.982);
   }
   .bridge-flow-arrow{
     margin-left:16px;
-    transform:rotate(90deg) scale(.72);
+    transform:translateY(-7px) rotate(90deg) scale(.74);
   }
-  .bridge-sequence.is-flowing .bridge-flow-arrow{
-    animation-name:bridgeArrowStageMobile;
+  .bridge-flow-arrow.is-active{
+    transform:rotate(90deg);
   }
-  @keyframes bridgeArrowStageMobile{
-    0%{opacity:0;transform:translateY(-8px) rotate(90deg) scale(.72)}
-    14%{opacity:1;transform:rotate(90deg)}
-    72%{opacity:1;transform:rotate(90deg)}
-    100%{opacity:0;transform:translateY(14px) rotate(90deg) scale(.82)}
+  .bridge-sequence.is-exiting .bridge-flow-arrow{
+    transform:translateY(14px) rotate(90deg) scale(.82)!important;
+  }
+  .bridge-sequence.is-exiting .bridge-flow-card{
+    transform:translate3d(0,30px,0) scale(.985)!important;
   }
 }
 
