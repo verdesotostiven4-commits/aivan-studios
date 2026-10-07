@@ -4244,3 +4244,397 @@ body{overflow-x:hidden}
   .bridge-motion-glyph{opacity:.35!important;transform:none!important}
   .bridge-click-burst{display:none!important}
 }
+
+
+/* === Galápagos signature: finch-inspired walking transition ===
+   Adapted from the user's walking-loader reference, but redrawn as an AIVAN finch. */
+.finch-signature{
+  --finch-look-x:0;
+  --finch-look-y:0;
+  position:relative;
+  max-width:1440px;
+  min-height:190px;
+  margin:0 auto 34px;
+  padding:24px 64px 18px;
+  display:grid;
+  grid-template-columns:minmax(260px,.72fr) 1.28fr;
+  align-items:center;
+  gap:46px;
+  overflow:hidden;
+  border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+  cursor:pointer;
+  isolation:isolate;
+}
+.finch-signature:before{
+  content:"";
+  position:absolute;
+  inset:auto 8% 18px 8%;
+  height:58px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(199,20,93,.045),rgba(91,136,255,.03) 38%,transparent 72%);
+  pointer-events:none;
+}
+.finch-signature-copy{
+  position:relative;
+  z-index:3;
+  display:grid;
+  gap:9px;
+}
+.finch-signature-copy span{
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.2em;
+  color:#88858d;
+}
+.finch-signature-copy strong{
+  max-width:360px;
+  font-size:clamp(22px,2.2vw,34px);
+  line-height:1.02;
+  letter-spacing:-.035em;
+  color:#15151a;
+}
+.finch-stage{
+  position:relative;
+  z-index:2;
+  min-height:128px;
+}
+.finch-track{
+  position:absolute;
+  left:2%;
+  right:2%;
+  bottom:22px;
+  height:34px;
+  overflow:hidden;
+  opacity:.33;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+}
+.finch-track i{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:4px;
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(17,17,21,.30) 12%,rgba(17,17,21,.18) 76%,transparent 100%);
+  transform:translateX(0);
+  animation:finchGroundScroll 5.6s linear infinite;
+}
+.finch-track i:nth-child(2){
+  left:18%;
+  right:46%;
+  bottom:13px;
+  transform:rotate(-5deg);
+  animation-delay:-2.1s;
+}
+.finch-track i:nth-child(3){
+  left:56%;
+  right:4%;
+  bottom:17px;
+  transform:rotate(4deg);
+  animation-delay:-3.8s;
+}
+@keyframes finchGroundScroll{
+  0%{transform:translateX(48px);opacity:0}
+  18%{opacity:.6}
+  78%{opacity:.6}
+  100%{transform:translateX(-84px);opacity:0}
+}
+
+.finch-walker{
+  position:absolute;
+  left:9%;
+  bottom:22px;
+  width:108px;
+  height:96px;
+  transform-origin:50% 100%;
+  animation:finchTravel 12.6s cubic-bezier(.45,.02,.25,.98) infinite alternate;
+  will-change:left,transform;
+}
+@keyframes finchTravel{
+  0%{left:8%;transform:translateY(0) scale(.96)}
+  20%{left:27%;transform:translateY(-1px) scale(1)}
+  44%{left:48%;transform:translateY(0) scale(.985)}
+  68%{left:68%;transform:translateY(-2px) scale(1)}
+  100%{left:86%;transform:translateY(0) scale(.97)}
+}
+.finch-shadow{
+  position:absolute;
+  left:26px;
+  bottom:2px;
+  width:60px;
+  height:10px;
+  border-radius:50%;
+  background:rgba(18,19,25,.16);
+  filter:blur(4px);
+  transform:skewX(-18deg);
+  animation:finchShadow 1.05s ease-in-out infinite;
+}
+@keyframes finchShadow{
+  0%,100%{transform:scaleX(.86) skewX(-18deg);opacity:.14}
+  50%{transform:scaleX(1.05) skewX(-18deg);opacity:.22}
+}
+
+.finch-body{
+  position:absolute;
+  z-index:3;
+  left:27px;
+  top:27px;
+  width:60px;
+  height:56px;
+  border-radius:52% 48% 44% 56% / 48% 50% 50% 52%;
+  background:
+    radial-gradient(circle at 38% 28%,rgba(255,255,255,.08),transparent 26%),
+    linear-gradient(145deg,#252b3b 0%,#171c29 58%,#10141e 100%);
+  box-shadow:inset -7px -8px 16px rgba(0,0,0,.16);
+  animation:finchBob 1.05s ease-in-out infinite;
+}
+.finch-wing{
+  position:absolute;
+  left:8px;
+  top:20px;
+  width:31px;
+  height:27px;
+  border-radius:58% 42% 60% 40%;
+  border-left:3px solid #343f58;
+  border-bottom:2px solid #2b354c;
+  transform:rotate(14deg);
+  opacity:.9;
+}
+.finch-chest{
+  position:absolute;
+  right:5px;
+  bottom:4px;
+  width:24px;
+  height:33px;
+  border-radius:50%;
+  background:linear-gradient(160deg,rgba(244,178,52,.18),rgba(220,50,117,.05) 58%,transparent);
+  opacity:.75;
+}
+.finch-head{
+  position:absolute;
+  z-index:4;
+  left:41px;
+  top:7px;
+  width:49px;
+  height:45px;
+  border-radius:52% 48% 45% 55%;
+  background:linear-gradient(150deg,#222839 0%,#131824 72%);
+  transform-origin:42% 78%;
+  animation:finchHeadBob 1.05s ease-in infinite;
+}
+.finch-crown{
+  position:absolute;
+  left:5px;
+  top:0;
+  width:33px;
+  height:18px;
+  border-radius:50% 50% 35% 48%;
+  background:#202638;
+}
+.finch-eye{
+  position:absolute;
+  right:9px;
+  top:14px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#f8f6ed;
+  box-shadow:0 0 0 2px rgba(255,255,255,.05);
+}
+.finch-eye:after{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:2px;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#0c0e15;
+}
+.finch-beak{
+  position:absolute;
+  right:-16px;
+  top:17px;
+  width:0;
+  height:0;
+  border-top:6px solid transparent;
+  border-bottom:5px solid transparent;
+  border-left:19px solid #c98a2c;
+  filter:drop-shadow(1px 1px 0 rgba(0,0,0,.25));
+}
+
+.finch-leg{
+  position:absolute;
+  z-index:2;
+  top:70px;
+  width:4px;
+  height:23px;
+  border-radius:999px;
+  background:#11151e;
+  transform-origin:50% 0;
+}
+.finch-leg span{
+  position:absolute;
+  left:-2px;
+  bottom:-2px;
+  width:14px;
+  height:4px;
+  border-radius:999px;
+  background:#11151e;
+  transform-origin:left center;
+}
+.finch-leg-left{
+  left:45px;
+  animation:finchStepLeft 1.05s ease-in-out infinite;
+}
+.finch-leg-right{
+  left:68px;
+  animation:finchStepRight 1.05s .5s ease-in-out infinite;
+}
+.finch-leg-right span{transform:rotate(-8deg)}
+@keyframes finchStepLeft{
+  0%,100%{transform:rotate(-8deg) translateY(0)}
+  33%{transform:rotate(28deg) translate(9px,-8px)}
+  66%{transform:rotate(-18deg) translate(5px,0)}
+}
+@keyframes finchStepRight{
+  0%,100%{transform:rotate(-7deg) translateY(0)}
+  33%{transform:rotate(26deg) translate(8px,-7px)}
+  66%{transform:rotate(-17deg) translate(5px,0)}
+}
+@keyframes finchBob{
+  0%,100%{transform:translateY(0) rotate(1.4deg)}
+  25%{transform:translateY(3px) rotate(0)}
+  50%{transform:translateY(0) rotate(-1.4deg)}
+  75%{transform:translateY(3px) rotate(0)}
+}
+@keyframes finchHeadBob{
+  0%,100%{transform:translateY(0) rotate(2deg)}
+  25%{transform:translateY(2px) rotate(0)}
+  50%{transform:translateY(0) rotate(-2deg)}
+  75%{transform:translateY(2px) rotate(0)}
+}
+
+/* Desktop pointer gives the finch a little curiosity instead of turning it into a mascot. */
+@media(hover:hover) and (pointer:fine){
+  .finch-signature.is-curious .finch-walker{
+    animation-duration:15.8s;
+  }
+  .finch-signature.is-curious .finch-head{
+    animation:none;
+    transform:
+      translate(
+        calc(var(--finch-look-x) * 3px),
+        calc(var(--finch-look-y) * 2px)
+      )
+      rotate(calc(var(--finch-look-x) * 7deg));
+    transition:transform .22s cubic-bezier(.2,.72,.2,1);
+  }
+  .finch-signature.is-curious .finch-eye{
+    transform:translate(
+      calc(var(--finch-look-x) * 1.4px),
+      calc(var(--finch-look-y) * 1.1px)
+    );
+  }
+}
+
+.finch-peck-burst{
+  position:absolute;
+  z-index:6;
+  left:93px;
+  top:27px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:1px solid rgba(216,61,126,.56);
+  animation:finchPeckBurst .7s cubic-bezier(.16,.84,.22,1) both;
+  pointer-events:none;
+}
+.finch-peck-burst i{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:4px;
+  height:4px;
+  margin:-2px;
+  border-radius:50%;
+  background:#d83d7e;
+}
+.finch-peck-burst i:nth-child(1){transform:translate(16px,-3px)}
+.finch-peck-burst i:nth-child(2){transform:translate(7px,14px);background:#7a65e7}
+.finch-peck-burst i:nth-child(3){transform:translate(17px,11px);background:#e4a12b}
+@keyframes finchPeckBurst{
+  0%{opacity:0;transform:scale(.25)}
+  22%{opacity:1}
+  100%{opacity:0;transform:scale(2.1)}
+}
+.finch-signature:active .finch-head{
+  animation:finchPeck .36s ease both;
+}
+@keyframes finchPeck{
+  0%{transform:rotate(0)}
+  45%{transform:translate(8px,9px) rotate(18deg)}
+  100%{transform:rotate(0)}
+}
+
+.finch-signature-note{
+  position:absolute;
+  z-index:4;
+  right:64px;
+  bottom:14px;
+  color:#aaa7ae;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+.finch-note-touch{display:none}
+
+@media(max-width:980px){
+  .finch-signature{
+    grid-template-columns:.82fr 1.18fr;
+    gap:24px;
+    padding-left:32px;
+    padding-right:32px;
+  }
+  .finch-signature-note{right:32px}
+}
+@media(max-width:760px){
+  .finch-signature{
+    min-height:220px;
+    margin-bottom:22px;
+    padding:24px 16px 16px;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .finch-signature-copy{
+    padding-right:68px;
+  }
+  .finch-signature-copy strong{
+    max-width:300px;
+    font-size:24px;
+  }
+  .finch-stage{min-height:112px}
+  .finch-walker{
+    transform:scale(.86);
+    transform-origin:50% 100%;
+    animation-duration:10.8s;
+  }
+  .finch-signature-note{
+    right:16px;
+    bottom:10px;
+  }
+  .finch-note-desktop{display:none}
+  .finch-note-touch{display:inline}
+}
+@media(prefers-reduced-motion:reduce){
+  .finch-walker{
+    left:72%!important;
+    animation:none!important;
+    transform:none!important;
+  }
+  .finch-body,.finch-head,.finch-leg,.finch-shadow,.finch-track i{
+    animation:none!important;
+  }
+  .finch-signature-note{display:none!important}
+}

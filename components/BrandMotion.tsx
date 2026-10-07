@@ -414,6 +414,90 @@ export function BridgeSequence() {
   );
 }
 
+export function FinchSignature() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [curious, setCurious] = useState(false);
+  const [peck, setPeck] = useState(0);
+  const reduced = useReducedMotion();
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (reduced) return;
+    const node = rootRef.current;
+    if (!node) return;
+
+    const rect = node.getBoundingClientRect();
+    const x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
+    const y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
+    node.style.setProperty("--finch-look-x", x.toFixed(3));
+    node.style.setProperty("--finch-look-y", y.toFixed(3));
+    setCurious(true);
+  };
+
+  const handlePointerLeave = () => {
+    const node = rootRef.current;
+    if (node) {
+      node.style.setProperty("--finch-look-x", "0");
+      node.style.setProperty("--finch-look-y", "0");
+    }
+    setCurious(false);
+  };
+
+  const triggerPeck = () => {
+    if (reduced) return;
+    setPeck((value) => value + 1);
+  };
+
+  return (
+    <section
+      ref={rootRef}
+      className={`finch-signature${curious ? " is-curious" : ""}`}
+      aria-label="Firma visual de AIVAN desde Galápagos"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      onClick={triggerPeck}
+    >
+      <div className="finch-signature-copy">
+        <span>DESDE GALÁPAGOS</span>
+        <strong>Una mirada que observa, adapta y evoluciona.</strong>
+      </div>
+
+      <div className="finch-stage" aria-hidden="true">
+        <div className="finch-track">
+          <i /><i /><i />
+        </div>
+
+        <div className="finch-walker">
+          <div className="finch-shadow" />
+          <div className="finch-leg finch-leg-left"><span /></div>
+          <div className="finch-leg finch-leg-right"><span /></div>
+
+          <div className="finch-body">
+            <span className="finch-wing" />
+            <span className="finch-chest" />
+          </div>
+
+          <div className="finch-head">
+            <span className="finch-crown" />
+            <span className="finch-eye" />
+            <span className="finch-beak" />
+          </div>
+
+          {peck > 0 && (
+            <span key={peck} className="finch-peck-burst">
+              <i /><i /><i />
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="finch-signature-note" aria-hidden="true">
+        <span className="finch-note-desktop">MUEVE EL CURSOR · HAZ CLICK</span>
+        <span className="finch-note-touch">TOCA PARA INTERACTUAR</span>
+      </div>
+    </section>
+  );
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {

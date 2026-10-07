@@ -4,7 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { BridgeSequence, FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FinchSignature, FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -97,6 +97,8 @@ export default function Home() {
           <AvatarShowcase />
         </div>
       </section>
+
+      <FinchSignature />
 
       <section className="statement" id="enfoque">
         <div className="statement-inner" data-reveal>
