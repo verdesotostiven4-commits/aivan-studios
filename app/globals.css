@@ -5935,3 +5935,161 @@ svg{
     transform:scale(1.04)!important;
   }
 }
+
+
+/* === Hero reel stability + livelier poster motion ===
+   The reel no longer relies on data-reveal, so React state updates cannot remove
+   the reveal class after scrolling away and back. is-live now pauses motion only. */
+.hero-media-shell{
+  opacity:1!important;
+  visibility:visible!important;
+  animation:heroMediaShellEnter .72s cubic-bezier(.2,.72,.2,1) both;
+}
+.hero-media-card,
+.hero-media-art,
+.hero-media-poster{
+  opacity:1!important;
+  visibility:visible!important;
+}
+@keyframes heroMediaShellEnter{
+  from{opacity:0;transform:translate3d(0,18px,0) scale(.987)}
+  to{opacity:1;transform:none}
+}
+
+/* Stronger but still premium "living poster" motion. */
+.hero-media-poster{
+  inset:-7%!important;
+  width:114%!important;
+  height:114%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform-origin:52% 48%!important;
+  animation:heroPosterAlive 8.8s cubic-bezier(.45,.02,.25,.98) infinite alternate!important;
+}
+@keyframes heroPosterAlive{
+  0%{
+    transform:translate3d(-3.2%,1.7%,0) scale(1.055) rotate(-.28deg);
+  }
+  28%{
+    transform:translate3d(.8%,-1.9%,0) scale(1.095) rotate(.16deg);
+  }
+  58%{
+    transform:translate3d(3.2%,.7%,0) scale(1.125) rotate(.3deg);
+  }
+  82%{
+    transform:translate3d(-.6%,2.1%,0) scale(1.085) rotate(-.12deg);
+  }
+  100%{
+    transform:translate3d(2.3%,-1.4%,0) scale(1.11) rotate(.22deg);
+  }
+}
+
+/* A masked duplicate moves against the base image, creating depth in the waves
+   without changing the supplied artwork. */
+.hero-media-poster-echo{
+  position:absolute;
+  z-index:2;
+  inset:-9%;
+  width:118%;
+  height:118%;
+  object-fit:cover;
+  object-position:center;
+  opacity:.20;
+  filter:blur(5px) saturate(1.18) brightness(1.04);
+  mix-blend-mode:screen;
+  pointer-events:none;
+  transform-origin:48% 52%;
+  -webkit-mask-image:radial-gradient(ellipse 58% 48% at 57% 50%,#000 0 40%,rgba(0,0,0,.58) 57%,transparent 78%);
+  mask-image:radial-gradient(ellipse 58% 48% at 57% 50%,#000 0 40%,rgba(0,0,0,.58) 57%,transparent 78%);
+  animation:heroPosterEcho 10.6s ease-in-out infinite alternate;
+  will-change:transform,opacity;
+}
+@keyframes heroPosterEcho{
+  0%{transform:translate3d(2.4%,-1.7%,0) scale(1.02);opacity:.13}
+  40%{transform:translate3d(-2.2%,1.6%,0) scale(1.09);opacity:.24}
+  72%{transform:translate3d(1.5%,2.2%,0) scale(1.06);opacity:.18}
+  100%{transform:translate3d(-2.7%,-1.2%,0) scale(1.1);opacity:.25}
+}
+
+.hero-media-poster-light{
+  z-index:3;
+  background:
+    radial-gradient(circle at 53% 46%,rgba(255,255,255,.32),transparent 22%),
+    radial-gradient(circle at 73% 58%,rgba(111,125,255,.12),transparent 30%),
+    linear-gradient(180deg,rgba(255,255,255,.08),transparent 29%,rgba(255,255,255,.05))!important;
+  animation:heroPosterLight 6.8s ease-in-out infinite alternate;
+}
+@keyframes heroPosterLight{
+  from{opacity:.62;transform:translate3d(-1%,.5%,0) scale(1)}
+  to{opacity:.92;transform:translate3d(1.4%,-.7%,0) scale(1.045)}
+}
+
+.hero-media-poster-sheen{
+  position:absolute;
+  z-index:4;
+  top:-20%;
+  bottom:-20%;
+  left:-34%;
+  width:25%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),rgba(255,255,255,.06),transparent);
+  transform:skewX(-16deg);
+  filter:blur(3px);
+  pointer-events:none;
+  opacity:.65;
+  animation:heroPosterSheen 7.8s ease-in-out infinite;
+}
+@keyframes heroPosterSheen{
+  0%,14%{transform:translate3d(-10%,0,0) skewX(-16deg);opacity:0}
+  36%{opacity:.62}
+  58%{opacity:.24}
+  72%,100%{transform:translate3d(560%,0,0) skewX(-16deg);opacity:0}
+}
+
+/* is-live only controls workload now; it never controls visibility. */
+.hero-media-shell:not(.is-live) .hero-media-poster,
+.hero-media-shell:not(.is-live) .hero-media-poster-echo,
+.hero-media-shell:not(.is-live) .hero-media-poster-light,
+.hero-media-shell:not(.is-live) .hero-media-poster-sheen,
+.hero-media-shell:not(.is-live) .hero-media-play:before,
+.hero-media-shell:not(.is-live) .hero-media-play:after,
+.hero-media-shell:not(.is-live) .hero-control-track i{
+  animation-play-state:paused!important;
+}
+
+@media(max-width:760px){
+  .hero-media-poster{
+    inset:-5%!important;
+    width:110%!important;
+    height:110%!important;
+  }
+  .hero-media-poster-echo{
+    inset:-7%;
+    width:114%;
+    height:114%;
+    opacity:.14;
+    filter:blur(4px) saturate(1.12);
+  }
+  .hero-media-poster-sheen{
+    opacity:.45;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-media-shell{
+    animation:none!important;
+  }
+  .hero-media-poster,
+  .hero-media-poster-echo,
+  .hero-media-poster-light,
+  .hero-media-poster-sheen{
+    animation:none!important;
+  }
+  .hero-media-poster{
+    transform:scale(1.06)!important;
+  }
+  .hero-media-poster-echo{
+    display:none!important;
+  }
+  .hero-media-poster-sheen{
+    display:none!important;
+  }
+}

@@ -95,7 +95,6 @@ export function HeroMediaFrame() {
     <div
       ref={rootRef}
       className={`hero-media-shell${live ? " is-live" : ""}`}
-      data-reveal
       aria-label="Espacio preparado para el próximo brand reel de AIVAN"
     >
       <div className="hero-media-glow" aria-hidden="true" />
@@ -116,7 +115,16 @@ export function HeroMediaFrame() {
             fetchPriority="high"
             draggable={false}
           />
+          <img
+            className="hero-media-poster-echo"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXv6QFj4xInRqf_Sgvoo_PL-nXcRqTBiGVcoXiMvgcFeO3yzb_5nfNbvM2VKgsgT8mEyhOdTn949-qc4sv9KHhts4pv6C8nJGovQTUUHrhcmiTg-E32-swkm3PINLNQin_qP8xwef8xJb4ab5uI9RI-4JOhxWBcnlSq_Sn0REi_2n7Uba62Ovpi2fpDaA/s1600/image.png"
+            alt=""
+            loading="eager"
+            decoding="async"
+            draggable={false}
+          />
           <span className="hero-media-poster-light" />
+          <span className="hero-media-poster-sheen" />
         </div>
 
         <div className="hero-media-chip hero-media-chip-left">
