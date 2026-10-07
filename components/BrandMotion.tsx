@@ -5,19 +5,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 export function HeroFlipWord({ text }: { text: string }) {
   return (
     <span className="hero-flip-word" aria-label={text}>
-      {Array.from(text).map((char, index) => (
-        <span
-          aria-hidden="true"
-          className="hero-flip-char"
-          data-char={char}
-          key={`${char}-${index}`}
-          style={{
-            ["--flip-delay" as string]: `${0.18 + index * 0.07}s`,
-          }}
-        >
-          {char === " " ? "\u00a0" : char}
-        </span>
-      ))}
+      <span className="hero-flip-base" aria-hidden="true">
+        {Array.from(text).map((char, index) => (
+          <span
+            className="hero-flip-char"
+            key={`${char}-${index}`}
+            style={{
+              ["--flip-delay" as string]: `${0.18 + index * 0.07}s`,
+            }}
+          >
+            {char === " " ? "\u00a0" : char}
+          </span>
+        ))}
+      </span>
+      <span className="hero-evolution-color" aria-hidden="true">{text}</span>
+      <span className="hero-evolution-wipe" aria-hidden="true" />
     </span>
   );
 }
