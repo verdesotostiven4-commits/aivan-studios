@@ -77,6 +77,13 @@ export function HeroBeams() {
 export function HeroMediaFrame() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(true);
+  const [posterReady, setPosterReady] = useState(false);
+  const [introReady, setIntroReady] = useState(false);
+
+  useEffect(() => {
+    const introTimer = window.setTimeout(() => setIntroReady(true), 900);
+    return () => window.clearTimeout(introTimer);
+  }, []);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -91,10 +98,12 @@ export function HeroMediaFrame() {
     return () => observer.disconnect();
   }, []);
 
+  const entered = posterReady && introReady;
+
   return (
     <div
       ref={rootRef}
-      className={`hero-media-shell${live ? " is-live" : ""}`}
+      className={`hero-media-shell${live ? " is-live" : ""}${posterReady ? " is-poster-ready" : ""}${entered ? " is-entered" : ""}`}
       aria-label="Espacio preparado para el próximo brand reel de AIVAN"
     >
       <div className="hero-media-glow" aria-hidden="true" />
@@ -114,6 +123,8 @@ export function HeroMediaFrame() {
             decoding="async"
             fetchPriority="high"
             draggable={false}
+            onLoad={() => setPosterReady(true)}
+            onError={() => setPosterReady(true)}
           />
           <img
             className="hero-media-poster-echo"

@@ -6093,3 +6093,122 @@ svg{
     display:none!important;
   }
 }
+
+
+/* === Hero intro sequencing: copy first, reel second, no poster flash === */
+.hero-media-shell{
+  opacity:0!important;
+  transform:translate3d(34px,22px,0) scale(.968)!important;
+  filter:blur(10px);
+  pointer-events:none;
+  transition:
+    opacity .72s ease,
+    transform .92s cubic-bezier(.16,.84,.22,1),
+    filter .72s ease!important;
+  animation:none!important;
+}
+.hero-media-shell.is-entered{
+  opacity:1!important;
+  transform:none!important;
+  filter:blur(0);
+  pointer-events:auto;
+}
+
+/* Hide the entire reel chrome until the linked poster has actually loaded.
+   The frame keeps its layout size, so there is no white flash or layout shift. */
+.hero-media-shell:not(.is-poster-ready) .hero-media-card,
+.hero-media-shell:not(.is-poster-ready) .hero-media-glow{
+  opacity:0!important;
+}
+.hero-media-shell.is-poster-ready .hero-media-card,
+.hero-media-shell.is-poster-ready .hero-media-glow{
+  opacity:1!important;
+}
+.hero-media-card,
+.hero-media-glow{
+  transition:
+    opacity .28s ease,
+    transform .9s cubic-bezier(.16,.84,.22,1),
+    box-shadow .5s ease!important;
+}
+
+/* Stagger the reel UI after the card arrives so the text keeps the first beat. */
+.hero-media-top,
+.hero-media-chip,
+.hero-media-play,
+.hero-media-controls{
+  opacity:0;
+  transform:translate3d(0,10px,0) scale(.985);
+}
+.hero-media-shell.is-entered .hero-media-top{
+  animation:heroReelUiIn .56s .18s cubic-bezier(.2,.72,.2,1) both;
+}
+.hero-media-shell.is-entered .hero-media-chip-left{
+  animation:heroReelUiIn .56s .28s cubic-bezier(.2,.72,.2,1) both;
+}
+.hero-media-shell.is-entered .hero-media-chip-right{
+  animation:heroReelUiIn .56s .36s cubic-bezier(.2,.72,.2,1) both;
+}
+.hero-media-shell.is-entered .hero-media-play{
+  animation:heroReelPlayIn .68s .34s cubic-bezier(.16,.84,.22,1) both;
+}
+.hero-media-shell.is-entered .hero-media-controls{
+  animation:heroReelUiIn .6s .46s cubic-bezier(.2,.72,.2,1) both;
+}
+@keyframes heroReelUiIn{
+  from{opacity:0;transform:translate3d(0,10px,0) scale(.985)}
+  to{opacity:1;transform:none}
+}
+@keyframes heroReelPlayIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+  62%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+
+/* Start the moving poster only once it can actually be seen. */
+.hero-media-shell:not(.is-entered) .hero-media-poster,
+.hero-media-shell:not(.is-entered) .hero-media-poster-echo,
+.hero-media-shell:not(.is-entered) .hero-media-poster-light,
+.hero-media-shell:not(.is-entered) .hero-media-poster-sheen,
+.hero-media-shell:not(.is-entered) .hero-control-track i,
+.hero-media-shell:not(.is-entered) .hero-media-play:before,
+.hero-media-shell:not(.is-entered) .hero-media-play:after{
+  animation-play-state:paused!important;
+}
+
+/* Once the reel has entered, scrolling away only pauses motion. It never hides again. */
+.hero-media-shell.is-entered:not(.is-live){
+  opacity:1!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+@media(max-width:760px){
+  .hero-media-shell{
+    transform:translate3d(0,18px,0) scale(.98)!important;
+    filter:blur(7px);
+  }
+  .hero-media-shell.is-entered{
+    transform:none!important;
+    filter:none;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-media-shell{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+    transition:none!important;
+  }
+  .hero-media-top,
+  .hero-media-chip,
+  .hero-media-play,
+  .hero-media-controls{
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+  }
+  .hero-media-play{
+    transform:translate(-50%,-50%)!important;
+  }
+}
