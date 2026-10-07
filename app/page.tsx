@@ -4,7 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { FlipFadeWord, HeroFlipWord, MorphWord, TypingSignal } from "@/components/BrandMotion";
+import { FlipFadeWord, HeroBeams, HeroFlipWord, MorphWord, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -51,6 +51,7 @@ export default function Home() {
       <SiteHeader />
 
       <section className="hero" id="inicio">
+        <HeroBeams />
         <div className="hero-copy" data-reveal>
           <p className="micro-label">ESTUDIO CREATIVO · GALÁPAGOS</p>
           <h1>

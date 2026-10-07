@@ -24,6 +24,40 @@ export function HeroFlipWord({ text }: { text: string }) {
   );
 }
 
+
+const heroBeams = [
+  { x: 8, delay: -0.6, duration: 5.8, drift: 28, tone: "orange" },
+  { x: 22, delay: -3.2, duration: 6.7, drift: -18, tone: "pink" },
+  { x: 42, delay: -1.4, duration: 5.4, drift: 22, tone: "violet" },
+  { x: 60, delay: -4.1, duration: 7.1, drift: -24, tone: "blue" },
+  { x: 76, delay: -2.5, duration: 6.1, drift: 16, tone: "pink" },
+  { x: 91, delay: -5.0, duration: 7.4, drift: -14, tone: "blue" },
+];
+
+export function HeroBeams() {
+  return (
+    <div className="hero-beams" aria-hidden="true">
+      <div className="hero-beams-field">
+        {heroBeams.map((beam, index) => (
+          <span
+            className={`hero-beam hero-beam-${beam.tone}`}
+            key={index}
+            style={{
+              ["--beam-x" as string]: `${beam.x}%`,
+              ["--beam-delay" as string]: `${beam.delay}s`,
+              ["--beam-duration" as string]: `${beam.duration}s`,
+              ["--beam-drift" as string]: `${beam.drift}px`,
+            }}
+          >
+            <i />
+          </span>
+        ))}
+      </div>
+      <div className="hero-collision-line" />
+    </div>
+  );
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
