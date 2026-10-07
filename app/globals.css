@@ -4849,3 +4849,83 @@ body{overflow-x:hidden}
   }
   .finch-walker.is-jumping{animation:none!important}
 }
+
+
+/* === Axel + Emma label refinement + pure-white AIVAN panel === */
+.human-panel{
+  background:#fff!important;
+}
+
+/* Keep the existing rounded border and structure; only remove the warm/gray tint. */
+.human-panel{
+  border:1px solid var(--line-soft);
+}
+
+/* Replace the floating white card with a compact editorial identifier above the avatars. */
+.avatar-caption{
+  left:50%!important;
+  right:auto!important;
+  top:8px!important;
+  bottom:auto!important;
+  transform:translateX(-50%)!important;
+  min-width:0!important;
+  width:max-content!important;
+  max-width:calc(100% - 36px);
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:8px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  white-space:nowrap;
+  text-align:center;
+  pointer-events:none;
+}
+.avatar-caption i{
+  width:6px;
+  height:6px;
+  flex:0 0 6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#e7a027,#d8397d 48%,#6b79eb 100%);
+  box-shadow:0 0 0 3px rgba(115,95,220,.07);
+}
+.avatar-caption strong{
+  font-size:9px!important;
+  line-height:1;
+  letter-spacing:.15em!important;
+  color:#15151a;
+}
+.avatar-caption>span{
+  display:inline!important;
+  padding-left:8px;
+  border-left:1px solid rgba(17,17,21,.12);
+  font-size:8px!important;
+  line-height:1;
+  letter-spacing:.04em;
+  color:#8a878f!important;
+}
+
+@media(max-width:1040px){
+  .avatar-caption{
+    top:6px!important;
+  }
+}
+@media(max-width:760px){
+  .avatar-caption{
+    top:8px!important;
+    max-width:calc(100% - 24px);
+    gap:6px!important;
+  }
+  .avatar-caption strong{font-size:8px!important}
+  .avatar-caption>span{
+    display:inline!important;
+    font-size:7px!important;
+    padding-left:6px;
+  }
+}
+@media(max-width:480px){
+  .avatar-caption>span{display:none!important}
+}

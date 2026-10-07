@@ -229,8 +229,9 @@ export default function AvatarShowcase() {
       </span>
 
       <span className="avatar-caption">
+        <i aria-hidden="true" />
         <strong>AXEL + EMMA</strong>
-        <span>Representantes digitales de AIVAN</span>
+        <span>Representantes digitales</span>
       </span>
       <span className="avatar-state" aria-live="polite">Pose {labels[avatarIndex]}</span>
     </button>
