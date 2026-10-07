@@ -3254,3 +3254,101 @@ body{overflow-x:hidden}
   }
   .statement-mask-hint{display:none!important}
 }
+
+
+/* === Statement mask v2: scroll-driven on every device, pointer takeover on desktop === */
+.statement-mask{
+  --mask-x:18%;
+  --mask-y:64%;
+  --mask-radius:0px;
+  --mask-progress:0;
+}
+.statement-mask-reveal{
+  -webkit-clip-path:circle(var(--mask-radius) at var(--mask-x) var(--mask-y))!important;
+  clip-path:circle(var(--mask-radius) at var(--mask-x) var(--mask-y))!important;
+  transition:
+    clip-path .09s linear,
+    -webkit-clip-path .09s linear!important;
+}
+.statement-mask.is-scroll-active .statement-mask-hint{
+  opacity:calc(1 - var(--mask-progress));
+  transform:translateY(calc(var(--mask-progress) * 6px));
+}
+.statement-mask-hint{
+  transition:opacity .25s ease,transform .25s ease;
+}
+.statement-mask.is-pointer-active .statement-mask-reveal{
+  transition:
+    clip-path .12s ease-out,
+    -webkit-clip-path .12s ease-out!important;
+}
+.statement-mask.is-pointer-active .statement-mask-hint{
+  opacity:0!important;
+}
+.statement-mask.is-scroll-complete .statement-mask-hint{
+  opacity:0;
+}
+
+/* Desktop: scrolling itself previews the reveal before the user ever touches the mouse.
+   Pointer movement can then take over seamlessly. */
+@media(hover:hover) and (pointer:fine){
+  .statement-mask.is-fine-pointer{
+    cursor:crosshair;
+  }
+  .statement-mask.is-fine-pointer:before{
+    content:"";
+    position:absolute;
+    z-index:3;
+    left:var(--mask-x);
+    top:var(--mask-y);
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.52);
+    box-shadow:
+      0 0 0 5px rgba(255,255,255,.045),
+      0 0 24px rgba(123,93,230,.16);
+    transform:translate(-50%,-50%) scale(calc(.7 + var(--mask-progress) * .3));
+    opacity:calc(.18 + var(--mask-progress) * .42);
+    pointer-events:none;
+  }
+}
+
+/* Touch: scroll performs the whole narrative. No drag gesture competes with page scrolling.
+   As the section moves through the viewport, the reveal travels across it and then opens fully. */
+@media(hover:none), (pointer:coarse){
+  .statement-mask.is-touch-mode .statement-mask-reveal{
+    transition:
+      clip-path .11s linear,
+      -webkit-clip-path .11s linear!important;
+  }
+  .statement-mask.is-touch-mode .statement-mask-hint .hint-desktop{display:none}
+  .statement-mask.is-touch-mode .statement-mask-hint .hint-touch{display:inline}
+  .statement-mask.is-touch-mode.is-scroll-complete .statement-mask-reveal{
+    transition:
+      clip-path .18s ease-out,
+      -webkit-clip-path .18s ease-out!important;
+  }
+}
+
+/* Retire the old one-shot touch animation: scroll now owns the interaction. */
+.statement-mask.is-touch-active .statement-mask-reveal{
+  animation:none!important;
+}
+
+@media(max-width:760px){
+  .statement-mask-hint{
+    max-width:220px;
+    text-align:right;
+    line-height:1.35;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .statement-mask:before{display:none!important}
+  .statement-mask-reveal{
+    -webkit-clip-path:circle(140vmax at 50% 50%)!important;
+    clip-path:circle(140vmax at 50% 50%)!important;
+    transition:none!important;
+  }
+}
