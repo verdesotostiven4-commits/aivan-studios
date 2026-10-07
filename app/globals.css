@@ -4929,3 +4929,51 @@ body{overflow-x:hidden}
 @media(max-width:480px){
   .avatar-caption>span{display:none!important}
 }
+
+
+/* === App-like interaction polish === */
+
+/* Lift the compact Axel + Emma identifier clearly above their heads. */
+.avatar-caption{
+  top:-16px!important;
+}
+@media(max-width:1040px){
+  .avatar-caption{top:-10px!important}
+}
+@media(max-width:760px){
+  .avatar-caption{top:4px!important}
+}
+
+/* Public presentation behaves more like a native app:
+   no accidental text/image selection, callouts or draggable media. */
+html,
+body{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  touch-action:pan-x pan-y;
+}
+body,
+body *:not(input):not(textarea):not(select):not([contenteditable="true"]){
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+input,
+textarea,
+select,
+[contenteditable="true"]{
+  -webkit-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:default;
+}
+img,
+svg{
+  -webkit-user-drag:none;
+  user-drag:none;
+}
+a,
+button,
+img,
+svg{
+  -webkit-tap-highlight-color:transparent;
+}

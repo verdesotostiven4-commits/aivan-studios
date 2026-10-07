@@ -209,7 +209,6 @@ export default function AvatarShowcase() {
       type="button"
       className="human-visual avatar-showcase"
       aria-label="Cambiar pose de Axel y Emma"
-      title="Axel + Emma"
       onClick={cycleAvatar}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
@@ -218,13 +217,13 @@ export default function AvatarShowcase() {
 
       <span className="blob-stack" aria-hidden="true">
         <span className={`blob-layer blob-variant-${blobIndex}${blobVisible ? " is-visible" : ""}`}>
-          <img src={blobs[blobIndex]} alt="" loading="lazy" decoding="async" />
+          <img src={blobs[blobIndex]} alt="" loading="lazy" decoding="async" draggable={false} />
         </span>
       </span>
 
       <span className="avatar-stack" aria-hidden="true">
         <span className={`avatar-layer${avatarVisible ? " is-visible" : ""}`}>
-          <img src={avatars[avatarIndex]} alt="" loading="lazy" decoding="async" />
+          <img src={avatars[avatarIndex]} alt="" loading="lazy" decoding="async" draggable={false} />
         </span>
       </span>
 
