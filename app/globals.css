@@ -2679,3 +2679,151 @@ body{overflow-x:hidden}
     animation:none!important;
   }
 }
+
+
+/* === Evolution reveal v3: text-mask reveal, no solid rectangle, no duplicate word ===
+   Sequence: black flip -> fine underline -> scan line travels upward -> gradient remains. */
+.hero h1 .hero-flip-word{
+  position:relative;
+  display:inline-block;
+  isolation:isolate;
+  overflow:visible;
+  padding-bottom:.04em;
+  color:var(--ink)!important;
+  background:none!important;
+}
+
+.hero h1 .hero-flip-base{
+  position:relative;
+  z-index:1;
+  display:inline-flex;
+  white-space:nowrap;
+  perspective:900px;
+  color:var(--ink)!important;
+  background:none!important;
+}
+
+/* The coloured layer is clipped to the glyphs only. */
+.hero h1 .hero-evolution-color{
+  position:absolute;
+  z-index:2;
+  inset:0;
+  display:block;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:1;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  background:linear-gradient(
+    90deg,
+    #ff9818 0%,
+    #ff6040 20%,
+    #ef2e76 41%,
+    #bd39d3 61%,
+    #7863ed 79%,
+    #4f96ff 100%
+  )!important;
+  background-size:100% 100%!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  clip-path:inset(100% 0 0 0);
+  transform:none;
+  filter:none;
+}
+
+/* This is intentionally only a thin scan line. It never becomes a filled block. */
+.hero h1 .hero-evolution-wipe{
+  position:absolute;
+  z-index:3;
+  left:.015em;
+  right:.015em;
+  bottom:-.005em;
+  height:3px;
+  border-radius:999px;
+  pointer-events:none;
+  opacity:0;
+  clip-path:none!important;
+  background:linear-gradient(
+    90deg,
+    #ff9818 0%,
+    #ff6040 20%,
+    #ef2e76 41%,
+    #bd39d3 61%,
+    #7863ed 79%,
+    #4f96ff 100%
+  )!important;
+  box-shadow:0 0 10px rgba(189,57,211,.16);
+  transform:scaleX(0) translateY(0);
+  transform-origin:left center;
+}
+
+/* Start only after the black character flip has had time to be seen. */
+.hero-copy.is-visible .hero-evolution-wipe{
+  animation:evolutionScanPro 1.08s 1.48s cubic-bezier(.18,.82,.2,1) both!important;
+}
+.hero-copy.is-visible .hero-evolution-color{
+  animation:
+    evolutionTextMaskPro .68s 1.82s cubic-bezier(.16,.84,.22,1) forwards,
+    evolutionColorSettlePro .42s 2.47s cubic-bezier(.2,.72,.2,1) both!important;
+}
+
+@keyframes evolutionScanPro{
+  0%{
+    opacity:0;
+    transform:scaleX(0) translateY(0);
+  }
+  8%{opacity:1}
+  32%{
+    opacity:1;
+    transform:scaleX(1) translateY(0);
+  }
+  42%{
+    opacity:1;
+    transform:scaleX(1) translateY(0);
+  }
+  88%{
+    opacity:.95;
+    transform:scaleX(1) translateY(-1.04em);
+  }
+  100%{
+    opacity:0;
+    transform:scaleX(1) translateY(-1.13em);
+  }
+}
+
+@keyframes evolutionTextMaskPro{
+  0%{
+    clip-path:inset(100% 0 0 0);
+  }
+  100%{
+    clip-path:inset(0 0 0 0);
+  }
+}
+
+@keyframes evolutionColorSettlePro{
+  0%{transform:scale(1);filter:saturate(1)}
+  48%{transform:scale(1.008);filter:saturate(1.08)}
+  100%{transform:scale(1);filter:saturate(1)}
+}
+
+@media(max-width:760px){
+  .hero h1 .hero-evolution-wipe{
+    height:2px;
+  }
+  .hero-copy.is-visible .hero-evolution-wipe{
+    animation-duration:.98s!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero h1 .hero-evolution-wipe{
+    display:none!important;
+  }
+  .hero h1 .hero-evolution-color{
+    clip-path:inset(0)!important;
+    opacity:1!important;
+    animation:none!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
