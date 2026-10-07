@@ -74,6 +74,50 @@ export function HeroBeams() {
   );
 }
 
+export function HeroMediaFrame() {
+  return (
+    <div className="hero-media-shell" data-reveal aria-label="Espacio preparado para el próximo brand reel de AIVAN">
+      <div className="hero-media-glow" aria-hidden="true" />
+      <div className="hero-media-card">
+        <div className="hero-media-top">
+          <span className="hero-media-brand">AIVAN <small>STUDIOS</small></span>
+          <span className="hero-media-status">BRAND REEL / PRÓXIMAMENTE</span>
+        </div>
+
+        <div className="hero-media-art" aria-hidden="true">
+          <span className="hero-wave hero-wave-a" />
+          <span className="hero-wave hero-wave-b" />
+          <span className="hero-wave hero-wave-c" />
+          <span className="hero-wave hero-wave-d" />
+          <span className="hero-wave-light hero-wave-light-a" />
+          <span className="hero-wave-light hero-wave-light-b" />
+        </div>
+
+        <div className="hero-media-chip hero-media-chip-left">
+          <i />
+          <span>Estrategia<br />Creatividad<br />Producción</span>
+        </div>
+
+        <div className="hero-media-chip hero-media-chip-right">
+          <span className="hero-chip-bars" aria-hidden="true"><i /><i /><i /></span>
+          <span>Marcas que<br />conectan de verdad.</span>
+        </div>
+
+        <span className="hero-media-play" aria-hidden="true">
+          <i />
+        </span>
+
+        <div className="hero-media-controls" aria-hidden="true">
+          <span className="hero-control-play">▶</span>
+          <span className="hero-control-label">VIDEO EN PREPARACIÓN</span>
+          <span className="hero-control-track"><i /></span>
+          <span className="hero-control-tag">AIVAN / REEL</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StatementMaskReveal() {
   const rootRef = useRef<HTMLDivElement>(null);
   const orbRef = useRef<HTMLSpanElement>(null);

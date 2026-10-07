@@ -4,7 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { BridgeSequence, FinchSignature, FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FinchSignature, FlipFadeWord, HeroBeams, HeroFlipWord, HeroMediaFrame, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -70,17 +70,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="signal-lab" aria-label="Representación del método creativo AIVAN" data-reveal>
-          <div className="signal-head"><span>SEÑAL / 001</span><span>SISTEMA CREATIVO</span></div>
-          <div className="signal-word">AIVAN</div>
-          <div className="signal-grid">
-            <article><span className="dot brand-dot" /><small>IDENTIDAD</small><strong>La marca se reconoce.</strong></article>
-            <article><span className="dot mark-dot" /><small>DIRECCIÓN</small><strong>La comunicación tiene foco.</strong></article>
-            <article><span className="dot prod-dot" /><small>PRODUCCIÓN</small><strong>El contenido demuestra valor.</strong></article>
-          </div>
-          <div className="signal-line"><span /></div>
-          <div className="signal-foot"><span>DESDE GALÁPAGOS</span><span>PARA MARCAS QUE QUIEREN MÁS</span></div>
-        </div>
+        <HeroMediaFrame />
       </section>
 
       <section className="human-section" id="aivan">
