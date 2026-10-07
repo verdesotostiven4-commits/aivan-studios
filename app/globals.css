@@ -4638,3 +4638,214 @@ body{overflow-x:hidden}
   }
   .finch-signature-note{display:none!important}
 }
+
+
+/* === Finch v2: closer to Axel + Emma, click-only interaction, lighter rendering === */
+.human-section{padding-bottom:34px!important}
+.human-section>.finch-signature{
+  max-width:1312px;
+  min-height:168px;
+  margin:6px auto 0;
+  padding:18px 0 12px;
+  grid-template-columns:1.25fr .75fr;
+  gap:30px;
+  background:transparent;
+  border-top:0;
+}
+.human-section>.finch-signature .finch-stage{
+  grid-column:1;
+  grid-row:1;
+  min-height:116px;
+}
+.human-section>.finch-signature .finch-signature-copy{
+  grid-column:2;
+  grid-row:1;
+  align-self:center;
+  padding-right:20px;
+}
+.human-section>.finch-signature .finch-signature-copy strong{
+  max-width:350px;
+  font-size:clamp(21px,1.85vw,30px);
+}
+.human-section>.finch-signature .finch-signature-note{right:4px;bottom:8px}
+.finch-signature{cursor:default!important}
+
+/* GPU-friendly path wrapper: the bird itself no longer teleports or follows the cursor. */
+.finch-roamer{
+  position:absolute;
+  left:5%;
+  bottom:20px;
+  width:108px;
+  height:96px;
+  transform:translate3d(0,0,0);
+  animation:finchRoamGPU 12.8s cubic-bezier(.45,.02,.25,.98) infinite alternate;
+  animation-play-state:paused;
+  will-change:transform;
+}
+@keyframes finchRoamGPU{
+  0%{transform:translate3d(0,0,0)}
+  20%{transform:translate3d(min(12vw,170px),-1px,0)}
+  44%{transform:translate3d(min(24vw,340px),0,0)}
+  68%{transform:translate3d(min(36vw,510px),-2px,0)}
+  100%{transform:translate3d(min(48vw,680px),0,0)}
+}
+.finch-walker{
+  position:relative!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:108px!important;
+  height:96px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+  transform:none!important;
+  animation:none!important;
+  will-change:transform;
+  -webkit-tap-highlight-color:transparent;
+}
+.finch-walker:focus-visible{
+  outline:2px solid rgba(91,136,255,.34);
+  outline-offset:6px;
+  border-radius:28px;
+}
+.finch-walker.is-jumping{
+  animation:finchClickJump .76s cubic-bezier(.16,.84,.22,1) both!important;
+}
+@keyframes finchClickJump{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  18%{transform:translate3d(0,4px,0) scale(.97)}
+  43%{transform:translate3d(0,-24px,0) scale(1.045) rotate(-3deg)}
+  62%{transform:translate3d(4px,-10px,0) scale(1.018) rotate(2deg)}
+  82%{transform:translate3d(0,3px,0) scale(.992)}
+  100%{transform:translate3d(0,0,0) scale(1)}
+}
+.finch-walker.is-jumping .finch-head{
+  animation:finchClickHead .76s cubic-bezier(.16,.84,.22,1) both!important;
+}
+@keyframes finchClickHead{
+  0%,100%{transform:rotate(0)}
+  38%{transform:translate(5px,4px) rotate(12deg)}
+  58%{transform:translate(-2px,-2px) rotate(-5deg)}
+}
+.finch-leg i{
+  position:absolute;
+  left:-2px;
+  bottom:-2px;
+  width:14px;
+  height:4px;
+  border-radius:999px;
+  background:#11151e;
+  transform-origin:left center;
+}
+.finch-leg-right i{transform:rotate(-8deg)}
+
+/* Only visible sections animate continuously. */
+.finch-body,
+.finch-head,
+.finch-leg-left,
+.finch-leg-right,
+.finch-shadow,
+.finch-track i,
+.finch-roamer{
+  animation-play-state:paused!important;
+}
+.finch-signature.is-finch-visible .finch-body,
+.finch-signature.is-finch-visible .finch-head,
+.finch-signature.is-finch-visible .finch-leg-left,
+.finch-signature.is-finch-visible .finch-leg-right,
+.finch-signature.is-finch-visible .finch-shadow,
+.finch-signature.is-finch-visible .finch-track i,
+.finch-signature.is-finch-visible .finch-roamer{
+  animation-play-state:running!important;
+}
+.finch-signature.is-finch-visible .finch-walker.is-jumping,
+.finch-signature.is-finch-visible .finch-walker.is-jumping .finch-head{
+  animation-play-state:running!important;
+}
+.hero-beams:not(.is-live) .hero-beam,
+.hero-beams:not(.is-live) .hero-beam i{
+  animation-play-state:paused!important;
+}
+
+/* Let Chromium skip painting long sections while they're far outside the viewport. */
+.services-section,
+.bridge-section,
+.process-section,
+.contact-section,
+.closing-section{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 720px;
+}
+
+/* Background tabs should consume essentially no animation work. */
+.page-hidden *,
+.page-hidden *:before,
+.page-hidden *:after{
+  animation-play-state:paused!important;
+}
+
+.finch-shadow{filter:blur(3px)}
+.finch-walker,.finch-roamer,.hero-beam,.hero-beam i{backface-visibility:hidden}
+
+@media(max-width:980px){
+  .human-section>.finch-signature{
+    grid-template-columns:1.12fr .88fr;
+    padding-left:0;
+    padding-right:0;
+  }
+  .human-section>.finch-signature .finch-signature-copy{padding-right:0}
+}
+@media(max-width:760px){
+  .human-section{padding-bottom:22px!important}
+  .human-section>.finch-signature{
+    min-height:210px;
+    margin-top:2px;
+    padding:18px 0 12px;
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  .human-section>.finch-signature .finch-signature-copy{
+    grid-column:1;
+    grid-row:1;
+    padding:0 4px;
+  }
+  .human-section>.finch-signature .finch-stage{
+    grid-column:1;
+    grid-row:2;
+    min-height:110px;
+  }
+  .human-section>.finch-signature .finch-signature-copy strong{
+    font-size:22px;
+    max-width:310px;
+  }
+  .finch-roamer{
+    left:3%;
+    transform:scale(.86);
+    transform-origin:50% 100%;
+    animation-name:finchRoamMobile;
+    animation-duration:10.8s;
+  }
+  @keyframes finchRoamMobile{
+    0%{transform:translate3d(0,0,0) scale(.86)}
+    25%{transform:translate3d(18vw,-1px,0) scale(.86)}
+    50%{transform:translate3d(38vw,0,0) scale(.86)}
+    75%{transform:translate3d(58vw,-1px,0) scale(.86)}
+    100%{transform:translate3d(70vw,0,0) scale(.86)}
+  }
+  .human-section>.finch-signature .finch-signature-note{right:4px;bottom:4px}
+  .bridge-click-burst{filter:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .finch-roamer{
+    position:absolute;
+    left:auto!important;
+    right:8%!important;
+    animation:none!important;
+    transform:none!important;
+  }
+  .finch-walker.is-jumping{animation:none!important}
+}

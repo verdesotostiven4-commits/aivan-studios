@@ -96,9 +96,8 @@ export default function Home() {
           </div>
           <AvatarShowcase />
         </div>
+        <FinchSignature />
       </section>
-
-      <FinchSignature />
 
       <section className="statement" id="enfoque">
         <div className="statement-inner" data-reveal>

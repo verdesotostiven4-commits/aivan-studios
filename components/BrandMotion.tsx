@@ -35,8 +35,24 @@ const heroBeams = [
 ];
 
 export function HeroBeams() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [live, setLive] = useState(true);
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setLive(entry.isIntersecting),
+      { threshold: 0, rootMargin: "12% 0px 12% 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="hero-beams" aria-hidden="true">
+    <div ref={rootRef} className={`hero-beams${live ? " is-live" : ""}`} aria-hidden="true">
       <div className="hero-beams-field">
         {heroBeams.map((beam, index) => (
           <span
@@ -415,84 +431,99 @@ export function BridgeSequence() {
 }
 
 export function FinchSignature() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [curious, setCurious] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
+  const jumpTimerRef = useRef<number | null>(null);
+  const [inView, setInView] = useState(false);
+  const [jumping, setJumping] = useState(false);
   const [peck, setPeck] = useState(0);
   const reduced = useReducedMotion();
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (reduced) return;
+  useEffect(() => {
     const node = rootRef.current;
-    if (!node) return;
-
-    const rect = node.getBoundingClientRect();
-    const x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
-    const y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
-    node.style.setProperty("--finch-look-x", x.toFixed(3));
-    node.style.setProperty("--finch-look-y", y.toFixed(3));
-    setCurious(true);
-  };
-
-  const handlePointerLeave = () => {
-    const node = rootRef.current;
-    if (node) {
-      node.style.setProperty("--finch-look-x", "0");
-      node.style.setProperty("--finch-look-y", "0");
+    if (!node || !("IntersectionObserver" in window)) {
+      setInView(true);
+      return;
     }
-    setCurious(false);
-  };
 
-  const triggerPeck = () => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.08, rootMargin: "12% 0px 12% 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => () => {
+    if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
+  }, []);
+
+  const triggerJump = () => {
     if (reduced) return;
+
     setPeck((value) => value + 1);
+    setJumping(false);
+
+    window.requestAnimationFrame(() => {
+      setJumping(true);
+      if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
+      jumpTimerRef.current = window.setTimeout(() => {
+        setJumping(false);
+        jumpTimerRef.current = null;
+      }, 760);
+    });
   };
 
   return (
     <section
       ref={rootRef}
-      className={`finch-signature${curious ? " is-curious" : ""}`}
+      className={`finch-signature${inView ? " is-finch-visible" : ""}`}
       aria-label="Firma visual de AIVAN desde Galápagos"
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onClick={triggerPeck}
     >
       <div className="finch-signature-copy">
         <span>DESDE GALÁPAGOS</span>
         <strong>Una mirada que observa, adapta y evoluciona.</strong>
       </div>
 
-      <div className="finch-stage" aria-hidden="true">
-        <div className="finch-track">
+      <div className="finch-stage">
+        <div className="finch-track" aria-hidden="true">
           <i /><i /><i />
         </div>
 
-        <div className="finch-walker">
-          <div className="finch-shadow" />
-          <div className="finch-leg finch-leg-left"><span /></div>
-          <div className="finch-leg finch-leg-right"><span /></div>
+        <div className="finch-roamer">
+          <button
+            type="button"
+            className={`finch-walker${jumping ? " is-jumping" : ""}`}
+            onClick={triggerJump}
+            aria-label="Hacer saltar al pinzón de AIVAN"
+          >
+            <span className="finch-shadow" aria-hidden="true" />
+            <span className="finch-leg finch-leg-left" aria-hidden="true"><i /></span>
+            <span className="finch-leg finch-leg-right" aria-hidden="true"><i /></span>
 
-          <div className="finch-body">
-            <span className="finch-wing" />
-            <span className="finch-chest" />
-          </div>
-
-          <div className="finch-head">
-            <span className="finch-crown" />
-            <span className="finch-eye" />
-            <span className="finch-beak" />
-          </div>
-
-          {peck > 0 && (
-            <span key={peck} className="finch-peck-burst">
-              <i /><i /><i />
+            <span className="finch-body" aria-hidden="true">
+              <i className="finch-wing" />
+              <i className="finch-chest" />
             </span>
-          )}
+
+            <span className="finch-head" aria-hidden="true">
+              <i className="finch-crown" />
+              <i className="finch-eye" />
+              <i className="finch-beak" />
+            </span>
+
+            {peck > 0 && (
+              <span key={peck} className="finch-peck-burst" aria-hidden="true">
+                <i /><i /><i />
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
       <div className="finch-signature-note" aria-hidden="true">
-        <span className="finch-note-desktop">MUEVE EL CURSOR · HAZ CLICK</span>
-        <span className="finch-note-touch">TOCA PARA INTERACTUAR</span>
+        <span className="finch-note-desktop">HAZ CLICK EN EL PINZÓN</span>
+        <span className="finch-note-touch">TOCA EL PINZÓN</span>
       </div>
     </section>
   );
@@ -529,18 +560,31 @@ export function MorphWord({ words }: { words: string[] }) {
 }
 
 export function FlipFadeWord({ words }: { words: string[] }) {
+  const rootRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
   const [index, setIndex] = useState(0);
+  const [active, setActive] = useState(false);
   const width = useMemo(() => Math.max(...words.map((word) => word.length)), [words]);
 
   useEffect(() => {
-    if (reduced || words.length < 2) return;
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      setActive(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), { threshold: 0 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!active || reduced || words.length < 2) return;
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % words.length), 3600);
     return () => window.clearInterval(timer);
-  }, [reduced, words.length]);
+  }, [active, reduced, words.length]);
 
   return (
-    <span className="flip-fade-word" style={{ ["--flipfade-width" as string]: `${width + 1}ch` }}>
+    <span ref={rootRef} className="flip-fade-word" style={{ ["--flipfade-width" as string]: `${width + 1}ch` }}>
       <span key={words[index]}>{words[index]}</span>
     </span>
   );
