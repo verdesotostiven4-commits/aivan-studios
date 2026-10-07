@@ -4,7 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { FlipFadeWord, HeroBeams, HeroFlipWord, MorphWord, TypingSignal } from "@/components/BrandMotion";
+import { FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -101,7 +101,7 @@ export default function Home() {
       <section className="statement" id="enfoque">
         <div className="statement-inner" data-reveal>
           <p className="micro-label">NUESTRA FORMA DE TRABAJAR</p>
-          <h2>No empezamos publicando.<br /><span>Empezamos <MorphWord words={["entendiendo.", "ordenando.", "dirigiendo."]} /></span></h2>
+          <StatementMaskReveal />
           <div className="statement-copy">
             <p>Una marca puede tener fotos bonitas y seguir sin decir nada. Puede publicar todos los días y seguir sin tener dirección. AIVAN existe para ordenar primero la idea y construir después la ejecución.</p>
             <p>Así branding, marketing y audiovisual dejan de competir entre sí y empiezan a empujar el mismo negocio.</p>

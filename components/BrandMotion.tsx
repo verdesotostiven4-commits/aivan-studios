@@ -58,6 +58,113 @@ export function HeroBeams() {
   );
 }
 
+export function StatementMaskReveal() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const currentRef = useRef({ x: 50, y: 50 });
+  const targetRef = useRef({ x: 50, y: 50 });
+  const [finePointer, setFinePointer] = useState(false);
+  const [touchActive, setTouchActive] = useState(false);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    const media = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setFinePointer(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (finePointer || reduced) return;
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      setTouchActive(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setTouchActive(true);
+      observer.disconnect();
+    }, { threshold: 0.36, rootMargin: "0px 0px -8% 0px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [finePointer, reduced]);
+
+  useEffect(() => () => {
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
+  }, []);
+
+  const writePosition = () => {
+    const node = rootRef.current;
+    if (!node) return;
+    const current = currentRef.current;
+    const target = targetRef.current;
+    current.x += (target.x - current.x) * 0.16;
+    current.y += (target.y - current.y) * 0.16;
+    node.style.setProperty("--mask-x", `${current.x}%`);
+    node.style.setProperty("--mask-y", `${current.y}%`);
+
+    if (Math.abs(target.x - current.x) > 0.08 || Math.abs(target.y - current.y) > 0.08) {
+      frameRef.current = requestAnimationFrame(writePosition);
+    } else {
+      frameRef.current = null;
+    }
+  };
+
+  const schedulePosition = () => {
+    if (frameRef.current) return;
+    frameRef.current = requestAnimationFrame(writePosition);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!finePointer || reduced) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    targetRef.current = {
+      x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
+      y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
+    };
+    event.currentTarget.classList.add("is-mask-active");
+    schedulePosition();
+  };
+
+  const handlePointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!finePointer || reduced) return;
+    event.currentTarget.classList.remove("is-mask-active");
+    targetRef.current = { x: 50, y: 50 };
+    schedulePosition();
+  };
+
+  return (
+    <div
+      ref={rootRef}
+      className={`statement-mask${finePointer ? " is-fine-pointer" : ""}${touchActive ? " is-touch-active" : ""}`}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      aria-label="No empezamos publicando. Empezamos entendiendo: estrategia, contexto, dirección y propósito."
+    >
+      <div className="statement-mask-base" aria-hidden="true">
+        <span className="statement-mask-kicker">LO QUE SE VE</span>
+        <h2>No empezamos<br />publicando.</h2>
+        <p>Una marca puede estar activa y aun así no tener una dirección clara.</p>
+      </div>
+
+      <div className="statement-mask-reveal" aria-hidden="true">
+        <span className="statement-mask-kicker">LO QUE HAY DETRÁS</span>
+        <h2>Empezamos<br /><strong>entendiendo.</strong></h2>
+        <div className="statement-mask-tags">
+          <span>ESTRATEGIA</span><span>CONTEXTO</span><span>DIRECCIÓN</span><span>PROPÓSITO</span>
+        </div>
+      </div>
+
+      <div className="statement-mask-hint" aria-hidden="true">
+        <span className="hint-desktop">MUEVE PARA MIRAR MÁS PROFUNDO</span>
+        <span className="hint-touch">MIRAMOS MÁS ALLÁ DE LO EVIDENTE</span>
+      </div>
+    </div>
+  );
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
