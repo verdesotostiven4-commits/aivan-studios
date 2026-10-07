@@ -268,6 +268,83 @@ export function StatementMaskReveal() {
   );
 }
 
+export function BridgeSequence() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const [inView, setInView] = useState(false);
+  const [cycle, setCycle] = useState(0);
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting && entry.intersectionRatio > 0.22);
+    }, {
+      threshold: [0, 0.22, 0.45],
+      rootMargin: "-8% 0px -12% 0px",
+    });
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView || reduced) return;
+    const timer = window.setInterval(() => {
+      setCycle((value) => value + 1);
+    }, 7200);
+    return () => window.clearInterval(timer);
+  }, [inView, reduced]);
+
+  const content = (
+    <>
+      <div className="bridge-node node-a bridge-flow-card" style={{ ["--flow-i" as string]: 0 }}>
+        <span className="bridge-node-index">01</span>
+        <strong>MARCA</strong>
+        <small>Se reconoce</small>
+      </div>
+      <span className="bridge-flow-arrow" style={{ ["--flow-i" as string]: 0 }} aria-hidden="true">→</span>
+
+      <div className="bridge-node node-b bridge-flow-card" style={{ ["--flow-i" as string]: 1 }}>
+        <span className="bridge-node-index">02</span>
+        <strong>ESTRATEGIA</strong>
+        <small>Encuentra foco</small>
+      </div>
+      <span className="bridge-flow-arrow" style={{ ["--flow-i" as string]: 1 }} aria-hidden="true">→</span>
+
+      <div className="bridge-node node-c bridge-flow-card" style={{ ["--flow-i" as string]: 2 }}>
+        <span className="bridge-node-index">03</span>
+        <strong>CONTENIDO</strong>
+        <small>Demuestra valor</small>
+      </div>
+      <span className="bridge-flow-arrow" style={{ ["--flow-i" as string]: 2 }} aria-hidden="true">→</span>
+
+      <div className="bridge-node node-d bridge-flow-card" style={{ ["--flow-i" as string]: 3 }}>
+        <span className="bridge-node-index">04</span>
+        <strong>RESULTADO</strong>
+        <small>Hace avanzar</small>
+      </div>
+    </>
+  );
+
+  return (
+    <div
+      ref={rootRef}
+      className={`bridge-visual bridge-sequence${inView ? " is-flowing" : ""}${reduced ? " is-reduced" : ""}`}
+      aria-label="Marca conduce a estrategia, estrategia a contenido y contenido a resultado."
+    >
+      <div className="bridge-flow-track" aria-hidden="true"><i /></div>
+      <div className="bridge-flow-content" key={reduced ? "reduced" : cycle}>
+        {content}
+      </div>
+    </div>
+  );
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {

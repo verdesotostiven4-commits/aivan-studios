@@ -4,7 +4,7 @@ import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FlipFadeWord, HeroBeams, HeroFlipWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -129,9 +129,7 @@ export default function Home() {
           <p className="micro-label">LO IMPORTANTE NO ES EL SERVICIO</p>
           <h2>Es saber <em>cuándo</em> usarlo.</h2>
         </div>
-        <div className="bridge-visual" data-reveal>
-          <div className="bridge-node node-a"><strong>MARCA</strong><small>Se reconoce</small></div><span>→</span><div className="bridge-node node-b"><strong>ESTRATEGIA</strong><small>Encuentra foco</small></div><span>→</span><div className="bridge-node node-c"><strong>CONTENIDO</strong><small>Demuestra valor</small></div><span>→</span><div className="bridge-node node-d"><strong>RESULTADO</strong><small>Hace avanzar</small></div>
-        </div>
+        <BridgeSequence />
       </section>
 
       <section className="process-section" id="proceso">
