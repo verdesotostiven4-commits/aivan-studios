@@ -3485,3 +3485,117 @@ body{overflow-x:hidden}
     animation:none!important;
   }
 }
+
+
+/* === Header CTA: AIVAN split-panel hover, adapted from the supplied reference === */
+.header-cta.header-cta-split{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:44px;
+  padding:12px 17px;
+  border:1px solid #0a0a0d;
+  border-radius:999px;
+  background:#0a0a0d;
+  color:#fff;
+  gap:14px;
+  -webkit-tap-highlight-color:transparent;
+  transition:
+    transform .28s cubic-bezier(.2,.72,.2,1),
+    box-shadow .28s ease,
+    border-color .28s ease;
+}
+.header-cta.header-cta-split .header-cta-label,
+.header-cta.header-cta-split .header-cta-arrow{
+  position:relative;
+  z-index:3;
+  color:#fff;
+  mix-blend-mode:difference;
+}
+.header-cta.header-cta-split .header-cta-label{
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+.header-cta.header-cta-split .header-cta-arrow{
+  transition:transform .3s cubic-bezier(.2,.72,.2,1);
+}
+
+/* Override the older glow/sweep pseudo-elements only for this CTA. */
+.header-cta.header-cta-split:before,
+.header-cta.header-cta-split:after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:-1px;
+  width:auto;
+  height:auto;
+  left:-1px;
+  top:-1px;
+  border-radius:inherit;
+  opacity:1;
+  box-shadow:none;
+  pointer-events:none;
+  transition:transform .32s cubic-bezier(.2,.72,.2,1);
+}
+.header-cta.header-cta-split:before{
+  background:linear-gradient(
+    90deg,
+    #fff 0 25%,
+    transparent 25% 50%,
+    #fff 50% 75%,
+    transparent 75% 100%
+  );
+  transform:translateY(105%);
+}
+.header-cta.header-cta-split:after{
+  background:linear-gradient(
+    90deg,
+    transparent 0 25%,
+    #fff 25% 50%,
+    transparent 50% 75%,
+    #fff 75% 100%
+  );
+  transform:translateY(-105%);
+}
+
+@media(hover:hover) and (pointer:fine){
+  .header-cta.header-cta-split:hover{
+    transform:translateY(-2px);
+    border-color:#fff;
+    box-shadow:0 12px 28px rgba(18,12,28,.13);
+  }
+  .header-cta.header-cta-split:hover:before,
+  .header-cta.header-cta-split:hover:after{
+    transform:translateY(0);
+    animation:none;
+  }
+  .header-cta.header-cta-split:hover .header-cta-arrow{
+    transform:translate(2px,-2px);
+  }
+}
+.header-cta.header-cta-split:focus-visible{
+  outline:3px solid rgba(91,136,255,.24);
+  outline-offset:3px;
+}
+.header-cta.header-cta-split:focus-visible:before,
+.header-cta.header-cta-split:focus-visible:after{
+  transform:translateY(0);
+  animation:none;
+}
+.header-cta.header-cta-split:active{
+  transform:translateY(0) scale(.985);
+}
+@media(hover:none){
+  .header-cta.header-cta-split:active:before,
+  .header-cta.header-cta-split:active:after{
+    transform:translateY(0);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .header-cta.header-cta-split,
+  .header-cta.header-cta-split:before,
+  .header-cta.header-cta-split:after,
+  .header-cta.header-cta-split .header-cta-arrow{
+    transition:none!important;
+  }
+}

@@ -54,7 +54,7 @@ export default function SiteHeader() {
           <a href={href} key={href} aria-current={active === href ? "location" : undefined}>{label}</a>
         ))}
       </nav>
-      <a className="header-cta" href="#brief">Empezar proyecto <span aria-hidden="true">↗</span></a>
+      <a className="header-cta header-cta-split" href="#brief"><span className="header-cta-label">Empezar proyecto</span><span className="header-cta-arrow" aria-hidden="true">↗</span></a>
       <button
         type="button"
         className={`menu-button${open ? " is-open" : ""}`}
