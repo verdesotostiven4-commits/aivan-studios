@@ -6288,3 +6288,38 @@ svg{
     opacity:1!important;
   }
 }
+
+
+/* === Hero intro rhythm v2: reel joins the copy instead of arriving late === */
+.hero-media-shell{
+  transition:
+    opacity .62s ease,
+    transform .76s cubic-bezier(.16,.84,.22,1),
+    filter .58s ease!important;
+}
+
+/* The frame begins while the headline is still finishing, then its UI resolves in a quick cascade. */
+.hero-media-shell.is-entered .hero-media-top{
+  animation:heroReelUiIn .46s .06s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-chip-left{
+  animation:heroReelUiIn .48s .12s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-chip-right{
+  animation:heroReelUiIn .48s .17s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-play{
+  animation:heroReelPlayIn .56s .14s cubic-bezier(.16,.84,.22,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-controls{
+  animation:heroReelUiIn .5s .23s cubic-bezier(.2,.72,.2,1) both!important;
+}
+
+@media(max-width:760px){
+  .hero-media-shell{
+    transition:
+      opacity .56s ease,
+      transform .68s cubic-bezier(.16,.84,.22,1),
+      filter .52s ease!important;
+  }
+}

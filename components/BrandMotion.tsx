@@ -82,7 +82,7 @@ export function HeroMediaFrame() {
   const [introReady, setIntroReady] = useState(false);
 
   useEffect(() => {
-    const introTimer = window.setTimeout(() => setIntroReady(true), 900);
+    const introTimer = window.setTimeout(() => setIntroReady(true), 360);
     return () => window.clearTimeout(introTimer);
   }, []);
 
