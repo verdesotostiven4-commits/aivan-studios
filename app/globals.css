@@ -6212,3 +6212,79 @@ svg{
     transform:translate(-50%,-50%)!important;
   }
 }
+
+
+/* === Hero reel intro hotfix: never strand the frame invisible === */
+.hero-media-shell{
+  opacity:0!important;
+  visibility:visible!important;
+  transform:translate3d(34px,22px,0) scale(.968)!important;
+  filter:blur(10px);
+}
+.hero-media-shell.is-entered{
+  opacity:1!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+/* The frame itself no longer waits on the remote image.
+   It enters after the copy; only the poster crossfades when the asset is ready. */
+.hero-media-shell .hero-media-card,
+.hero-media-shell .hero-media-glow{
+  opacity:1!important;
+  visibility:visible!important;
+}
+.hero-media-art{
+  background:
+    radial-gradient(circle at 24% 38%,rgba(255,166,56,.34),transparent 30%),
+    radial-gradient(circle at 57% 43%,rgba(239,53,133,.26),transparent 34%),
+    radial-gradient(circle at 82% 58%,rgba(81,142,255,.34),transparent 34%),
+    linear-gradient(135deg,#fff8ef 0%,#fff5fa 45%,#f1f6ff 100%)!important;
+}
+.hero-media-poster,
+.hero-media-poster-echo{
+  opacity:0!important;
+  transition:opacity .34s ease!important;
+}
+.hero-media-shell.is-poster-ready .hero-media-poster{
+  opacity:1!important;
+}
+.hero-media-shell.is-poster-ready .hero-media-poster-echo{
+  opacity:.20!important;
+}
+
+/* UI still arrives after the frame, preserving the copy-first hierarchy. */
+.hero-media-shell.is-entered .hero-media-top{
+  animation:heroReelUiIn .56s .18s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-chip-left{
+  animation:heroReelUiIn .56s .28s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-chip-right{
+  animation:heroReelUiIn .56s .36s cubic-bezier(.2,.72,.2,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-play{
+  animation:heroReelPlayIn .68s .34s cubic-bezier(.16,.84,.22,1) both!important;
+}
+.hero-media-shell.is-entered .hero-media-controls{
+  animation:heroReelUiIn .6s .46s cubic-bezier(.2,.72,.2,1) both!important;
+}
+
+/* Scrolling away may pause motion, but can never hide the frame again. */
+.hero-media-shell.is-entered:not(.is-live){
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-media-shell{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+  }
+  .hero-media-poster{
+    opacity:1!important;
+  }
+}

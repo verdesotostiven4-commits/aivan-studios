@@ -76,6 +76,7 @@ export function HeroBeams() {
 
 export function HeroMediaFrame() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
   const [live, setLive] = useState(true);
   const [posterReady, setPosterReady] = useState(false);
   const [introReady, setIntroReady] = useState(false);
@@ -83,6 +84,29 @@ export function HeroMediaFrame() {
   useEffect(() => {
     const introTimer = window.setTimeout(() => setIntroReady(true), 900);
     return () => window.clearTimeout(introTimer);
+  }, []);
+
+  useEffect(() => {
+    const image = posterRef.current;
+    if (!image) return;
+
+    if (image.complete) {
+      setPosterReady(true);
+      return;
+    }
+
+    const preload = new Image();
+    const settle = () => setPosterReady(true);
+    preload.onload = settle;
+    preload.onerror = settle;
+    preload.src = image.currentSrc || image.src;
+
+    const fallback = window.setTimeout(settle, 2200);
+    return () => {
+      preload.onload = null;
+      preload.onerror = null;
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   useEffect(() => {
@@ -98,12 +122,10 @@ export function HeroMediaFrame() {
     return () => observer.disconnect();
   }, []);
 
-  const entered = posterReady && introReady;
-
   return (
     <div
       ref={rootRef}
-      className={`hero-media-shell${live ? " is-live" : ""}${posterReady ? " is-poster-ready" : ""}${entered ? " is-entered" : ""}`}
+      className={`hero-media-shell${live ? " is-live" : ""}${posterReady ? " is-poster-ready" : ""}${introReady ? " is-entered" : ""}`}
       aria-label="Espacio preparado para el próximo brand reel de AIVAN"
     >
       <div className="hero-media-glow" aria-hidden="true" />
@@ -116,6 +138,7 @@ export function HeroMediaFrame() {
 
         <div className="hero-media-art" aria-hidden="true">
           <img
+            ref={posterRef}
             className="hero-media-poster"
             src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXv6QFj4xInRqf_Sgvoo_PL-nXcRqTBiGVcoXiMvgcFeO3yzb_5nfNbvM2VKgsgT8mEyhOdTn949-qc4sv9KHhts4pv6C8nJGovQTUUHrhcmiTg-E32-swkm3PINLNQin_qP8xwef8xJb4ab5uI9RI-4JOhxWBcnlSq_Sn0REi_2n7Uba62Ovpi2fpDaA/s1600/image.png"
             alt=""
