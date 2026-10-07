@@ -6323,3 +6323,342 @@ svg{
       filter .52s ease!important;
   }
 }
+
+
+/* === Finch evolution story: egg -> hatch -> juvenile -> adult === */
+.finch-evolution{
+  overflow:hidden;
+}
+.finch-evolution .finch-stage{
+  overflow:visible;
+}
+.finch-evolution .finch-track{
+  overflow:visible;
+}
+.finch-progress-dot{
+  position:absolute;
+  bottom:2px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#d5d2d8;
+  box-shadow:0 0 0 4px rgba(255,255,255,.72);
+  transition:background .45s ease,transform .45s ease,box-shadow .45s ease;
+}
+.finch-progress-dot.dot-one{left:18%}
+.finch-progress-dot.dot-two{left:49%}
+.finch-progress-dot.dot-three{left:80%}
+.finch-evolution[data-finch-stage="1"] .dot-one,
+.finch-evolution[data-finch-stage="2"] .dot-one,
+.finch-evolution[data-finch-stage="3"] .dot-one{
+  background:#e39a2b;
+  transform:scale(1.22);
+  box-shadow:0 0 0 5px rgba(227,154,43,.10);
+}
+.finch-evolution[data-finch-stage="2"] .dot-two,
+.finch-evolution[data-finch-stage="3"] .dot-two{
+  background:#d93d7e;
+  transform:scale(1.22);
+  box-shadow:0 0 0 5px rgba(217,61,126,.10);
+}
+.finch-evolution[data-finch-stage="3"] .dot-three{
+  background:#687dec;
+  transform:scale(1.22);
+  box-shadow:0 0 0 5px rgba(104,125,236,.10);
+}
+
+.finch-evolution-roamer{
+  position:absolute!important;
+  left:7%!important;
+  bottom:14px!important;
+  width:126px!important;
+  height:112px!important;
+  transform:none!important;
+  animation:none!important;
+  will-change:transform;
+  transition:
+    transform 1s cubic-bezier(.16,.84,.22,1),
+    left 1s cubic-bezier(.16,.84,.22,1)!important;
+}
+.finch-evolution-roamer.stage-0{left:10%!important}
+.finch-evolution-roamer.stage-1{left:18%!important}
+.finch-evolution-roamer.stage-2{left:34%!important}
+.finch-evolution-roamer.stage-3{
+  left:50%!important;
+  animation:finchAdultJourney 9.5s 1.15s cubic-bezier(.45,.02,.25,.98) infinite alternate!important;
+}
+@keyframes finchAdultJourney{
+  0%{transform:translate3d(0,0,0)}
+  30%{transform:translate3d(8vw,-2px,0)}
+  62%{transform:translate3d(17vw,0,0)}
+  100%{transform:translate3d(27vw,-2px,0)}
+}
+
+.finch-evolution-button{
+  position:relative;
+  width:126px;
+  height:112px;
+  padding:0;
+  border:0;
+  background:transparent;
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.finch-evolution-button:focus-visible{
+  outline:2px solid rgba(91,136,255,.32);
+  outline-offset:6px;
+  border-radius:32px;
+}
+
+.finch-egg-glow{
+  position:absolute;
+  z-index:0;
+  left:30px;
+  top:36px;
+  width:66px;
+  height:55px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(244,173,49,.15),rgba(216,61,126,.05) 42%,transparent 72%);
+  filter:blur(8px);
+  opacity:.85;
+  transform:scale(.88);
+  animation:finchEggGlow 1.8s ease-in-out infinite alternate;
+}
+@keyframes finchEggGlow{
+  to{opacity:1;transform:scale(1.06)}
+}
+
+.finch-egg{
+  position:absolute;
+  z-index:5;
+  left:36px;
+  top:22px;
+  width:58px;
+  height:72px;
+  opacity:1;
+  transform-origin:50% 90%;
+  transition:opacity .45s ease,transform .6s cubic-bezier(.16,.84,.22,1);
+  animation:finchEggBreathe 1.65s ease-in-out infinite;
+}
+@keyframes finchEggBreathe{
+  0%,100%{transform:translateY(0) rotate(-1deg) scale(1)}
+  50%{transform:translateY(-2px) rotate(1deg) scale(1.025)}
+}
+.finch-shell{
+  position:absolute;
+  inset:0;
+  border-radius:52% 48% 48% 52% / 58% 58% 42% 42%;
+  background:
+    radial-gradient(circle at 34% 24%,rgba(255,255,255,.96),rgba(255,250,231,.82) 42%,rgba(239,226,195,.94) 100%);
+  border:1px solid rgba(106,92,62,.13);
+  box-shadow:
+    inset -7px -9px 16px rgba(141,116,65,.08),
+    0 10px 24px rgba(30,26,20,.08);
+  transition:transform .65s cubic-bezier(.16,.84,.22,1),opacity .45s ease;
+}
+.finch-shell-right{clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%,41% 77%,55% 61%,44% 45%,57% 30%,47% 13%)}
+.finch-shell-left{clip-path:polygon(0 0,50% 0,47% 13%,57% 30%,44% 45%,55% 61%,41% 77%,50% 100%,0 100%)}
+.finch-crack{
+  position:absolute;
+  z-index:6;
+  left:28px;
+  top:17px;
+  width:2px;
+  height:38px;
+  background:#b39d76;
+  opacity:0;
+  transform-origin:top;
+}
+.finch-crack-a{transform:rotate(14deg)}
+.finch-crack-b{top:43px;left:30px;height:22px;transform:rotate(-20deg)}
+
+.finch-bird{
+  position:absolute;
+  z-index:4;
+  left:9px;
+  top:7px;
+  width:108px;
+  height:96px;
+  opacity:0;
+  transform:translate3d(0,20px,0) scale(.34);
+  transform-origin:50% 90%;
+  transition:
+    opacity .55s ease,
+    transform .9s cubic-bezier(.16,.84,.22,1),
+    filter .65s ease;
+  filter:saturate(.86) brightness(1.06);
+}
+.finch-evolution[data-finch-stage="0"] .finch-bird{opacity:0}
+.finch-evolution[data-finch-stage="1"] .finch-crack{opacity:.68;animation:finchCrackFlash .45s ease both}
+.finch-evolution[data-finch-stage="1"] .finch-shell-left{
+  transform:translate3d(-12px,-8px,0) rotate(-18deg);
+}
+.finch-evolution[data-finch-stage="1"] .finch-shell-right{
+  transform:translate3d(12px,-10px,0) rotate(19deg);
+}
+.finch-evolution[data-finch-stage="1"] .finch-bird{
+  opacity:1;
+  transform:translate3d(0,20px,0) scale(.48);
+}
+.finch-evolution[data-finch-stage="2"] .finch-egg,
+.finch-evolution[data-finch-stage="3"] .finch-egg{
+  opacity:0;
+  transform:translateY(10px) scale(.72);
+  pointer-events:none;
+}
+.finch-evolution[data-finch-stage="2"] .finch-egg-glow,
+.finch-evolution[data-finch-stage="3"] .finch-egg-glow{
+  opacity:0;
+}
+.finch-evolution[data-finch-stage="2"] .finch-bird{
+  opacity:1;
+  transform:translate3d(0,7px,0) scale(.72);
+  filter:saturate(.9) brightness(1.08);
+}
+.finch-evolution[data-finch-stage="3"] .finch-bird{
+  opacity:1;
+  transform:none;
+  filter:none;
+}
+@keyframes finchCrackFlash{
+  0%{opacity:0;filter:drop-shadow(0 0 0 rgba(255,181,50,0))}
+  45%{opacity:1;filter:drop-shadow(0 0 5px rgba(255,181,50,.45))}
+  100%{opacity:.68;filter:none}
+}
+
+/* Juvenile movement is lighter and less confident; adult becomes the steady walk. */
+.finch-evolution[data-finch-stage="2"] .finch-body,
+.finch-evolution[data-finch-stage="2"] .finch-head{
+  animation-duration:.82s!important;
+}
+.finch-evolution[data-finch-stage="2"] .finch-leg-left,
+.finch-evolution[data-finch-stage="2"] .finch-leg-right{
+  animation-duration:.82s!important;
+}
+.finch-evolution[data-finch-stage="3"] .finch-body,
+.finch-evolution[data-finch-stage="3"] .finch-head,
+.finch-evolution[data-finch-stage="3"] .finch-leg-left,
+.finch-evolution[data-finch-stage="3"] .finch-leg-right{
+  animation-duration:1.05s!important;
+}
+
+.finch-bird.is-jumping{
+  animation:finchEvolutionJump .76s cubic-bezier(.16,.84,.22,1) both!important;
+}
+@keyframes finchEvolutionJump{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  18%{transform:translate3d(0,4px,0) scale(.97)}
+  43%{transform:translate3d(0,-25px,0) scale(1.045) rotate(-3deg)}
+  62%{transform:translate3d(4px,-10px,0) scale(1.018) rotate(2deg)}
+  82%{transform:translate3d(0,3px,0) scale(.992)}
+  100%{transform:translate3d(0,0,0) scale(1)}
+}
+
+.finch-evolution-burst{
+  position:absolute;
+  z-index:9;
+  left:62px;
+  top:55px;
+  width:18px;
+  height:18px;
+  margin:-9px;
+  border-radius:50%;
+  border:1px solid rgba(217,61,126,.38);
+  pointer-events:none;
+  animation:finchEvolutionBurst .72s cubic-bezier(.16,.84,.22,1) both;
+}
+.finch-evolution-burst i{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:4px;
+  height:4px;
+  margin:-2px;
+  border-radius:50%;
+  background:#e49f2b;
+}
+.finch-evolution-burst i:nth-child(1){transform:translate(23px,-5px)}
+.finch-evolution-burst i:nth-child(2){transform:translate(-19px,-12px);background:#dc3f7e}
+.finch-evolution-burst i:nth-child(3){transform:translate(12px,20px);background:#776ee8}
+.finch-evolution-burst i:nth-child(4){transform:translate(-16px,16px);background:#72b6f7}
+@keyframes finchEvolutionBurst{
+  0%{opacity:0;transform:scale(.3)}
+  22%{opacity:.9}
+  100%{opacity:0;transform:scale(2.65)}
+}
+
+/* Stage-specific hover: invite interaction without shifting position. */
+@media(hover:hover) and (pointer:fine){
+  .finch-evolution-button:hover .finch-egg{
+    filter:brightness(1.025);
+  }
+  .finch-evolution[data-finch-stage="0"] .finch-evolution-button:hover .finch-egg{
+    transform:translateY(-3px) scale(1.035);
+  }
+  .finch-evolution[data-finch-stage="2"] .finch-evolution-button:hover .finch-bird,
+  .finch-evolution[data-finch-stage="3"] .finch-evolution-button:hover .finch-bird{
+    filter:brightness(1.04);
+  }
+}
+
+/* Keep all continuous evolution motion paused when this strip is offscreen. */
+.finch-evolution:not(.is-finch-visible) .finch-evolution-roamer,
+.finch-evolution:not(.is-finch-visible) .finch-egg,
+.finch-evolution:not(.is-finch-visible) .finch-egg-glow,
+.finch-evolution:not(.is-finch-visible) .finch-evolution-burst{
+  animation-play-state:paused!important;
+}
+
+@media(max-width:980px){
+  .finch-evolution-roamer.stage-3{
+    animation-name:finchAdultJourneyTablet!important;
+  }
+  @keyframes finchAdultJourneyTablet{
+    0%{transform:translate3d(0,0,0)}
+    50%{transform:translate3d(11vw,-2px,0)}
+    100%{transform:translate3d(21vw,0,0)}
+  }
+}
+@media(max-width:760px){
+  .finch-evolution-roamer{
+    left:4%!important;
+    transform:scale(.86)!important;
+    transform-origin:50% 100%;
+  }
+  .finch-evolution-roamer.stage-0{left:4%!important}
+  .finch-evolution-roamer.stage-1{left:13%!important}
+  .finch-evolution-roamer.stage-2{left:27%!important}
+  .finch-evolution-roamer.stage-3{
+    left:38%!important;
+    animation-name:finchAdultJourneyMobile!important;
+    animation-duration:8.5s!important;
+  }
+  @keyframes finchAdultJourneyMobile{
+    0%{transform:translate3d(0,0,0) scale(.86)}
+    50%{transform:translate3d(15vw,-2px,0) scale(.86)}
+    100%{transform:translate3d(31vw,0,0) scale(.86)}
+  }
+  .finch-progress-dot.dot-one{left:16%}
+  .finch-progress-dot.dot-two{left:48%}
+  .finch-progress-dot.dot-three{left:80%}
+}
+@media(prefers-reduced-motion:reduce){
+  .finch-evolution-roamer{
+    left:55%!important;
+    animation:none!important;
+    transform:none!important;
+  }
+  .finch-egg,
+  .finch-egg-glow,
+  .finch-bird,
+  .finch-evolution-burst{
+    animation:none!important;
+    transition:none!important;
+  }
+  .finch-evolution[data-finch-stage="3"] .finch-bird{
+    opacity:1!important;
+    transform:none!important;
+  }
+}

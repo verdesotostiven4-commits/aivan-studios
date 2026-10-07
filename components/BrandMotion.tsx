@@ -546,8 +546,9 @@ export function FinchSignature() {
   const rootRef = useRef<HTMLElement>(null);
   const jumpTimerRef = useRef<number | null>(null);
   const [inView, setInView] = useState(false);
+  const [stage, setStage] = useState(0);
   const [jumping, setJumping] = useState(false);
-  const [peck, setPeck] = useState(0);
+  const [burst, setBurst] = useState(0);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -566,16 +567,37 @@ export function FinchSignature() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (reduced) {
+      setStage(3);
+      return;
+    }
+    if (!inView || stage >= 3) return;
+
+    const delays = [2300, 1050, 2600];
+    const timer = window.setTimeout(() => {
+      setBurst((value) => value + 1);
+      setStage((value) => Math.min(3, value + 1));
+    }, delays[stage]);
+
+    return () => window.clearTimeout(timer);
+  }, [inView, reduced, stage]);
+
   useEffect(() => () => {
     if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
   }, []);
 
-  const triggerJump = () => {
+  const interact = () => {
     if (reduced) return;
 
-    setPeck((value) => value + 1);
-    setJumping(false);
+    if (stage < 3) {
+      setBurst((value) => value + 1);
+      setStage((value) => Math.min(3, value + 1));
+      return;
+    }
 
+    setBurst((value) => value + 1);
+    setJumping(false);
     window.requestAnimationFrame(() => {
       setJumping(true);
       if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
@@ -586,11 +608,20 @@ export function FinchSignature() {
     });
   };
 
+  const stageLabel = stage === 0
+    ? "Romper el cascarón"
+    : stage === 1
+      ? "Ayudar al pinzón a salir"
+      : stage === 2
+        ? "Acelerar su evolución"
+        : "Hacer saltar al pinzón";
+
   return (
     <section
       ref={rootRef}
-      className={`finch-signature${inView ? " is-finch-visible" : ""}`}
-      aria-label="Firma visual de AIVAN desde Galápagos"
+      className={`finch-signature finch-evolution${inView ? " is-finch-visible" : ""}`}
+      data-finch-stage={stage}
+      aria-label="Evolución visual del pinzón de AIVAN desde Galápagos"
     >
       <div className="finch-signature-copy">
         <span>DESDE GALÁPAGOS</span>
@@ -600,33 +631,47 @@ export function FinchSignature() {
       <div className="finch-stage">
         <div className="finch-track" aria-hidden="true">
           <i /><i /><i />
+          <span className="finch-progress-dot dot-one" />
+          <span className="finch-progress-dot dot-two" />
+          <span className="finch-progress-dot dot-three" />
         </div>
 
-        <div className="finch-roamer">
+        <div className={`finch-roamer finch-evolution-roamer stage-${stage}`}>
           <button
             type="button"
-            className={`finch-walker${jumping ? " is-jumping" : ""}`}
-            onClick={triggerJump}
-            aria-label="Hacer saltar al pinzón de AIVAN"
+            className="finch-evolution-button"
+            onClick={interact}
+            aria-label={stageLabel}
           >
-            <span className="finch-shadow" aria-hidden="true" />
-            <span className="finch-leg finch-leg-left" aria-hidden="true"><i /></span>
-            <span className="finch-leg finch-leg-right" aria-hidden="true"><i /></span>
+            <span className="finch-egg-glow" aria-hidden="true" />
 
-            <span className="finch-body" aria-hidden="true">
-              <i className="finch-wing" />
-              <i className="finch-chest" />
+            <span className="finch-egg" aria-hidden="true">
+              <i className="finch-shell finch-shell-left" />
+              <i className="finch-shell finch-shell-right" />
+              <i className="finch-crack finch-crack-a" />
+              <i className="finch-crack finch-crack-b" />
             </span>
 
-            <span className="finch-head" aria-hidden="true">
-              <i className="finch-crown" />
-              <i className="finch-eye" />
-              <i className="finch-beak" />
+            <span className={`finch-bird${jumping ? " is-jumping" : ""}`} aria-hidden="true">
+              <span className="finch-shadow" />
+              <span className="finch-leg finch-leg-left"><i /></span>
+              <span className="finch-leg finch-leg-right"><i /></span>
+
+              <span className="finch-body">
+                <i className="finch-wing" />
+                <i className="finch-chest" />
+              </span>
+
+              <span className="finch-head">
+                <i className="finch-crown" />
+                <i className="finch-eye" />
+                <i className="finch-beak" />
+              </span>
             </span>
 
-            {peck > 0 && (
-              <span key={peck} className="finch-peck-burst" aria-hidden="true">
-                <i /><i /><i />
+            {burst > 0 && (
+              <span key={burst} className="finch-evolution-burst" aria-hidden="true">
+                <i /><i /><i /><i />
               </span>
             )}
           </button>
@@ -634,8 +679,12 @@ export function FinchSignature() {
       </div>
 
       <div className="finch-signature-note" aria-hidden="true">
-        <span className="finch-note-desktop">HAZ CLICK EN EL PINZÓN</span>
-        <span className="finch-note-touch">TOCA EL PINZÓN</span>
+        <span className="finch-note-desktop">
+          {stage < 3 ? "HAZ CLICK PARA ADELANTAR LA EVOLUCIÓN" : "HAZ CLICK EN EL PINZÓN"}
+        </span>
+        <span className="finch-note-touch">
+          {stage < 3 ? "TOCA PARA ADELANTAR" : "TOCA EL PINZÓN"}
+        </span>
       </div>
     </section>
   );
