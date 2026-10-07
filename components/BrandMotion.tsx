@@ -60,12 +60,14 @@ export function HeroBeams() {
 
 export function StatementMaskReveal() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const pointerFrameRef = useRef<number | null>(null);
+  const frameRef = useRef<number | null>(null);
   const scrollFrameRef = useRef<number | null>(null);
-  const pointerActiveRef = useRef(false);
   const currentRef = useRef({ x: 50, y: 50 });
   const targetRef = useRef({ x: 50, y: 50 });
+  const pointerRef = useRef({ x: -1, y: -1, known: false });
+  const localPointerRef = useRef(false);
   const [finePointer, setFinePointer] = useState(false);
+  const [touchActive, setTouchActive] = useState(false);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -76,60 +78,58 @@ export function StatementMaskReveal() {
     return () => media.removeEventListener("change", sync);
   }, []);
 
+  /* Desktop discoverability:
+     remember the cursor globally, but do no visual work here. When this section
+     scrolls under a stationary cursor, a local scroll RAF reveals the mask exactly
+     where that cursor already is. */
   useEffect(() => {
-    const node = rootRef.current;
-    if (!node) return;
+    if (!finePointer || reduced) return;
 
-    if (reduced) {
-      node.style.setProperty("--mask-x", "50%");
-      node.style.setProperty("--mask-y", "50%");
-      node.style.setProperty("--mask-radius", "140vmax");
-      node.classList.add("is-scroll-active", "is-scroll-complete");
-      return;
-    }
+    const rememberPointer = (event: PointerEvent) => {
+      pointerRef.current = { x: event.clientX, y: event.clientY, known: true };
+    };
+
+    window.addEventListener("pointermove", rememberPointer, { passive: true });
+    return () => window.removeEventListener("pointermove", rememberPointer);
+  }, [finePointer, reduced]);
+
+  useEffect(() => {
+    if (!finePointer || reduced) return;
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) return;
 
     let observing = false;
 
     const paintFromScroll = () => {
       scrollFrameRef.current = null;
-      if (!observing || pointerActiveRef.current) return;
+      if (!observing || localPointerRef.current) return;
+
+      const pointer = pointerRef.current;
+      if (!pointer.known) return;
 
       const rect = node.getBoundingClientRect();
-      const viewport = window.innerHeight || 1;
-      const raw = (viewport * 0.92 - rect.top) / (viewport * 0.78);
-      const progress = Math.max(0, Math.min(1, raw));
+      const inside =
+        pointer.x >= rect.left &&
+        pointer.x <= rect.right &&
+        pointer.y >= rect.top &&
+        pointer.y <= rect.bottom;
 
-      const ease = progress * progress * (3 - 2 * progress);
-      const x = 18 + ease * 64;
-      const y = 64 - ease * 26;
-
-      let radius: number;
-      if (finePointer) {
-        radius = 38 + ease * 188;
-      } else {
-        const travel = Math.min(1, progress / 0.68);
-        const travelEase = travel * travel * (3 - 2 * travel);
-        const smallRadius = 28 + travelEase * 132;
-
-        if (progress <= 0.68) {
-          radius = smallRadius;
-        } else {
-          const expand = Math.min(1, (progress - 0.68) / 0.32);
-          const expandEase = expand * expand * (3 - 2 * expand);
-          const coverRadius = Math.hypot(rect.width, rect.height) * 0.72;
-          radius = smallRadius + (coverRadius - smallRadius) * expandEase;
-        }
+      if (!inside) {
+        node.classList.remove("is-mask-active", "is-scroll-cursor");
+        return;
       }
 
+      const x = Math.max(0, Math.min(100, ((pointer.x - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((pointer.y - rect.top) / rect.height) * 100));
+
+      currentRef.current = { x, y };
+      targetRef.current = { x, y };
       node.style.setProperty("--mask-x", `${x}%`);
       node.style.setProperty("--mask-y", `${y}%`);
-      node.style.setProperty("--mask-radius", `${radius}px`);
-      node.style.setProperty("--mask-progress", progress.toFixed(3));
-      node.classList.toggle("is-scroll-active", progress > 0.025);
-      node.classList.toggle("is-scroll-complete", progress > 0.9);
+      node.classList.add("is-mask-active", "is-scroll-cursor");
     };
 
-    const requestScrollPaint = () => {
+    const requestPaint = () => {
       if (scrollFrameRef.current) return;
       scrollFrameRef.current = requestAnimationFrame(paintFromScroll);
     };
@@ -137,31 +137,51 @@ export function StatementMaskReveal() {
     const observer = new IntersectionObserver(([entry]) => {
       observing = entry.isIntersecting;
       if (observing) {
-        window.addEventListener("scroll", requestScrollPaint, { passive: true });
-        window.addEventListener("resize", requestScrollPaint);
-        requestScrollPaint();
+        window.addEventListener("scroll", requestPaint, { passive: true });
+        window.addEventListener("resize", requestPaint);
+        requestPaint();
       } else {
-        window.removeEventListener("scroll", requestScrollPaint);
-        window.removeEventListener("resize", requestScrollPaint);
+        window.removeEventListener("scroll", requestPaint);
+        window.removeEventListener("resize", requestPaint);
+        node.classList.remove("is-mask-active", "is-scroll-cursor");
       }
-    }, { rootMargin: "28% 0px 28% 0px", threshold: 0 });
+    }, { rootMargin: "18% 0px 18% 0px", threshold: 0 });
 
     observer.observe(node);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", requestScrollPaint);
-      window.removeEventListener("resize", requestScrollPaint);
+      window.removeEventListener("scroll", requestPaint);
+      window.removeEventListener("resize", requestPaint);
       if (scrollFrameRef.current) cancelAnimationFrame(scrollFrameRef.current);
     };
   }, [finePointer, reduced]);
 
+  /* Mobile keeps the previous one-shot reveal: no drag gesture competes with scrolling. */
+  useEffect(() => {
+    if (finePointer || reduced) return;
+    const node = rootRef.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      setTouchActive(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setTouchActive(true);
+      observer.disconnect();
+    }, { threshold: 0.36, rootMargin: "0px 0px -8% 0px" });
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [finePointer, reduced]);
+
   useEffect(() => () => {
-    if (pointerFrameRef.current) cancelAnimationFrame(pointerFrameRef.current);
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
     if (scrollFrameRef.current) cancelAnimationFrame(scrollFrameRef.current);
   }, []);
 
-  const writePointerPosition = () => {
+  const writePosition = () => {
     const node = rootRef.current;
     if (!node) return;
 
@@ -172,58 +192,49 @@ export function StatementMaskReveal() {
 
     node.style.setProperty("--mask-x", `${current.x}%`);
     node.style.setProperty("--mask-y", `${current.y}%`);
-    node.style.setProperty("--mask-radius", "220px");
 
     if (Math.abs(target.x - current.x) > 0.08 || Math.abs(target.y - current.y) > 0.08) {
-      pointerFrameRef.current = requestAnimationFrame(writePointerPosition);
+      frameRef.current = requestAnimationFrame(writePosition);
     } else {
-      pointerFrameRef.current = null;
+      frameRef.current = null;
     }
   };
 
-  const schedulePointerPosition = () => {
-    if (pointerFrameRef.current) return;
-    pointerFrameRef.current = requestAnimationFrame(writePointerPosition);
+  const schedulePosition = () => {
+    if (frameRef.current) return;
+    frameRef.current = requestAnimationFrame(writePosition);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!finePointer || reduced) return;
 
+    localPointerRef.current = true;
+    pointerRef.current = { x: event.clientX, y: event.clientY, known: true };
+
     const rect = event.currentTarget.getBoundingClientRect();
-    pointerActiveRef.current = true;
     targetRef.current = {
       x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
       y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
     };
 
+    event.currentTarget.classList.remove("is-scroll-cursor");
     event.currentTarget.classList.add("is-mask-active", "is-pointer-active");
-    schedulePointerPosition();
+    schedulePosition();
   };
 
   const handlePointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!finePointer || reduced) return;
 
-    pointerActiveRef.current = false;
-    event.currentTarget.classList.remove("is-mask-active", "is-pointer-active");
-
-    const node = event.currentTarget;
-    const rect = node.getBoundingClientRect();
-    const viewport = window.innerHeight || 1;
-    const raw = (viewport * 0.92 - rect.top) / (viewport * 0.78);
-    const progress = Math.max(0, Math.min(1, raw));
-    const ease = progress * progress * (3 - 2 * progress);
-
-    currentRef.current = { x: 18 + ease * 64, y: 64 - ease * 26 };
-    targetRef.current = currentRef.current;
-    node.style.setProperty("--mask-x", `${currentRef.current.x}%`);
-    node.style.setProperty("--mask-y", `${currentRef.current.y}%`);
-    node.style.setProperty("--mask-radius", `${38 + ease * 188}px`);
+    localPointerRef.current = false;
+    event.currentTarget.classList.remove("is-mask-active", "is-pointer-active", "is-scroll-cursor");
+    targetRef.current = { x: 50, y: 50 };
+    schedulePosition();
   };
 
   return (
     <div
       ref={rootRef}
-      className={`statement-mask${finePointer ? " is-fine-pointer" : " is-touch-mode"}`}
+      className={`statement-mask${finePointer ? " is-fine-pointer" : ""}${touchActive ? " is-touch-active" : ""}`}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       aria-label="No empezamos publicando. Empezamos entendiendo: estrategia, contexto, dirección y propósito."
@@ -243,8 +254,8 @@ export function StatementMaskReveal() {
       </div>
 
       <div className="statement-mask-hint" aria-hidden="true">
-        <span className="hint-desktop">SCROLL O MUEVE PARA MIRAR MÁS PROFUNDO</span>
-        <span className="hint-touch">DESLIZA PARA REVELAR LO QUE HAY DETRÁS</span>
+        <span className="hint-desktop">MUEVE PARA MIRAR MÁS PROFUNDO</span>
+        <span className="hint-touch">MIRAMOS MÁS ALLÁ DE LO EVIDENTE</span>
       </div>
     </div>
   );
