@@ -2256,3 +2256,7 @@ body{overflow-x:hidden}
   .process-rail:before{transform:scaleX(1)!important}
   .process-rail:after{display:none!important}
 }
+
+
+/* Preserve AIVAN color progression inside the hero despite the generic h1 span rule. */
+.hero h1 .hero-flip-char{color:var(--char-color)!important}
