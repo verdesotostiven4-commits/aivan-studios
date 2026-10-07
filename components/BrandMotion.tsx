@@ -572,12 +572,12 @@ export function FinchSignature() {
       setStage(3);
       return;
     }
-    if (!inView || stage >= 3) return;
+    if (!inView) return;
 
-    const delays = [2300, 1050, 2600];
+    const delays = [3000, 1050, 2500, 6200, 1500];
     const timer = window.setTimeout(() => {
       setBurst((value) => value + 1);
-      setStage((value) => Math.min(3, value + 1));
+      setStage((value) => (value >= 4 ? 0 : value + 1));
     }, delays[stage]);
 
     return () => window.clearTimeout(timer);
@@ -596,30 +596,37 @@ export function FinchSignature() {
       return;
     }
 
-    setBurst((value) => value + 1);
-    setJumping(false);
-    window.requestAnimationFrame(() => {
-      setJumping(true);
-      if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
-      jumpTimerRef.current = window.setTimeout(() => {
-        setJumping(false);
-        jumpTimerRef.current = null;
-      }, 760);
-    });
+    if (stage === 3) {
+      setBurst((value) => value + 1);
+      setJumping(false);
+      window.requestAnimationFrame(() => {
+        setJumping(true);
+        if (jumpTimerRef.current) window.clearTimeout(jumpTimerRef.current);
+        jumpTimerRef.current = window.setTimeout(() => {
+          setJumping(false);
+          jumpTimerRef.current = null;
+        }, 760);
+      });
+      return;
+    }
+
+    setStage(0);
   };
 
-  const stageLabel = stage === 0
-    ? "Romper el cascarón"
+  const actionLabel = stage === 0
+    ? "TÓCAME"
     : stage === 1
-      ? "Ayudar al pinzón a salir"
+      ? "SIGUE"
       : stage === 2
-        ? "Acelerar su evolución"
-        : "Hacer saltar al pinzón";
+        ? "EVOLUCIONA"
+        : stage === 3
+          ? "SALTA"
+          : "OTRA VEZ";
 
   return (
     <section
       ref={rootRef}
-      className={`finch-signature finch-evolution${inView ? " is-finch-visible" : ""}`}
+      className={`finch-signature finch-evolution finch-evolution-v3${inView ? " is-finch-visible" : ""}`}
       data-finch-stage={stage}
       aria-label="Evolución visual del pinzón de AIVAN desde Galápagos"
     >
@@ -641,8 +648,12 @@ export function FinchSignature() {
             type="button"
             className="finch-evolution-button"
             onClick={interact}
-            aria-label={stageLabel}
+            aria-label={stage === 0 ? "Romper el cascarón" : stage < 3 ? "Adelantar la evolución" : "Interactuar con el pinzón"}
           >
+            <span className="finch-tap-hint" aria-hidden="true">
+              <i>↘</i><strong>{actionLabel}</strong>
+            </span>
+
             <span className="finch-egg-glow" aria-hidden="true" />
 
             <span className="finch-egg" aria-hidden="true">
@@ -650,6 +661,7 @@ export function FinchSignature() {
               <i className="finch-shell finch-shell-right" />
               <i className="finch-crack finch-crack-a" />
               <i className="finch-crack finch-crack-b" />
+              <i className="finch-crack finch-crack-c" />
             </span>
 
             <span className={`finch-bird${jumping ? " is-jumping" : ""}`} aria-hidden="true">
@@ -669,6 +681,10 @@ export function FinchSignature() {
               </span>
             </span>
 
+            <span className="finch-shell-fragments" aria-hidden="true">
+              <i /><i /><i /><i />
+            </span>
+
             {burst > 0 && (
               <span key={burst} className="finch-evolution-burst" aria-hidden="true">
                 <i /><i /><i /><i />
@@ -680,7 +696,7 @@ export function FinchSignature() {
 
       <div className="finch-signature-note" aria-hidden="true">
         <span className="finch-note-desktop">
-          {stage < 3 ? "HAZ CLICK PARA ADELANTAR LA EVOLUCIÓN" : "HAZ CLICK EN EL PINZÓN"}
+          {stage < 3 ? "PUEDES ADELANTAR SU EVOLUCIÓN" : stage === 3 ? "EL PINZÓN SIGUE SU CAMINO" : "LA HISTORIA VUELVE A EMPEZAR"}
         </span>
         <span className="finch-note-touch">
           {stage < 3 ? "TOCA PARA ADELANTAR" : "TOCA EL PINZÓN"}

@@ -6662,3 +6662,317 @@ svg{
     transform:none!important;
   }
 }
+
+
+/* === Finch evolution v3: continuous motion, cleaner hatch, complete loop === */
+.finch-evolution-v3 .finch-stage{
+  min-height:128px!important;
+}
+.finch-evolution-v3 .finch-evolution-roamer{
+  left:9%!important;
+  bottom:10px!important;
+  width:128px!important;
+  height:116px!important;
+  transform:none!important;
+  animation:none!important;
+  opacity:1;
+  transition:
+    left 2.6s cubic-bezier(.2,.72,.2,1),
+    opacity .55s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="0"] .finch-evolution-roamer{
+  left:9%!important;
+  opacity:1;
+  transition:none!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-evolution-roamer{
+  left:9%!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{
+  left:26%!important;
+  transition-duration:2.35s!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{
+  left:68%!important;
+  transition-duration:4.8s!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{
+  left:88%!important;
+  opacity:0;
+  transition:
+    left 1.45s cubic-bezier(.32,.02,.2,1),
+    opacity .75s .55s ease!important;
+}
+
+/* Egg is smaller, more tense and better centered. */
+.finch-evolution-v3 .finch-egg{
+  left:39px!important;
+  top:28px!important;
+  width:48px!important;
+  height:61px!important;
+  transform-origin:50% 86%!important;
+  animation:finchEggRestless 1.05s ease-in-out infinite!important;
+}
+@keyframes finchEggRestless{
+  0%,100%{transform:translate3d(0,0,0) rotate(-2deg) scale(1)}
+  18%{transform:translate3d(-2px,-1px,0) rotate(3deg) scale(1.015)}
+  34%{transform:translate3d(2px,-2px,0) rotate(-4deg) scale(1.025)}
+  52%{transform:translate3d(-3px,-1px,0) rotate(4deg) scale(1.015)}
+  70%{transform:translate3d(2px,-3px,0) rotate(-3deg) scale(1.03)}
+  84%{transform:translate3d(-1px,-1px,0) rotate(2deg) scale(1.01)}
+}
+.finch-evolution-v3 .finch-egg-glow{
+  left:31px!important;
+  top:34px!important;
+  width:68px!important;
+  height:58px!important;
+  animation:finchEggUrgency 1.05s ease-in-out infinite alternate!important;
+}
+@keyframes finchEggUrgency{
+  from{opacity:.45;transform:scale(.88)}
+  to{opacity:1;transform:scale(1.16)}
+}
+
+/* "Tócame" is part of the hatch invitation and disappears the instant stage 1 starts. */
+.finch-tap-hint{
+  position:absolute;
+  z-index:12;
+  left:84px;
+  top:8px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:#8a868f;
+  opacity:0;
+  transform:translate3d(-7px,4px,0);
+  pointer-events:none;
+  transition:opacity .25s ease,transform .35s ease;
+}
+.finch-tap-hint i{
+  font-style:normal;
+  font-size:17px;
+  line-height:1;
+  color:#d7922b;
+  animation:finchHintArrow .72s ease-in-out infinite alternate;
+}
+.finch-tap-hint strong{
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.13em;
+  white-space:nowrap;
+}
+.finch-evolution-v3[data-finch-stage="0"] .finch-tap-hint{
+  opacity:1;
+  transform:none;
+}
+@keyframes finchHintArrow{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-3px,4px,0)}
+}
+
+/* The hatch happens in one place: no horizontal teleport during the shell break. */
+.finch-evolution-v3 .finch-shell{
+  transition:
+    transform .72s cubic-bezier(.12,.82,.18,1),
+    opacity .44s .16s ease!important;
+}
+.finch-evolution-v3 .finch-crack{
+  width:1px!important;
+  background:#a48d66!important;
+}
+.finch-evolution-v3 .finch-crack-a{left:23px!important;top:14px!important;height:24px!important}
+.finch-evolution-v3 .finch-crack-b{left:24px!important;top:34px!important;height:17px!important}
+.finch-evolution-v3 .finch-crack-c{
+  position:absolute;
+  z-index:7;
+  left:20px;
+  top:25px;
+  width:12px;
+  height:1px;
+  background:#a48d66;
+  opacity:0;
+  transform:rotate(-28deg);
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-crack,
+.finch-evolution-v3[data-finch-stage="1"] .finch-crack-c{
+  opacity:.78!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-left{
+  transform:translate3d(-18px,-17px,0) rotate(-28deg)!important;
+  opacity:.86!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-right{
+  transform:translate3d(18px,-18px,0) rotate(30deg)!important;
+  opacity:.86!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-shell,
+.finch-evolution-v3[data-finch-stage="3"] .finch-shell,
+.finch-evolution-v3[data-finch-stage="4"] .finch-shell{
+  opacity:0!important;
+}
+
+/* Small shell fragments sell the break, then vanish completely. */
+.finch-shell-fragments{
+  position:absolute;
+  z-index:7;
+  left:60px;
+  top:55px;
+  width:1px;
+  height:1px;
+  pointer-events:none;
+  opacity:0;
+}
+.finch-shell-fragments i{
+  position:absolute;
+  width:7px;
+  height:5px;
+  border-radius:60% 40% 50% 50%;
+  background:#fff7df;
+  border:1px solid rgba(118,99,63,.08);
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments{
+  opacity:1;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments i:nth-child(1){animation:finchShellBitA .7s ease-out both}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments i:nth-child(2){animation:finchShellBitB .74s .04s ease-out both}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments i:nth-child(3){animation:finchShellBitC .68s .08s ease-out both}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments i:nth-child(4){animation:finchShellBitD .72s .02s ease-out both}
+@keyframes finchShellBitA{to{transform:translate3d(-30px,-29px,0) rotate(-75deg);opacity:0}}
+@keyframes finchShellBitB{to{transform:translate3d(29px,-32px,0) rotate(82deg);opacity:0}}
+@keyframes finchShellBitC{to{transform:translate3d(-25px,20px,0) rotate(55deg);opacity:0}}
+@keyframes finchShellBitD{to{transform:translate3d(31px,15px,0) rotate(-64deg);opacity:0}}
+
+/* Bird stays physically continuous: it emerges at the egg's exact position, then grows while moving. */
+.finch-evolution-v3 .finch-bird{
+  left:9px!important;
+  top:8px!important;
+  opacity:0!important;
+  transform:translate3d(0,22px,0) scale(.34)!important;
+  transform-origin:50% 88%!important;
+  transition:
+    opacity .42s ease,
+    transform 1.55s cubic-bezier(.16,.84,.22,1),
+    filter .6s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,18px,0) scale(.46)!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,7px,0) scale(.72)!important;
+  filter:saturate(.92) brightness(1.06)!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,0,0) scale(1)!important;
+  filter:none!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(9px,-18px,0) scale(1.02) rotate(-5deg)!important;
+}
+
+/* No legs poking out while still inside the shell. */
+.finch-evolution-v3[data-finch-stage="0"] .finch-leg,
+.finch-evolution-v3[data-finch-stage="1"] .finch-leg{
+  opacity:0!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-leg,
+.finch-evolution-v3[data-finch-stage="3"] .finch-leg,
+.finch-evolution-v3[data-finch-stage="4"] .finch-leg{
+  opacity:1!important;
+}
+
+/* Juvenile starts with quick little steps; adult settles into a confident cadence. */
+.finch-evolution-v3[data-finch-stage="2"] .finch-body,
+.finch-evolution-v3[data-finch-stage="2"] .finch-head,
+.finch-evolution-v3[data-finch-stage="2"] .finch-leg-left,
+.finch-evolution-v3[data-finch-stage="2"] .finch-leg-right{
+  animation-duration:.72s!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-body,
+.finch-evolution-v3[data-finch-stage="3"] .finch-head,
+.finch-evolution-v3[data-finch-stage="3"] .finch-leg-left,
+.finch-evolution-v3[data-finch-stage="3"] .finch-leg-right{
+  animation-duration:.98s!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-body{
+  animation:finchExitFlap .44s ease-in-out infinite alternate!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-head{
+  animation:finchExitHead .55s ease-in-out infinite alternate!important;
+}
+@keyframes finchExitFlap{
+  from{transform:translateY(0) rotate(-2deg) scaleX(1)}
+  to{transform:translateY(-4px) rotate(3deg) scaleX(.96)}
+}
+@keyframes finchExitHead{
+  from{transform:rotate(-3deg)}
+  to{transform:translateY(-2px) rotate(7deg)}
+}
+
+/* Adult click still feels responsive without interrupting the path. */
+.finch-evolution-v3 .finch-bird.is-jumping{
+  animation:finchEvolutionJump .76s cubic-bezier(.16,.84,.22,1) both!important;
+}
+
+/* Progress points become a quiet timeline rather than static decoration. */
+.finch-evolution-v3 .finch-progress-dot{
+  transition:background .4s ease,transform .4s ease,box-shadow .4s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-progress-dot{
+  background:#bbb8c0!important;
+  transform:scale(.85)!important;
+  box-shadow:none!important;
+}
+
+/* Offscreen = paused, but stage and position are preserved. */
+.finch-evolution-v3:not(.is-finch-visible) .finch-egg,
+.finch-evolution-v3:not(.is-finch-visible) .finch-egg-glow,
+.finch-evolution-v3:not(.is-finch-visible) .finch-body,
+.finch-evolution-v3:not(.is-finch-visible) .finch-head,
+.finch-evolution-v3:not(.is-finch-visible) .finch-leg,
+.finch-evolution-v3:not(.is-finch-visible) .finch-shell-fragments i,
+.finch-evolution-v3:not(.is-finch-visible) .finch-tap-hint i{
+  animation-play-state:paused!important;
+}
+
+@media(max-width:980px){
+  .finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{left:23%!important}
+  .finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{left:61%!important}
+  .finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{left:84%!important}
+}
+@media(max-width:760px){
+  .finch-evolution-v3 .finch-evolution-roamer{
+    transform:scale(.86)!important;
+    transform-origin:50% 100%!important;
+  }
+  .finch-evolution-v3[data-finch-stage="0"] .finch-evolution-roamer{left:3%!important}
+  .finch-evolution-v3[data-finch-stage="1"] .finch-evolution-roamer{left:3%!important}
+  .finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{left:21%!important}
+  .finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{left:55%!important}
+  .finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{left:78%!important}
+  .finch-tap-hint{
+    left:78px;
+    top:5px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .finch-evolution-v3 .finch-evolution-roamer{
+    left:55%!important;
+    opacity:1!important;
+    transition:none!important;
+  }
+  .finch-evolution-v3 .finch-bird{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+  .finch-evolution-v3 .finch-egg,
+  .finch-evolution-v3 .finch-egg-glow,
+  .finch-evolution-v3 .finch-tap-hint,
+  .finch-evolution-v3 .finch-shell-fragments{
+    display:none!important;
+  }
+}
