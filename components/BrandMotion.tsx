@@ -92,7 +92,7 @@ export function StatementMaskReveal() {
       if (!entry.isIntersecting) {
         engagedRef.current = false;
         lensLiveRef.current = false;
-        node.classList.remove("is-mask-active", "is-pointer-active", "is-returning");
+        node.classList.remove("is-mask-active", "is-pointer-active", "is-lens-live", "is-returning");
       }
     }, { threshold: 0.18, rootMargin: "10% 0px 10% 0px" });
 
@@ -114,7 +114,7 @@ export function StatementMaskReveal() {
 
     engagedRef.current = false;
     lensLiveRef.current = false;
-    node.classList.remove("is-mask-active", "is-pointer-active");
+    node.classList.remove("is-mask-active", "is-pointer-active", "is-lens-live");
     node.classList.add("is-returning");
 
     clearReturnTimer();
@@ -146,8 +146,8 @@ export function StatementMaskReveal() {
 
     const current = currentRef.current;
     const target = targetRef.current;
-    current.x += (target.x - current.x) * 0.22;
-    current.y += (target.y - current.y) * 0.22;
+    current.x += (target.x - current.x) * 0.115;
+    current.y += (target.y - current.y) * 0.115;
 
     node.style.setProperty("--mask-x", `${current.x}%`);
     node.style.setProperty("--mask-y", `${current.y}%`);
@@ -155,7 +155,7 @@ export function StatementMaskReveal() {
     const distance = Math.hypot(target.x - current.x, target.y - current.y);
     if (engagedRef.current && !lensLiveRef.current && distance < 9) {
       lensLiveRef.current = true;
-      node.classList.add("is-mask-active");
+      node.classList.add("is-mask-active", "is-lens-live");
     }
 
     if (Math.abs(target.x - current.x) > 0.08 || Math.abs(target.y - current.y) > 0.08) {

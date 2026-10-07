@@ -3690,3 +3690,55 @@ body{overflow-x:hidden}
     transition:none!important;
   }
 }
+
+
+/* === Statement lens v5: calmer chase, clean lens center === */
+@media(hover:hover) and (pointer:fine){
+  /* The probe glides toward the cursor instead of snapping to it. */
+  .statement-mask.is-pointer-active .statement-orb{
+    transition:
+      opacity .34s ease,
+      transform .38s cubic-bezier(.2,.72,.2,1),
+      left .12s linear,
+      top .12s linear!important;
+  }
+
+  /* Once the large reveal opens, the little coloured probe disappears so the
+     lens stays clean and editorial. */
+  .statement-mask.is-lens-live .statement-orb{
+    opacity:0!important;
+    transform:translateZ(0) scale(.62)!important;
+    pointer-events:none!important;
+  }
+
+  .statement-mask.is-lens-live .statement-orb-core,
+  .statement-mask.is-lens-live .statement-orb-ring,
+  .statement-mask.is-lens-live .statement-orb-spark{
+    opacity:0!important;
+    animation:none!important;
+  }
+}
+
+/* Make the chase itself calmer and more deliberate. */
+@keyframes statementOrbChasePulseSoft{
+  0%,100%{transform:scale(.92);filter:saturate(1)}
+  50%{transform:scale(1.04);filter:saturate(1.06)}
+}
+@keyframes statementOrbChaseRingSoft{
+  0%{opacity:.34;transform:scale(.78)}
+  100%{opacity:0;transform:scale(1.32)}
+}
+@media(hover:hover) and (pointer:fine){
+  .statement-mask.is-pointer-active:not(.is-lens-live) .statement-orb-core{
+    animation:statementOrbChasePulseSoft 1.25s ease-in-out infinite!important;
+  }
+  .statement-mask.is-pointer-active:not(.is-lens-live) .statement-orb-ring{
+    animation:statementOrbChaseRingSoft 1.25s ease-out infinite!important;
+  }
+  .statement-mask.is-pointer-active:not(.is-lens-live) .statement-orb-spark.spark-a{
+    animation:statementSparkA 1.8s ease-in-out infinite!important;
+  }
+  .statement-mask.is-pointer-active:not(.is-lens-live) .statement-orb-spark.spark-b{
+    animation:statementSparkB 2.1s ease-in-out infinite!important;
+  }
+}
