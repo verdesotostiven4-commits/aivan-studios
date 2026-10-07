@@ -268,13 +268,28 @@ export function StatementMaskReveal() {
   );
 }
 
+function BridgeMotionGlyph() {
+  return (
+    <span className="bridge-motion-glyph" aria-hidden="true">
+      <svg viewBox="0 0 40 40" role="presentation">
+        <circle className="bridge-glyph-ghost" cx="20" cy="20" r="14" />
+        <circle className="bridge-glyph-dash" cx="20" cy="20" r="14" pathLength="360" />
+        <circle className="bridge-glyph-spin" cx="20" cy="20" r="9" pathLength="360" />
+      </svg>
+    </span>
+  );
+}
+
 export function BridgeSequence() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const hitTimerRef = useRef<number | null>(null);
   const reduced = useReducedMotion();
   const [inView, setInView] = useState(false);
   const [step, setStep] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [cycle, setCycle] = useState(0);
+  const [hitIndex, setHitIndex] = useState<number | null>(null);
+  const [bursts, setBursts] = useState([0, 0, 0, 0]);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -330,9 +345,50 @@ export function BridgeSequence() {
     return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, [inView, reduced, cycle]);
 
+  useEffect(() => () => {
+    if (hitTimerRef.current) window.clearTimeout(hitTimerRef.current);
+  }, []);
+
   const cardActive = (index: number) => step >= index * 2 + 1;
   const arrowActive = (index: number) => step >= index * 2 + 2;
   const progress = step <= 1 ? 0 : Math.min(1, (step - 1) / 6);
+
+  const triggerCard = (index: number) => {
+    if (reduced || exiting || !cardActive(index)) return;
+
+    setBursts((current) => current.map((value, itemIndex) => itemIndex === index ? value + 1 : value));
+    setHitIndex(null);
+
+    window.requestAnimationFrame(() => {
+      setHitIndex(index);
+      if (hitTimerRef.current) window.clearTimeout(hitTimerRef.current);
+      hitTimerRef.current = window.setTimeout(() => {
+        setHitIndex((current) => current === index ? null : current);
+        hitTimerRef.current = null;
+      }, 620);
+    });
+  };
+
+  const renderCard = (
+    index: number,
+    nodeClass: string,
+    title: string,
+    subtitle: string,
+  ) => (
+    <button
+      type="button"
+      className={`bridge-node ${nodeClass} bridge-flow-card${cardActive(index) ? " is-active" : ""}${hitIndex === index ? " is-hit" : ""}`}
+      style={{ ["--flow-i" as string]: index }}
+      onClick={() => triggerCard(index)}
+      aria-label={`${title}: ${subtitle}. Activar interacción visual.`}
+    >
+      <span className="bridge-node-index">0{index + 1}</span>
+      <BridgeMotionGlyph />
+      <strong>{title}</strong>
+      <small>{subtitle}</small>
+      {bursts[index] > 0 && <span key={bursts[index]} className="bridge-click-burst" aria-hidden="true" />}
+    </button>
+  );
 
   return (
     <div
@@ -343,32 +399,16 @@ export function BridgeSequence() {
     >
       <div className="bridge-flow-track" aria-hidden="true"><i /></div>
       <div className="bridge-flow-content">
-        <div className={`bridge-node node-a bridge-flow-card${cardActive(0) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 0 }}>
-          <span className="bridge-node-index">01</span>
-          <strong>MARCA</strong>
-          <small>Se reconoce</small>
-        </div>
+        {renderCard(0, "node-a", "MARCA", "Se reconoce")}
         <span className={`bridge-flow-arrow${arrowActive(0) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 0 }} aria-hidden="true">→</span>
 
-        <div className={`bridge-node node-b bridge-flow-card${cardActive(1) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 1 }}>
-          <span className="bridge-node-index">02</span>
-          <strong>ESTRATEGIA</strong>
-          <small>Encuentra foco</small>
-        </div>
+        {renderCard(1, "node-b", "ESTRATEGIA", "Encuentra foco")}
         <span className={`bridge-flow-arrow${arrowActive(1) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 1 }} aria-hidden="true">→</span>
 
-        <div className={`bridge-node node-c bridge-flow-card${cardActive(2) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 2 }}>
-          <span className="bridge-node-index">03</span>
-          <strong>CONTENIDO</strong>
-          <small>Demuestra valor</small>
-        </div>
+        {renderCard(2, "node-c", "CONTENIDO", "Demuestra valor")}
         <span className={`bridge-flow-arrow${arrowActive(2) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 2 }} aria-hidden="true">→</span>
 
-        <div className={`bridge-node node-d bridge-flow-card${cardActive(3) ? " is-active" : ""}`} style={{ ["--flow-i" as string]: 3 }}>
-          <span className="bridge-node-index">04</span>
-          <strong>RESULTADO</strong>
-          <small>Hace avanzar</small>
-        </div>
+        {renderCard(3, "node-d", "RESULTADO", "Hace avanzar")}
       </div>
     </div>
   );

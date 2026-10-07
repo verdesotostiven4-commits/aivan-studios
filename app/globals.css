@@ -4004,3 +4004,243 @@ body{overflow-x:hidden}
     transform:scaleX(1)!important;
   }
 }
+
+
+/* === Bridge interactions + animated dash glyph, adapted from the supplied loader reference === */
+.bridge-sequence .bridge-flow-card{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  font:inherit;
+  color:inherit;
+  text-align:center;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.bridge-sequence .bridge-flow-card:focus-visible{
+  outline:3px solid rgba(91,136,255,.22);
+  outline-offset:4px;
+}
+.bridge-sequence .bridge-flow-card:disabled{
+  cursor:default;
+}
+
+/* The loader reference becomes a small "system signal", not a loader.
+   It lives in the top-right of each stage and wakes as that stage becomes active. */
+.bridge-motion-glyph{
+  position:absolute!important;
+  z-index:4!important;
+  top:13px;
+  right:14px;
+  width:34px;
+  height:34px;
+  color:#aaa8ae;
+  opacity:0;
+  transform:scale(.72) rotate(-12deg);
+  transition:
+    opacity .42s ease,
+    transform .55s cubic-bezier(.16,.84,.22,1),
+    color .3s ease;
+  pointer-events:none;
+}
+.bridge-flow-card.is-active .bridge-motion-glyph{
+  opacity:.42;
+  transform:none;
+}
+.node-a .bridge-motion-glyph{color:#d99a25}
+.node-b .bridge-motion-glyph{color:#d83d7e}
+.node-c .bridge-motion-glyph{color:#786fe7}
+.node-d .bridge-motion-glyph{color:#6aaef0}
+
+.bridge-motion-glyph svg{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+.bridge-motion-glyph circle{
+  fill:none;
+  stroke:currentColor;
+  vector-effect:non-scaling-stroke;
+}
+.bridge-glyph-ghost{
+  opacity:.14;
+  stroke-width:1;
+}
+.bridge-glyph-dash{
+  stroke-width:1.35;
+  stroke-linecap:round;
+  animation:
+    bridgeDashArray 2.6s ease-in-out infinite,
+    bridgeDashOffset 2.6s linear infinite;
+  animation-play-state:paused;
+}
+.bridge-glyph-spin{
+  stroke-width:1.2;
+  stroke-linecap:round;
+  animation:
+    bridgeSpinDashArray 2.6s ease-in-out infinite,
+    bridgeGlyphSpin 8.8s ease-in-out infinite,
+    bridgeDashOffset 2.6s linear infinite;
+  transform-origin:center;
+  animation-play-state:paused;
+}
+.bridge-flow-card.is-active .bridge-glyph-dash,
+.bridge-flow-card.is-active .bridge-glyph-spin{
+  animation-play-state:running;
+}
+
+@keyframes bridgeDashArray{
+  0%{stroke-dasharray:0 1 359 0}
+  50%{stroke-dasharray:0 359 1 0}
+  100%{stroke-dasharray:359 1 0 0}
+}
+@keyframes bridgeSpinDashArray{
+  0%{stroke-dasharray:270 90}
+  50%{stroke-dasharray:0 360}
+  100%{stroke-dasharray:270 90}
+}
+@keyframes bridgeDashOffset{
+  0%{stroke-dashoffset:365}
+  100%{stroke-dashoffset:5}
+}
+@keyframes bridgeGlyphSpin{
+  0%{rotate:0deg}
+  12.5%,25%{rotate:270deg}
+  37.5%,50%{rotate:540deg}
+  62.5%,75%{rotate:810deg}
+  87.5%,100%{rotate:1080deg}
+}
+
+/* Hover adds depth and speeds up the signal without touching the main story cycle. */
+@media(hover:hover) and (pointer:fine){
+  .bridge-sequence .bridge-flow-card.is-active:hover{
+    transform:translateY(-7px) scale(1.012);
+    border-color:rgba(20,18,24,.17);
+    box-shadow:
+      0 28px 68px rgba(24,19,34,.09),
+      0 0 0 1px rgba(255,255,255,.8) inset;
+  }
+  .bridge-sequence .bridge-flow-card.is-active:hover strong{
+    transform:translateY(-2px);
+  }
+  .bridge-sequence .bridge-flow-card.is-active:hover small{
+    color:#656269;
+  }
+  .bridge-sequence .bridge-flow-card.is-active:hover .bridge-motion-glyph{
+    opacity:.9;
+    transform:scale(1.12) rotate(5deg);
+  }
+  .bridge-sequence .bridge-flow-card.is-active:hover .bridge-glyph-dash{
+    animation-duration:1.45s,1.45s;
+  }
+  .bridge-sequence .bridge-flow-card.is-active:hover .bridge-glyph-spin{
+    animation-duration:1.45s,4.4s,1.45s;
+  }
+}
+.bridge-sequence .bridge-flow-card strong,
+.bridge-sequence .bridge-flow-card small{
+  transition:transform .3s cubic-bezier(.2,.72,.2,1),color .3s ease;
+}
+
+/* Click/tap feedback: a compact rebound plus a colour burst. The sequence timer continues untouched. */
+.bridge-sequence .bridge-flow-card.is-hit{
+  animation:bridgeCardHit .6s cubic-bezier(.16,.84,.22,1) both;
+}
+@keyframes bridgeCardHit{
+  0%{transform:translateY(0) scale(1)}
+  24%{transform:translateY(4px) scale(.985)}
+  52%{transform:translateY(-9px) scale(1.026)}
+  76%{transform:translateY(2px) scale(.996)}
+  100%{transform:translateY(0) scale(1)}
+}
+.bridge-click-burst{
+  position:absolute!important;
+  z-index:5!important;
+  left:50%;
+  top:50%;
+  width:28px;
+  height:28px;
+  margin:-14px;
+  border-radius:50%;
+  pointer-events:none;
+  border:1px solid currentColor;
+  color:inherit;
+  opacity:0;
+  animation:bridgeClickBurst .7s cubic-bezier(.16,.84,.22,1) both;
+}
+.node-a .bridge-click-burst{color:#e4a12b}
+.node-b .bridge-click-burst{color:#d93b7e}
+.node-c .bridge-click-burst{color:#776ee8}
+.node-d .bridge-click-burst{color:#70b8f6}
+.bridge-click-burst:before,
+.bridge-click-burst:after{
+  content:"";
+  position:absolute;
+  inset:50%;
+  width:5px;
+  height:5px;
+  margin:-2.5px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:
+    28px 0 0 -1px currentColor,
+    -28px 0 0 -1px currentColor,
+    0 28px 0 -1px currentColor,
+    0 -28px 0 -1px currentColor;
+}
+.bridge-click-burst:after{
+  transform:rotate(45deg) scale(.72);
+  opacity:.65;
+}
+@keyframes bridgeClickBurst{
+  0%{opacity:0;transform:scale(.2);filter:blur(2px)}
+  18%{opacity:.9}
+  72%{opacity:.28;transform:scale(2.6);filter:blur(0)}
+  100%{opacity:0;transform:scale(3.2)}
+}
+.bridge-flow-card.is-hit .bridge-motion-glyph{
+  opacity:1!important;
+  transform:scale(1.18) rotate(10deg)!important;
+}
+.bridge-flow-card.is-hit .bridge-glyph-dash{
+  animation-duration:.82s,.82s!important;
+}
+.bridge-flow-card.is-hit .bridge-glyph-spin{
+  animation-duration:.82s,2.4s,.82s!important;
+}
+
+/* Keep the programmed reset authoritative if it happens during a click. */
+.bridge-sequence.is-exiting .bridge-flow-card.is-hit{
+  animation:none!important;
+}
+
+@media(max-width:760px){
+  .bridge-sequence .bridge-flow-card{
+    text-align:left;
+  }
+  .bridge-motion-glyph{
+    top:50%;
+    right:16px;
+    transform:translateY(-50%) scale(.76) rotate(-10deg);
+  }
+  .bridge-flow-card.is-active .bridge-motion-glyph{
+    transform:translateY(-50%);
+  }
+  .bridge-flow-card.is-hit .bridge-motion-glyph{
+    transform:translateY(-50%) scale(1.14) rotate(8deg)!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .bridge-motion-glyph,
+  .bridge-glyph-dash,
+  .bridge-glyph-spin,
+  .bridge-sequence .bridge-flow-card.is-hit,
+  .bridge-click-burst{
+    animation:none!important;
+    transition:none!important;
+  }
+  .bridge-motion-glyph{opacity:.35!important;transform:none!important}
+  .bridge-click-burst{display:none!important}
+}
