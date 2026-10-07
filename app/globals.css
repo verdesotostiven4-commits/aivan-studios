@@ -6976,3 +6976,200 @@ svg{
     display:none!important;
   }
 }
+
+
+/* === Finch evolution v4: walking-paced transitions + invisible reset === */
+
+/* Movement now follows a steady walking pace instead of accelerating between phases. */
+.finch-evolution-v3 .finch-evolution-roamer{
+  transition-property:left,opacity!important;
+  transition-timing-function:linear,ease!important;
+}
+.finch-evolution-v3[data-finch-stage="0"] .finch-evolution-roamer{
+  left:9%!important;
+  opacity:1!important;
+  transition:none!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-evolution-roamer{
+  left:9%!important;
+  opacity:1!important;
+  transition:none!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{
+  left:34%!important;
+  opacity:1!important;
+  transition:
+    left 5.05s linear,
+    opacity .4s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{
+  left:69%!important;
+  opacity:1!important;
+  transition:
+    left 5.65s linear,
+    opacity .4s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{
+  left:91%!important;
+  opacity:0!important;
+  transition:
+    left 4.35s linear,
+    opacity .82s 3.25s ease!important;
+}
+
+/* Hidden reset frame: the adult disappears at the far edge, teleports while invisible,
+   then only the new egg fades back in at the starting point. */
+.finch-evolution-v3[data-finch-stage="5"] .finch-evolution-roamer{
+  left:9%!important;
+  opacity:0!important;
+  transition:none!important;
+}
+.finch-evolution-v3[data-finch-stage="5"] .finch-bird,
+.finch-evolution-v3[data-finch-stage="5"] .finch-egg,
+.finch-evolution-v3[data-finch-stage="5"] .finch-egg-glow,
+.finch-evolution-v3[data-finch-stage="5"] .finch-tap-hint,
+.finch-evolution-v3[data-finch-stage="5"] .finch-shell-fragments{
+  opacity:0!important;
+  animation:none!important;
+  transition:none!important;
+}
+
+/* Growth follows the walking distance instead of snapping at each phase. */
+.finch-evolution-v3 .finch-bird{
+  transition:
+    opacity .55s ease,
+    transform 4.8s linear,
+    filter 1.4s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,17px,0) scale(.45)!important;
+}
+.finch-evolution-v3[data-finch-stage="2"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,8px,0) scale(.72)!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(0,0,0) scale(1)!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-bird{
+  opacity:1!important;
+  transform:translate3d(5px,-5px,0) scale(1.015)!important;
+  transition:
+    opacity .55s ease,
+    transform 3.9s linear,
+    filter .8s ease!important;
+}
+
+/* Hatch remains in place and feels less like a cut between two drawings. */
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-left{
+  transform:translate3d(-13px,-10px,0) rotate(-22deg) scale(.88)!important;
+  opacity:.78!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-right{
+  transform:translate3d(13px,-11px,0) rotate(23deg) scale(.88)!important;
+  opacity:.78!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell{
+  transition:
+    transform 1.05s cubic-bezier(.2,.72,.2,1),
+    opacity .7s .2s ease!important;
+}
+.finch-evolution-v3[data-finch-stage="1"] .finch-shell-fragments i{
+  animation-duration:.9s!important;
+}
+
+/* Stronger, logical invitation: centered above the egg with a downward arrow. */
+.finch-evolution-v3 .finch-tap-hint{
+  left:27px!important;
+  top:-9px!important;
+  width:74px;
+  display:flex!important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0!important;
+  color:#6f6b74!important;
+  text-align:center;
+}
+.finch-evolution-v3 .finch-tap-hint strong{
+  padding:5px 9px 4px;
+  border:1px solid rgba(20,20,24,.09);
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 6px 18px rgba(30,26,36,.07);
+  font-size:9px!important;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.12em!important;
+}
+.finch-evolution-v3 .finch-tap-hint i{
+  margin-top:2px;
+  font-size:18px!important;
+  color:#d8922a!important;
+  animation:finchHintDown .72s ease-in-out infinite alternate!important;
+}
+@keyframes finchHintDown{
+  from{transform:translateY(-1px)}
+  to{transform:translateY(4px)}
+}
+.finch-evolution-v3:not([data-finch-stage="0"]) .finch-tap-hint{
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* Keep cadence natural: steps do not speed up simply because a growth stage changed. */
+.finch-evolution-v3[data-finch-stage="2"] .finch-body,
+.finch-evolution-v3[data-finch-stage="2"] .finch-head,
+.finch-evolution-v3[data-finch-stage="2"] .finch-leg-left,
+.finch-evolution-v3[data-finch-stage="2"] .finch-leg-right{
+  animation-duration:.96s!important;
+}
+.finch-evolution-v3[data-finch-stage="3"] .finch-body,
+.finch-evolution-v3[data-finch-stage="3"] .finch-head,
+.finch-evolution-v3[data-finch-stage="3"] .finch-leg-left,
+.finch-evolution-v3[data-finch-stage="3"] .finch-leg-right,
+.finch-evolution-v3[data-finch-stage="4"] .finch-body,
+.finch-evolution-v3[data-finch-stage="4"] .finch-head,
+.finch-evolution-v3[data-finch-stage="4"] .finch-leg-left,
+.finch-evolution-v3[data-finch-stage="4"] .finch-leg-right{
+  animation-duration:1.04s!important;
+}
+
+/* Stage 4 is still walking out, not suddenly "flying" away. */
+.finch-evolution-v3[data-finch-stage="4"] .finch-body,
+.finch-evolution-v3[data-finch-stage="4"] .finch-head{
+  animation-name:finchBob!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-leg-left{
+  animation-name:finchStepLeft!important;
+}
+.finch-evolution-v3[data-finch-stage="4"] .finch-leg-right{
+  animation-name:finchStepRight!important;
+}
+
+/* Notes and timeline disappear during the invisible reset beat. */
+.finch-evolution-v3[data-finch-stage="5"] .finch-signature-note,
+.finch-evolution-v3[data-finch-stage="5"] .finch-progress-dot{
+  opacity:0!important;
+}
+
+@media(max-width:980px){
+  .finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{left:31%!important}
+  .finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{left:64%!important}
+  .finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{left:86%!important}
+  .finch-evolution-v3[data-finch-stage="5"] .finch-evolution-roamer{left:9%!important}
+}
+@media(max-width:760px){
+  .finch-evolution-v3[data-finch-stage="0"] .finch-evolution-roamer,
+  .finch-evolution-v3[data-finch-stage="1"] .finch-evolution-roamer,
+  .finch-evolution-v3[data-finch-stage="5"] .finch-evolution-roamer{left:3%!important}
+  .finch-evolution-v3[data-finch-stage="2"] .finch-evolution-roamer{left:24%!important}
+  .finch-evolution-v3[data-finch-stage="3"] .finch-evolution-roamer{left:57%!important}
+  .finch-evolution-v3[data-finch-stage="4"] .finch-evolution-roamer{left:79%!important}
+  .finch-evolution-v3 .finch-tap-hint{
+    left:25px!important;
+    top:-7px!important;
+  }
+}
