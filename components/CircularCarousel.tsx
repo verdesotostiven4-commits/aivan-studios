@@ -184,9 +184,9 @@ const CircularCarousel = ({
   cardWidth = 220,
   aspectRatio = 1,
   gap = 25,
-  curve,
-  tilt,
-  perspective,
+  curve = undefined,
+  tilt = undefined,
+  perspective = undefined,
   autoplay = 'drift',
   speed = 14,
   interval = 3,
@@ -203,10 +203,10 @@ const CircularCarousel = ({
   innerShade = 0.6,
   cornerRadius = 12,
   captions = false,
-  onChange,
-  onItemClick,
+  onChange = undefined,
+  onItemClick = undefined,
   className = '',
-  style
+  style = undefined
 }) => {
   const incoming = items && items.length ? items : DEFAULT_ITEMS;
   const [list, setList] = useState(incoming);
