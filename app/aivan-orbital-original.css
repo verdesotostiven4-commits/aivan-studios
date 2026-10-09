@@ -97,3 +97,13 @@
   .aivan-orbital-original-layout.is-focused .aivan-original-artboard,
   .aivan-orbital-original-layout .aivan-original-artboard{transform:none!important}
 }
+
+/* Client-approved transparent composite (2026-10-09).
+   Do not mask or recolor the supplied artwork: its alpha edges are intentional. */
+.aivan-orbital-original-layout .aivan-approved-composite {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  object-fit: contain;
+  filter: none !important;
+  mix-blend-mode: normal;
+}
