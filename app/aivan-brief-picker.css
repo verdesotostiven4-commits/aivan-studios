@@ -1,0 +1,137 @@
+/* AIVAN | Brief area selector: no browser-native dropdown chrome. */
+.brief-form .service-choice-field{
+  position:relative;
+  overflow:visible;
+  min-width:0;
+  padding:12px 13px 13px;
+  z-index:2;
+  background:linear-gradient(145deg,#fff,#faf9fb);
+}
+.brief-form .service-choice-field:focus-within,
+.brief-form .service-choice-field:has(.aivan-service-picker.is-open){
+  z-index:15;
+}
+.brief-form .service-choice-field > span{
+  margin:0 0 8px 2px;
+}
+.aivan-service-picker{
+  position:relative;
+  width:100%;
+  min-width:0;
+  isolation:isolate;
+}
+.aivan-service-trigger{
+  width:100%;
+  min-height:44px;
+  padding:0 1px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:0;
+  background:transparent;
+  border-radius:12px;
+  text-align:left;
+  cursor:pointer;
+  color:#18151e;
+}
+.aivan-service-trigger:focus-visible{
+  outline:2px solid #715ad6;
+  outline-offset:4px;
+}
+.aivan-service-orb{
+  flex:none;
+  width:25px;
+  height:25px;
+  border-radius:9px;
+  background:linear-gradient(135deg,#e5ad3f,#cf3f8b,#6d83f2);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.45);
+}
+.aivan-service-orb--unsure{background:linear-gradient(140deg,#c4bfc8,#8f869f)}
+.aivan-service-orb--brand{background:linear-gradient(135deg,#d0ae09,#f16c24)}
+.aivan-service-orb--mark{background:linear-gradient(135deg,#df553f,#cc267b,#7344c9)}
+.aivan-service-orb--prod{background:linear-gradient(135deg,#655de2,#50adfc)}
+.aivan-service-orb--packs{background:linear-gradient(135deg,#626067,#151518)}
+.aivan-service-trigger-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.aivan-service-trigger-copy strong{display:block;font-size:14px;font-weight:720;line-height:1.2;letter-spacing:-.02em;white-space:normal}
+.aivan-service-trigger-copy small{display:block;margin:0;font-size:10px;line-height:1.25;color:#89838e;letter-spacing:0}
+.aivan-service-chevron{width:19px;height:19px;flex:none;color:#59535f;transition:transform .23s ease}
+.aivan-service-picker.is-open .aivan-service-chevron{transform:rotate(-180deg)}
+.aivan-service-options{
+  position:absolute;
+  z-index:50;
+  width:calc(100% + 28px);
+  left:-14px;
+  top:calc(100% + 17px);
+  padding:8px;
+  border:1px solid rgba(130,116,150,.22);
+  border-radius:22px;
+  background:rgba(255,255,255,.985);
+  box-shadow:0 24px 65px rgba(31,22,48,.16),0 5px 16px rgba(34,28,42,.05);
+  animation:aivan-picker-in .22s cubic-bezier(.2,.7,.2,1) both;
+}
+.aivan-service-menu-eyebrow{
+  padding:10px 11px 9px;
+  color:#928b98;
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.17em;
+}
+.aivan-service-option{
+  display:flex;
+  width:100%;
+  min-height:58px;
+  align-items:center;
+  gap:12px;
+  padding:8px 11px;
+  border:1px solid transparent;
+  background:transparent;
+  border-radius:14px;
+  cursor:pointer;
+  text-align:left;
+  color:#242028;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.aivan-service-option.is-highlighted,
+.aivan-service-option:hover{background:#f6f3f9;border-color:#e9e2ee}
+.aivan-service-option[aria-selected="true"]{background:linear-gradient(95deg,#f7f4f9,#fff);border-color:#e2dbe8}
+.aivan-service-option-index{
+  display:grid;
+  place-items:center;
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  background:#efecf1;
+  color:#7d7383;
+  font-size:10px;
+  font-weight:850;
+  flex:none;
+}
+.aivan-service-option--brand .aivan-service-option-index{background:linear-gradient(135deg,#efc530,#f17725);color:#fff}
+.aivan-service-option--mark .aivan-service-option-index{background:linear-gradient(135deg,#ec5542,#ca2988,#8055d7);color:#fff}
+.aivan-service-option--prod .aivan-service-option-index{background:linear-gradient(135deg,#645ee3,#56aafb);color:#fff}
+.aivan-service-option--packs .aivan-service-option-index{background:linear-gradient(135deg,#55545a,#17171c);color:#fff}
+.aivan-service-option-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+.aivan-service-option-copy strong{
+  display:block;font-size:14px;font-weight:790;line-height:1.1;letter-spacing:-.018em;color:#17151b;
+}
+.aivan-service-option-copy small{
+  margin:0;color:#79747f;font-size:11px;line-height:1.25;letter-spacing:0;
+}
+.aivan-service-option--brand .aivan-service-option-copy strong{color:#c27d00}
+.aivan-service-option--mark .aivan-service-option-copy strong{color:#c33486}
+.aivan-service-option--prod .aivan-service-option-copy strong{color:#4a80db}
+.aivan-service-option--packs .aivan-service-option-copy strong{color:#242226}
+.aivan-service-option-check{width:17px;color:#716977;font-weight:780;text-align:center;flex:none}
+.aivan-service-option[aria-selected="true"] .aivan-service-option-check{color:#7452c5}
+@keyframes aivan-picker-in{
+  from{opacity:0;transform:translateY(-9px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:760px){
+  .aivan-service-options{top:calc(100% + 13px);border-radius:18px}
+  .aivan-service-option{min-height:54px;padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .aivan-service-options{animation:none}
+  .aivan-service-chevron,.aivan-service-option{transition:none}
+}

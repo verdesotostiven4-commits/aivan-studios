@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import BrandServicePicker from "./BrandServicePicker";
 
-const projectUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const submitUrl = projectUrl ? `${projectUrl}/functions/v1/submit-brief` : "";
+// Always submit through our own first-party API route; no public env required.
+const submitUrl = "/api/brief";
 
 const steps = ["Negocio", "Reto", "Objetivo", "Contacto"];
 const networks = ["Instagram", "Facebook", "TikTok", "LinkedIn", "YouTube", "Otra"];
@@ -76,12 +77,6 @@ export default function BriefForm() {
       return;
     }
 
-    if (!submitUrl) {
-      setState("error");
-      setMessage("La conexión del brief todavía no está configurada.");
-      return;
-    }
-
     setState("sending");
     setMessage("");
     try {
@@ -101,7 +96,7 @@ export default function BriefForm() {
         body: JSON.stringify({ ...form, utm }),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.message || "No pudimos enviar el brief.");
+      if (!response.ok || result.ok !== true) throw new Error(result.message || "No pudimos enviar el brief.");
       setState("success");
       setMessage("Recibimos tu información. El equipo de AIVAN la revisará antes de contactarte.");
       setForm(initial);
@@ -143,7 +138,7 @@ export default function BriefForm() {
           <div className="brief-question"><p className="micro-label">SIN ADIVINAR</p><h3>¿Qué está frenando a tu marca hoy?</h3></div>
           <Field label="Cuéntanos el reto principal"><textarea value={form.challenge} onChange={(e) => update("challenge", e.target.value)} placeholder="No sé qué publicar, mi marca no representa el negocio, necesito una estrategia…" rows={5} maxLength={900} required /></Field>
           <div className="form-grid two compact-grid">
-            <Field label="Área que crees necesitar"><select value={form.service} onChange={(e) => update("service", e.target.value)}><option value="no-se">No estoy seguro todavía</option><option value="aibrand">AIBRAND — Branding & diseño</option><option value="aimark">AIMARK — Marketing creativo</option><option value="aiprod">AIPROD — Producción audiovisual</option><option value="aipacks">AIPACKS — Acompañamiento integral</option></select></Field>
+            <div className="form-field service-choice-field"><span>Área que crees necesitar</span><BrandServicePicker value={form.service} onChange={(value) => update("service", value)} /></div>
             <Field label="Presupuesto / rango" hint="Opcional"><input value={form.budget} onChange={(e) => update("budget", e.target.value)} placeholder="Ej. $300–$600 / por definir" maxLength={80} /></Field>
           </div>
         </>}

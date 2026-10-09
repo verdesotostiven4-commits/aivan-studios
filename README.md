@@ -189,3 +189,23 @@ En `components/ServiceExplorer.tsx` cada opción del explorador tiene una clase 
 ## Logotipos definitivos y créditos (2026-10-09)
 
 Los 4 logos proporcionados mediante enlaces de Blogger están centralizados en `components/BrandAsset.tsx` (AIVAN STUDIOS negro, AIVAN sin STUDIOS, KIUBO y byStiven). El cabezal principal y la página /privacidad usan el negro AIVAN STUDIOS original mediante un `img` que **no estira ni comprime** sus proporciones. El pie de página ahora usa **solo AIVAN** y muestra en una franja oscura discreta los créditos **Creado por KIUBO** y **Identidad creativa byStiven**. No se sustituyeron los SVG blancos sobre fondo oscuro en otras secciones. CSS en `app/aivan-branding.css` (responsive y con `object-fit:contain`). Los archivos están alojados externamente en Blogger; si la red los bloquea, se presenta fallback accesible en lugar de un icono roto. No se generaron imágenes nuevas.
+
+## Brief 100 % personalizado y conexión funcional (2026-10-09)
+
+El selector nativo de "Área que crees necesitar" ha sido reemplazado por
+`components/BrandServicePicker.tsx` con menú propio accesible (combobox +
+listbox, teclado, estado seleccionado, cierre exterior) y los tonos oficiales
+de AIBRAND, AIMARK, AIPROD y AIPACKS en `app/aivan-brief-picker.css`.
+
+El Brief ahora publica su envío hacia el endpoint interno `POST /api/brief`
+(`app/api/brief/route.ts`): el servidor reenvía los mismos campos a la Edge
+Function `submit-brief` del proyecto Supabase de AIVAN
+(`nfwteklhqnkzlqnnhtem`). Se elimina el requisito de configurar
+`NEXT_PUBLIC_SUPABASE_URL` en el navegador para enviar solicitudes. La
+dirección pública fija de Supabase sirve de respaldo en el servidor a
+`SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_URL`. **No se añaden claves secretas
+al código**, ya que la función remota valida/filtra el formulario y guarda
+los leads con su autorización interna. El proxy limita los cuerpos a 25 KB,
+comprueba el Origin, agota en 14 segundos y no revela el error interno de
+Supabase. Con un error real de red muestra un mensaje honesto en vez del
+anterior texto engañoso de "conexión no configurada".

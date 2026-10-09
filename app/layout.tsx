@@ -9,6 +9,7 @@ import "./aivan-interaction-polish.css";
 import "./contact-editorial.css";
 import "./aivan-queued-improvements.css";
 import "./aivan-branding.css";
+import "./aivan-brief-picker.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://aivan-studios.vercel.app"),
