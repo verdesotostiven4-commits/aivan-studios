@@ -8,6 +8,7 @@ import ContactSection from "@/components/ContactSection";
 import PortfolioShowcase from "@/components/PortfolioShowcase";
 import ServiceExplorer from "@/components/ServiceExplorer";
 import BrandAsset from "@/components/BrandAsset";
+import FooterVideo from "@/components/FooterVideo";
 import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 // The original animated finch is intentionally archived, not deleted.
@@ -121,6 +122,7 @@ export default function Home() {
         <div className="closing-content" data-reveal><p className="micro-label light-label">AIVAN STUDIOS</p><p className="closing-cycle">Para marcas que quieren <FlipFadeWord words={["crecer.", "conectar.", "evolucionar."]} /></p><h2>La siguiente versión<br />de tu marca puede empezar hoy.</h2><div><a href="#brief" className="button button-light">Analizar mi negocio <span>↗</span></a><a href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined} className="button button-outline">Hablar directamente</a></div></div>
       </section>
 
+      <FooterVideo />
       <footer className="site-footer aivan-signature-footer">
         <a className="footer-brand-link" href="#inicio" aria-label="AIVAN — Volver al inicio">
           <BrandAsset brand="solo" />

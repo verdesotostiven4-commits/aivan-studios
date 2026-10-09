@@ -1,0 +1,50 @@
+/* Optional motion poster: enabled only when the optimized MP4 is hosted.
+ * Leave the preexisting credits in place as a semantic, functional fallback. */
+.aivan-footer-video{
+  max-width:100%;
+  padding:0;
+  margin:0;
+  background:#e9ddcb;
+  isolation:isolate;
+}
+.aivan-footer-video-frame{
+  width:100%;
+  max-height:min(100svh,960px);
+  aspect-ratio:16/9;
+  position:relative;
+  overflow:hidden;
+  background:#e9ddcb;
+}
+.aivan-footer-video-poster,.aivan-footer-video-media{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+.aivan-footer-video-media{opacity:0;transition:opacity .3s ease}
+.aivan-footer-video-media.is-ready{opacity:1}
+.aivan-footer-video-link-zones{position:absolute;inset:0;z-index:2;pointer-events:none}
+.aivan-footer-video-logo-link{position:absolute;left:5%;top:33%;height:19%;width:29%;pointer-events:auto}
+.aivan-footer-video-nav{
+  display:flex;
+  position:absolute;
+  left:35%;
+  top:36%;
+  height:13%;
+  width:35%;
+  pointer-events:auto;
+}
+.aivan-footer-video-nav>a{display:block;flex:1;min-width:0}
+.aivan-footer-video-link-zones a:focus-visible{outline:2px solid #0a0a0d;outline-offset:2px;border-radius:6px}
+@media(max-width:760px){
+  .aivan-footer-video-frame{aspect-ratio:16/10}
+  .aivan-footer-video-poster,.aivan-footer-video-media{object-fit:cover}
+  /* At narrow sizes text embedded in video becomes illegible.
+   * The full responsive semantic footer immediately below stays usable. */
+  .aivan-footer-video-link-zones{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .aivan-footer-video-media{display:none}
+}
