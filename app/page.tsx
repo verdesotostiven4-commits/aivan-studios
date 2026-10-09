@@ -7,7 +7,7 @@ import CinematicHero from "@/components/CinematicHero";
 import ContactSection from "@/components/ContactSection";
 import PortfolioShowcase from "@/components/PortfolioShowcase";
 import ServiceExplorer from "@/components/ServiceExplorer";
-import Wordmark from "@/components/Wordmark";
+import BrandAsset from "@/components/BrandAsset";
 import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 // The original animated finch is intentionally archived, not deleted.
@@ -121,10 +121,28 @@ export default function Home() {
         <div className="closing-content" data-reveal><p className="micro-label light-label">AIVAN STUDIOS</p><p className="closing-cycle">Para marcas que quieren <FlipFadeWord words={["crecer.", "conectar.", "evolucionar."]} /></p><h2>La siguiente versión<br />de tu marca puede empezar hoy.</h2><div><a href="#brief" className="button button-light">Analizar mi negocio <span>↗</span></a><a href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined} className="button button-outline">Hablar directamente</a></div></div>
       </section>
 
-      <footer className="site-footer">
-        <a href="#inicio" aria-label="Volver al inicio"><Wordmark /></a>
+      <footer className="site-footer aivan-signature-footer">
+        <a className="footer-brand-link" href="#inicio" aria-label="AIVAN — Volver al inicio">
+          <BrandAsset brand="solo" />
+        </a>
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
-        <nav aria-label="Enlaces del pie"><a href="#servicios">Servicios</a><a href="#proceso">Proceso</a><a href="#brief">Brief</a><a href="#contacto">Contacto</a><a href="/privacidad">Privacidad</a></nav>
+        <nav aria-label="Enlaces del pie">
+          <a href="#servicios">Servicios</a><a href="#proceso">Proceso</a>
+          <a href="#brief">Brief</a><a href="#contacto">Contacto</a>
+          <a href="/privacidad">Privacidad</a>
+        </nav>
+        <div className="footer-signatures" aria-label="Créditos de creación">
+          <div className="footer-signature footer-signature--kiubo">
+            <span className="footer-signature-caption">Creado por</span>
+            <BrandAsset brand="kiubo" />
+          </div>
+          <span className="footer-signature-divider" aria-hidden="true" />
+          <div className="footer-signature footer-signature--stiven">
+            <span className="footer-signature-caption">Identidad creativa</span>
+            <BrandAsset brand="bystiven" />
+            <span className="footer-signature-name">byStiven</span>
+          </div>
+        </div>
       </footer>
     </main>
   );

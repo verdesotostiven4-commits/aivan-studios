@@ -185,3 +185,7 @@ El recurso orbital oficial permanece una única imagen intacta, con nueva flotac
 ## Identidad cromática de las cuatro áreas (2026-10-09)
 
 En `components/ServiceExplorer.tsx` cada opción del explorador tiene una clase semántica `service-option--{brand,mark,prod,packs}`. `app/aivan-queued-improvements.css` asigna los degradados oficiales a los nombres (sin imágenes): AIBRAND dorado/naranja, AIMARK coral/fucsia/violeta, AIPROD añil/azul/celeste y AIPACKS grafito/negro. Las flechas usan el acento correspondiente. Los colores se ven también en opciones inactivas; las selecciones son sutiles y el comportamiento, imágenes de referencia y responsive no se alteran.
+
+## Logotipos definitivos y créditos (2026-10-09)
+
+Los 4 logos proporcionados mediante enlaces de Blogger están centralizados en `components/BrandAsset.tsx` (AIVAN STUDIOS negro, AIVAN sin STUDIOS, KIUBO y byStiven). El cabezal principal y la página /privacidad usan el negro AIVAN STUDIOS original mediante un `img` que **no estira ni comprime** sus proporciones. El pie de página ahora usa **solo AIVAN** y muestra en una franja oscura discreta los créditos **Creado por KIUBO** y **Identidad creativa byStiven**. No se sustituyeron los SVG blancos sobre fondo oscuro en otras secciones. CSS en `app/aivan-branding.css` (responsive y con `object-fit:contain`). Los archivos están alojados externamente en Blogger; si la red los bloquea, se presenta fallback accesible en lugar de un icono roto. No se generaron imágenes nuevas.

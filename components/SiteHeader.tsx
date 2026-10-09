@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Wordmark from "./Wordmark";
+import BrandAsset from "./BrandAsset";
 
 const links = [
   ["Qué es AIVAN", "#aivan"],
@@ -70,7 +70,7 @@ export default function SiteHeader() {
   return (
     <header className={`site-header compact${overHero ? " is-over-hero" : ""}`}>
       <a href="#inicio" className="brand-link" aria-label="AIVAN STUDIOS — Inicio" onClick={() => setOpen(false)}>
-        <Wordmark />
+        <BrandAsset brand="studio" loading="eager" />
       </a>
       <nav className="desktop-nav" aria-label="Navegación principal">
         {links.map(([label, href]) => (

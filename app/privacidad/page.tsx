@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Wordmark from "@/components/Wordmark";
+import BrandAsset from "@/components/BrandAsset";
 
 export const metadata: Metadata = {
   title: "Aviso de privacidad",
@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <main className="legal-page" id="main-content">
       <article className="legal-shell">
-        <a href="/" aria-label="Volver al sitio de AIVAN STUDIOS"><Wordmark /></a>
+        <a href="/" aria-label="Volver al sitio de AIVAN STUDIOS"><BrandAsset brand="studio" loading="eager" /></a>
         <p className="micro-label">INFORMACIÓN Y CONTACTO</p>
         <h1>Aviso de privacidad.</h1>
         <p>Este aviso explica, de forma sencilla, qué información recibe AIVAN STUDIOS cuando una persona envía el brief o se pone en contacto desde este sitio.</p>
