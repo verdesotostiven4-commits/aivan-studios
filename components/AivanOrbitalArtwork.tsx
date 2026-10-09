@@ -30,97 +30,132 @@ type LayerName = keyof typeof layers;
 const ORDER: LayerName[] = ["guides", "clouds", "portal", "orbit", "amber", "magenta", "blue"];
 
 export default function AivanOrbitalArtwork() {
-  const artRef = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const [focused, setFocused] = useState(false);
-  const [portalReady, setPortalReady] = useState(false);
-  const [inView, setInView] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [failed, setFailed] = useState<LayerName[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(media.matches);
+    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
-    const el = artRef.current;
-    if (!el || !("IntersectionObserver" in window)) {
-      setInView(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.12 });
-    observer.observe(el);
+    const node = ref.current;
+    if (!node || !("IntersectionObserver" in window)) { setVisible(true); return; }
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .15 });
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
-  function onPointerMove(event: React.PointerEvent<HTMLButtonElement>) {
-    if (event.pointerType === "touch" || reducedMotion || !artRef.current) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - .5) * 2));
-    const y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - .5) * 2));
-    artRef.current.style.setProperty("--orbital-x", `${(x * 7).toFixed(2)}px`);
-    artRef.current.style.setProperty("--orbital-y", `${(y * 6).toFixed(2)}px`);
-    artRef.current.style.setProperty("--orbital-near-x", `${(x * 13).toFixed(2)}px`);
-    artRef.current.style.setProperty("--orbital-near-y", `${(y * 9).toFixed(2)}px`);
+  function onMove(event: React.PointerEvent<HTMLButtonElement>) {
+    if (reduced || event.pointerType === "touch") return;
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--aivan-tilt-x", (((event.clientX - r.left) / r.width - .5) * 7).toFixed(2) + "px");
+    el.style.setProperty("--aivan-tilt-y", (((event.clientY - r.top) / r.height - .5) * 5).toFixed(2) + "px");
   }
 
-  function onPointerLeave() {
-    const el = artRef.current;
-    if (!el) return;
-    el.style.setProperty("--orbital-x", "0px");
-    el.style.setProperty("--orbital-y", "0px");
-    el.style.setProperty("--orbital-near-x", "0px");
-    el.style.setProperty("--orbital-near-y", "0px");
+  function reset() {
+    ref.current?.style.setProperty("--aivan-tilt-x", "0px");
+    ref.current?.style.setProperty("--aivan-tilt-y", "0px");
   }
 
   return (
     <button
-      ref={artRef}
       type="button"
-      className={`aivan-orbital-art${focused ? " is-focused" : ""}${inView ? " is-visible" : ""}${reducedMotion ? " is-reduced" : ""}`}
-      aria-label={focused ? "Volver a la vista orbital completa" : "Acercar el paisaje de Galápagos"}
+      ref={ref}
+      className={`aivan-orbital-art aivan-orbital-original-layout${focused ? " is-focused" : ""}${visible && !reduced ? " is-visible" : ""}`}
+      aria-label={focused ? "Volver a la vista completa de Galápagos" : "Explorar el paisaje orbital de Galápagos"}
       aria-pressed={focused}
-      title={focused ? "Volver a la composición" : "Explorar Galápagos"}
-      onClick={() => setFocused((value) => !value)}
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-      onKeyDown={(event) => { if (event.key === "Escape") { setFocused(false); event.stopPropagation(); } }}
+      title={focused ? "Volver a la vista completa" : "Explorar Galápagos"}
+      onClick={() => setFocused(value => !value)}
+      onPointerMove={onMove}
+      onPointerLeave={reset}
+      onKeyDown={event => { if (event.key === "Escape") setFocused(false); }}
     >
-      <span className="aivan-orbital-fallback" aria-hidden="true">
-        <span className="aivan-orbital-fallback-path" />
-        <span className="aivan-orbital-fallback-dot" />
-        <span className="aivan-orbital-fallback-dot" />
-        <span className="aivan-orbital-fallback-dot" />
+      <span className="aivan-original-artboard" aria-hidden="true">
+        {/* The photograph is the ONLY original derived layer still in use.
+            Other re-generated neon overlays are archived above, deliberately
+            disabled: they distorted the original artwork. */}
+        <span className="aivan-original-landscape">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={layers.portal} width="1600" height="900" alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => setLoaded(false)} />
+        </span>
+        <svg className="aivan-original-orbits" viewBox="0 0 1672 941" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="aivan-orbit-warm" x1="0%" y1="0%" x2="100%" y2="85%">
+              <stop offset="0%" stopColor="#b08c7b" />
+              <stop offset="15%" stopColor="#f39a20" />
+              <stop offset="44%" stopColor="#f8b459" />
+              <stop offset="76%" stopColor="#d96ba9" />
+              <stop offset="100%" stopColor="#6665e5" />
+            </linearGradient>
+            <linearGradient id="aivan-orbit-cool" x1="0%" y1="40%" x2="100%" y2="60%">
+              <stop offset="0%" stopColor="#bf406f" />
+              <stop offset="30%" stopColor="#fd5079" />
+              <stop offset="55%" stopColor="#d791bd" />
+              <stop offset="79%" stopColor="#73b7ff" />
+              <stop offset="100%" stopColor="#4c5edb" />
+            </linearGradient>
+            <linearGradient id="aivan-orbit-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#f29b2e" />
+              <stop offset="45%" stopColor="#f1c37c" />
+              <stop offset="100%" stopColor="#f09a1e" />
+            </linearGradient>
+            <radialGradient id="aivan-planet-sun" cx="32%" cy="25%" r="74%">
+              <stop stopColor="#fff1b8"/>
+              <stop offset=".38" stopColor="#f7bb65"/>
+              <stop offset=".77" stopColor="#d28b22"/>
+              <stop offset="1" stopColor="#b66e16"/>
+            </radialGradient>
+            <radialGradient id="aivan-planet-rose" cx="30%" cy="22%" r="82%">
+              <stop stopColor="#ffd3e6"/>
+              <stop offset=".4" stopColor="#f08ac5"/>
+              <stop offset=".78" stopColor="#bf2f8c"/>
+              <stop offset="1" stopColor="#9a236d"/>
+            </radialGradient>
+            <radialGradient id="aivan-planet-blue" cx="33%" cy="23%" r="81%">
+              <stop stopColor="#c6ecff"/>
+              <stop offset=".3" stopColor="#71b8ff"/>
+              <stop offset=".7" stopColor="#3566e8"/>
+              <stop offset="1" stopColor="#17339f"/>
+            </radialGradient>
+          </defs>
+
+          {/* Hairline background construction rings: quiet and translucent. */}
+          <g fill="none" stroke="#bcb5ad" strokeWidth="1" opacity=".36">
+            <ellipse cx="830" cy="429" rx="428" ry="391" transform="rotate(-14 830 429)" />
+            <path d="M1245 146 C1491 155 1544 347 1458 465" />
+            <path d="M319 284 C155 255 85 316 122 438" />
+          </g>
+          <g fill="#baa795" opacity=".76">
+            <circle cx="543" cy="155" r="4"/>
+            <circle cx="1245" cy="146" r="4"/>
+            <circle cx="783" cy="797" r="4"/>
+          </g>
+          {/* The original is composed of slender, precise paths.
+              Replace the previous thick neon loops with subtle strokes. */}
+          <g fill="none" strokeWidth="1.8" strokeLinecap="round" opacity=".96">
+            <path d="M303 246 C287 171 445 165 599 174 C991 180 1397 278 1459 433 C1486 494 1350 625 1062 647" stroke="url(#aivan-orbit-warm)"/>
+            <path d="M303 283 C191 278 102 286 136 376 C165 465 440 554 648 598 C866 654 1251 690 1378 636" stroke="url(#aivan-orbit-cool)"/>
+            <path d="M307 245 C344 362 627 451 885 545 C1153 647 1368 708 1337 655 C1300 614 1171 576 1106 571" stroke="url(#aivan-orbit-gold)" />
+            <path d="M1434 403 C1469 353 1558 402 1523 483 C1503 548 1331 595 1119 589 C961 585 795 560 650 598" stroke="url(#aivan-orbit-cool)"/>
+          </g>
+          <g className="aivan-original-planets">
+            <circle cx="303" cy="277" r="32" fill="url(#aivan-planet-sun)"/>
+            <circle cx="648" cy="599" r="28" fill="url(#aivan-planet-rose)"/>
+            <circle cx="1467" cy="431" r="28" fill="url(#aivan-planet-blue)"/>
+          </g>
+        </svg>
+        {!loaded && <span className="aivan-original-offline" />}
       </span>
-      <span className={`aivan-orbital-stack${portalReady ? " has-portal" : ""}`} aria-hidden="true">
-        {ORDER.map((name) => (
-          <span className={`aivan-orbital-layer aivan-orbital-${name}`} key={name}>
-            {/* All user assets retain their original 16:9 canvas and relative positions. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt=""
-              src={layers[name]}
-              width={1600}
-              height={900}
-              draggable={false}
-              loading="lazy"
-              decoding="async"
-              onLoad={() => { if (name === "portal") setPortalReady(true); }}
-              onError={() => {
-                setFailed((previous) => previous.includes(name) ? previous : [...previous, name]);
-                if (name === "portal") setPortalReady(false);
-              }}
-              style={{ opacity: failed.includes(name) ? 0 : 1 }}
-            />
-          </span>
-        ))}
-      </span>
-      <span className="aivan-orbital-instruction" aria-hidden="true">
-        {focused ? "VOLVER A LA VISTA COMPLETA ↗" : "EXPLORAR ↗"}
-      </span>
+      <span className="aivan-orbital-instruction" aria-hidden="true">{focused ? "VOLVER ↗" : "EXPLORAR ↗"}</span>
     </button>
   );
 }

@@ -96,3 +96,20 @@ La animación histórica del pinzón está guardada por separado.
 Carrusel: `pauseOnlyOnActive` en `CircularCarousel` permite mantener
 la rotación sobre la periferia y pausarla únicamente al pasar el cursor
 sobre la tarjeta central activa.
+
+## Corrección de dirección artística del bloque orbital (2026-10-09)
+
+La primera integración de siete capas tenía halos de neón y órbitas deformadas
+que **NO** respetaban la imagen conceptual aprobada. Se archivaron las siete URL
+sin borrarlas en `components/AivanOrbitalArtwork.tsx` (constante `layers`).
+Ahora solo se utiliza como recurso visual el portal central original de la
+entrega de capas y las órbitas de trazo fino se dibujan en SVG. Archivo de
+estilos de corrección: `app/aivan-orbital-original.css`. **Importante:**
+las órbitas SVG se aproximan al diseño fuente y aún requieren comparación visual;
+para exactitud píxel a píxel, insertar como activo estático la ilustración
+original completa de AIVAN, guardada en la conversación de diseño, como
+`public/images/aivan-galapagos-orbital-original.webp` antes de rehacer
+animaciones. No reactivar las capas de neón sin aprobación.
+
+La corrección mantiene interacción ligera (paralaje de todo el conjunto,
+zoom discreto) y soporte de movimiento reducido.
