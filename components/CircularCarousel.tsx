@@ -195,6 +195,7 @@ const CircularCarousel = ({
   momentum = 0.6,
   snap = true,
   pauseOnHover = true,
+  pauseOnlyOnActive = false,
   focusOnClick = true,
   parallax = 0.3,
   stretch = 0.5,
@@ -275,7 +276,7 @@ const CircularCarousel = ({
     press: null,
     drag: false,
     hover: false,
-    pointer: { inside: false, x: 0, y: 0 },
+    pointer: { inside: false, x: 0, y: 0, clientX: 0, clientY: 0 },
     yaw: 0,
     pitch: 0,
     intro: null,
@@ -308,6 +309,7 @@ const CircularCarousel = ({
     momentum: clamp(momentum, 0, 1),
     snap,
     pauseOnHover,
+    pauseOnlyOnActive,
     parallax: reduced ? 0 : clamp(parallax, 0, 1),
     stretch: reduced ? 0 : clamp(stretch, 0, 1),
     depthFade: clamp(depthFade, 0, 1),
@@ -488,7 +490,18 @@ const CircularCarousel = ({
         }
       }
 
-      const paused = (s.pauseOnHover && state.hover) || state.drag || now < state.holdUntil;
+      // The rest of the carousel keeps turning when hovered; only the
+      // card currently facing the viewer is a deliberate pause target.
+      let hoverPause = s.pauseOnHover && state.hover;
+      if (s.pauseOnHover && s.pauseOnlyOnActive) {
+        hoverPause = false;
+        if (state.pointer.inside) {
+          const element = document.elementFromPoint(state.pointer.clientX, state.pointer.clientY);
+          const card = element?.closest?.('[data-cc-index]');
+          hoverPause = Boolean(card && Number(card.getAttribute('data-cc-index')) === activeRef.current);
+        }
+      }
+      const paused = hoverPause || state.drag || now < state.holdUntil;
       const cruise = s.autoplay === 'drift' && !paused && !state.intro ? s.speed * state.dir : 0;
       let busy = Boolean(state.intro) || state.drag;
 
@@ -708,6 +721,8 @@ const CircularCarousel = ({
   const updatePointer = event => {
     const rect = rootRef.current.getBoundingClientRect();
     const pointer = stateRef.current.pointer;
+    pointer.clientX = event.clientX;
+    pointer.clientY = event.clientY;
     pointer.x = clamp(((event.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
     pointer.y = clamp(((event.clientY - rect.top) / rect.height) * 2 - 1, -1, 1);
   };
@@ -792,6 +807,8 @@ const CircularCarousel = ({
   const handlePointerEnter = event => {
     if (event.pointerType !== 'mouse') return;
     stateRef.current.hover = true;
+    stateRef.current.pointer.inside = true;
+    updatePointer(event);
     wakeRef.current();
   };
 

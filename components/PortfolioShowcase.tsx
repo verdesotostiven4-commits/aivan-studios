@@ -55,12 +55,13 @@ export default function PortfolioShowcase() {
           items={inspiration}
           preset="cylinder"
           intro="rise"
-          cardWidth={250}
+          cardWidth={275}
           aspectRatio={0.86}
           gap={30}
           speed={11}
           autoplay="drift"
           pauseOnHover
+          pauseOnlyOnActive
           fadeColor="#101114"
           depthFade={0.65}
           cornerRadius={20}

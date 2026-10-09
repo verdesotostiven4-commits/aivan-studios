@@ -1,4 +1,5 @@
 import AvatarShowcase from "@/components/AvatarShowcase";
+import AivanOrbitalArtwork from "@/components/AivanOrbitalArtwork";
 import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
@@ -51,10 +52,8 @@ export default function Home() {
             To restore: set ENABLE_FINCH_SIGNATURE to true. */}
         {ENABLE_FINCH_SIGNATURE ? <FinchSignature /> : (
           <div className="aivan-insight" data-reveal>
-            <div className="aivan-insight-art" aria-hidden="true">
-              <div className="aivan-insight-rings"><span /><span /><span /></div>
-              <div className="aivan-insight-path"><span /><span /><span /></div>
-              <span className="aivan-insight-legend">UNA DIRECCIÓN / MUCHAS FORMAS DE CRECER</span>
+            <div className="aivan-insight-art">
+              <AivanOrbitalArtwork />
             </div>
             <div className="aivan-insight-copy">
               <p className="micro-label">DESDE GALÁPAGOS</p>

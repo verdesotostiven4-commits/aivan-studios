@@ -73,3 +73,26 @@ Las fotografías actuales de `components/PortfolioShowcase.tsx` y de las
 cuatro áreas en `components/ServiceExplorer.tsx` son **referencias
 ilustrativas**, no proyectos aprobados ni realizados por AIVAN. Sustituir
 fuentes y descripciones al recibir material oficial.
+
+## Capas orbitales AIVAN (arte interactivo y recuperable)
+
+El bloque debajo de Axel y Emma (`Una mirada que observa, adapta y evoluciona`) usa
+`components/AivanOrbitalArtwork.tsx` y `app/aivan-orbital.css`. Contiene
+**siete URLs de PNGs proporcionadas por el cliente**: paisaje circular,
+órbitas de color, esferas dorada/magenta/azul, guías y nubes.
+Todas las capas deben mantener **idéntica relación 16:9 y origen común**.
+
+Movimiento: oscilación sutil de las capas y paralaje al mover el cursor,
+con enfoque del paisaje al pulsar o con teclado. Respeta
+`prefers-reduced-motion`; cuando no se descarga el portal aparece
+un gráfico de respaldo. **Nota:** el orden de asignación de las siete URLs
+es el orden original entregado por el cliente; verificar visualmente en navegador,
+ya que la fuente Blogger no pudo inspeccionarse desde la herramienta remota.
+
+Palabras clave: `AivanOrbitalArtwork`, `capas`, `órbitas`,
+`planeta Galápagos`, `orbital PNG`, `artwork`.
+La animación histórica del pinzón está guardada por separado.
+
+Carrusel: `pauseOnlyOnActive` en `CircularCarousel` permite mantener
+la rotación sobre la periferia y pausarla únicamente al pasar el cursor
+sobre la tarjeta central activa.

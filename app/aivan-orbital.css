@@ -1,0 +1,79 @@
+/* The seven user-provided AIVAN image layers are a 16:9 artboard.
+   Keep one shared coordinate system; do not crop an individual PNG. */
+.aivan-insight{min-height:235px;padding-top:20px;padding-bottom:12px;align-items:center}
+.aivan-insight-art{height:auto!important;min-height:0;display:block;overflow:visible;position:relative;isolation:isolate}
+.aivan-insight-art:before{display:none}
+.aivan-orbital-art{
+  --orbital-x:0px;--orbital-y:0px;--orbital-near-x:0px;--orbital-near-y:0px;
+  display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:1672/941;
+  padding:0;margin:0;border:0;background:transparent;cursor:zoom-in;
+  color:#78727b;text-align:center;overflow:visible;touch-action:pan-y;
+  border-radius:14px;outline-offset:5px;
+}
+.aivan-orbital-art.is-focused{cursor:zoom-out}
+.aivan-orbital-art:focus-visible{outline:2px solid #af4a94}
+.aivan-orbital-fallback,.aivan-orbital-stack{position:absolute;inset:0;pointer-events:none}
+.aivan-orbital-fallback{display:grid;place-items:center;opacity:.5;transition:opacity .5s}
+.aivan-orbital-fallback-path{position:absolute;width:79%;height:50%;border:1px solid rgba(187,98,142,.4);border-radius:50%;transform:rotate(-20deg)}
+.aivan-orbital-fallback-path:after{content:"";position:absolute;inset:18% 8%;border:1px solid rgba(105,139,249,.35);border-radius:50%}
+.aivan-orbital-fallback-dot{position:absolute;top:39%;left:18%;height:12px;width:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffcb74,#d58b09)}
+.aivan-orbital-fallback-dot:nth-child(3){left:48%;top:63%;background:radial-gradient(circle at 35% 30%,#fc75b4,#c72b76)}
+.aivan-orbital-fallback-dot:nth-child(4){left:79%;top:37%;background:radial-gradient(circle at 35% 30%,#92bdff,#5b7eff)}
+.aivan-orbital-stack{opacity:0;transition:opacity .7s cubic-bezier(.2,.8,.2,1)}
+.aivan-orbital-stack.has-portal{opacity:1}
+.aivan-orbital-art:has(.has-portal) .aivan-orbital-fallback{opacity:0}
+.aivan-orbital-layer{position:absolute;inset:0;display:block;will-change:transform;pointer-events:none;transition:transform .45s cubic-bezier(.22,.85,.24,1),opacity .6s}
+.aivan-orbital-layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;max-width:none;filter:none;user-select:none;pointer-events:none}
+.aivan-orbital-guides{z-index:1;opacity:.68}
+.aivan-orbital-clouds{z-index:2;opacity:.75;transform:translate(calc(var(--orbital-x) * -0.2),calc(var(--orbital-y) * -0.2))}
+.aivan-orbital-portal{z-index:3;transform:translate(var(--orbital-x),var(--orbital-y))}
+.aivan-orbital-orbit{z-index:4;transform:translate(var(--orbital-near-x),var(--orbital-near-y))}
+.aivan-orbital-amber,.aivan-orbital-magenta,.aivan-orbital-blue{z-index:5;transform:translate(var(--orbital-near-x),var(--orbital-near-y))}
+.aivan-orbital-amber{z-index:6}
+.aivan-orbital-magenta{z-index:7}
+.aivan-orbital-blue{z-index:8}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-guides img{animation:aivanOrbitGuides 21s ease-in-out infinite alternate}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-clouds img{animation:aivanOrbitMist 17s ease-in-out infinite alternate}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-portal img{animation:aivanOrbitBreathe 14s ease-in-out infinite}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-orbit img{animation:aivanOrbitTrail 15s ease-in-out infinite alternate}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-amber img{animation:aivanAmber 11s ease-in-out infinite alternate}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-magenta img{animation:aivanMagenta 10s ease-in-out infinite alternate}
+.aivan-orbital-art.is-visible:not(.is-reduced) .aivan-orbital-blue img{animation:aivanBlue 12s ease-in-out infinite alternate}
+.aivan-orbital-instruction{position:absolute;bottom:-8px;left:50%;transform:translate(-50%,9px);white-space:nowrap;font-size:8px;font-weight:800;letter-spacing:.16em;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
+.aivan-orbital-art:hover .aivan-orbital-instruction,.aivan-orbital-art:focus-visible .aivan-orbital-instruction{opacity:.78;transform:translate(-50%,0)}
+.aivan-orbital-art.is-focused .aivan-orbital-portal{transform:scale(1.10) translate(var(--orbital-x),var(--orbital-y));z-index:9}
+.aivan-orbital-art.is-focused .aivan-orbital-orbit{opacity:.25;transform:scale(.95)}
+.aivan-orbital-art.is-focused .aivan-orbital-amber,
+.aivan-orbital-art.is-focused .aivan-orbital-magenta,
+.aivan-orbital-art.is-focused .aivan-orbital-blue{opacity:.35}
+@keyframes aivanOrbitGuides{from{transform:rotate(-.8deg)}to{transform:rotate(1.6deg)}}
+@keyframes aivanOrbitMist{from{transform:translate3d(-4px,3px,0);opacity:.8}to{transform:translate3d(6px,-4px,0);opacity:1}}
+@keyframes aivanOrbitBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
+@keyframes aivanOrbitTrail{from{transform:rotate(-.65deg) scale(.99)}to{transform:rotate(.9deg) scale(1.01)}}
+@keyframes aivanAmber{from{transform:translate3d(-4px,1px,0)}to{transform:translate3d(5px,-3px,0)}}
+@keyframes aivanMagenta{from{transform:translate3d(3px,-4px,0)}to{transform:translate3d(-4px,5px,0)}}
+@keyframes aivanBlue{from{transform:translate3d(4px,3px,0)}to{transform:translate3d(-5px,-4px,0)}}
+/* Put some presence back into the 3D work gallery without extending the
+   whole section to several fold heights at standard laptop resolutions. */
+.portfolio-showcase{padding-top:clamp(65px,8vh,92px);padding-bottom:43px}
+.portfolio-heading{gap:36px}
+.portfolio-heading h2{font-size:clamp(44px,5.45vw,82px)}
+.portfolio-heading>div:last-child p{font-size:14px}
+.portfolio-carousel-wrap{height:clamp(390px,56svh,565px);margin-top:8px}
+.portfolio-showcase .circular-carousel__title{font-size:17px}
+@media(max-height:790px) and (min-width:761px){
+  .portfolio-carousel-wrap{height:clamp(360px,53svh,470px)}
+}
+@media(max-width:760px){
+  .aivan-insight{padding-top:18px;padding-bottom:12px;gap:12px}
+  .aivan-insight-art{height:auto!important;min-height:0}
+  .aivan-orbital-art{width:min(100%,500px);margin:0 auto}
+  .aivan-orbital-instruction{font-size:7px;bottom:0}
+  .portfolio-showcase{padding-top:58px;padding-bottom:32px}
+  .portfolio-carousel-wrap{height:clamp(370px,57svh,495px)}
+  .portfolio-heading h2{font-size:clamp(42px,9.3vw,61px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .aivan-orbital-layer,.aivan-orbital-layer img{animation:none!important;transition:none!important;transform:none!important}
+  .aivan-orbital-art.is-focused .aivan-orbital-portal{transform:scale(1.04)!important}
+}
