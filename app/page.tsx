@@ -3,16 +3,10 @@ import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import CinematicHero from "@/components/CinematicHero";
-import ProjectsSection from "@/components/ProjectsSection";
+import PortfolioShowcase from "@/components/PortfolioShowcase";
+import ServiceExplorer from "@/components/ServiceExplorer";
 import Wordmark from "@/components/Wordmark";
 import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
-
-const services = [
-  { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
-  { code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo", copy: "Dirección estratégica para que el contenido tenga una razón de existir y una ruta para crecer.", items: ["Estrategia de contenidos", "Gestión de redes sociales", "Diagnóstico de marca", "Asesoría estratégica"] },
-  { code: "03", id: "prod", name: "AIPROD", label: "Producción audiovisual", copy: "Fotografía, edición y motion pensados para comunicar valor y convertir ideas en contenido real.", items: ["Estrategia de contenidos", "Fotografía profesional", "Edición audiovisual", "Motion Graphics"] },
-  { code: "04", id: "packs", name: "AIPACKS", label: "Paquetes AIVAN", copy: "Acompañamientos que combinan disciplinas cuando tu negocio necesita continuidad y evolución.", items: ["AIPACK Mini", "AIPACK Pro", "AIPACK Ultra"] },
-];
 
 const processSteps = [
   ["01", "Conocemos", "Entendemos el negocio, su contexto y el problema antes de hablar de soluciones."],
@@ -21,24 +15,6 @@ const processSteps = [
   ["04", "Creamos", "Convertimos la dirección en piezas, contenido y materiales listos para el mundo real."],
   ["05", "Evolucionamos contigo", "Leemos la respuesta, ajustamos y hacemos que el sistema madure con el negocio."],
 ];
-
-function ServiceIcon({ id }: { id: string }) {
-  if (id === "brand") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/><circle cx="12" cy="12" r="3.25"/></svg>;
-  if (id === "mark") return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"/></svg>;
-  if (id === "prod") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>;
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3l8 4.5-8 4.5-8-4.5Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg>;
-}
-
-function ServiceCard({ service, index }: { service: (typeof services)[number]; index: number }) {
-  return (
-    <article id={service.id === "packs" ? "aipacks" : undefined} className={`service-card service-${service.id} service-stagger-${index + 1}`} data-reveal>
-      <div className="service-index"><span>{service.code}</span><span>↗</span></div>
-      <div className="service-title"><span className="service-symbol"><ServiceIcon id={service.id} /></span><div><p>{service.label}</p><h3>{service.name}</h3></div></div>
-      <p className="service-copy">{service.copy}</p>
-      <div className="service-list">{service.items.map((item) => <span key={item}>{item}</span>)}</div>
-    </article>
-  );
-}
 
 export default function Home() {
   const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "593990601620").replace(/\D/g, "");
@@ -80,19 +56,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="brand-marquee" aria-label="Lenguaje creativo de AIVAN">
-        <div className="marquee-track">
-          <span>AIBRAND</span><b>✦</b><em>IDENTIDAD</em><b>✦</b><span>AIMARK</span><b>✦</b><em>ESTRATEGIA</em><b>✦</b><span>AIPROD</span><b>✦</b><em>PRODUCCIÓN</em><b>✦</b><span>AIPACKS</span><b>✦</b><em>EVOLUCIÓN</em><b>✦</b>
-          <span aria-hidden="true">AIBRAND</span><b aria-hidden="true">✦</b><em aria-hidden="true">IDENTIDAD</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIMARK</span><b aria-hidden="true">✦</b><em aria-hidden="true">ESTRATEGIA</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIPROD</span><b aria-hidden="true">✦</b><em aria-hidden="true">PRODUCCIÓN</em><b aria-hidden="true">✦</b><span aria-hidden="true">AIPACKS</span><b aria-hidden="true">✦</b><em aria-hidden="true">EVOLUCIÓN</em><b aria-hidden="true">✦</b>
-        </div>
-      </section>
+      <PortfolioShowcase />
 
       <section className="services-section" id="servicios">
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
           <p>Entramos por el punto que tu negocio necesita hoy y dejamos espacio para que el sistema crezca mañana.</p>
         </div>
-        <div className="services-grid">{services.map((service, index) => <ServiceCard key={service.name} service={service} index={index} />)}</div>
+        <ServiceExplorer />
       </section>
 
       <section className="bridge-section">
@@ -113,7 +84,6 @@ export default function Home() {
         </div>
       </section>
 
-      <ProjectsSection />
 
       <section className="brief-section" id="brief">
         <div className="brief-shell">
