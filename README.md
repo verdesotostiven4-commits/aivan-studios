@@ -152,3 +152,20 @@ Se preservaron el código del pinzón archivado, los diseños de otras secciones
 El menú principal y móvil comparte el array de `components/SiteHeader.tsx`, ahora ordenado **Qué es AIVAN → Servicios → Acompañamientos → Nuestro método → Brief → Contacto**. El enlace de Acompañamientos abre el área AIPACKS.
 
 En `app/aivan-interaction-polish.css` se equilibró el Brief en ventanas de navegador normales: menos espacio superior vacío, columnas proporcionadas, jerarquía tipográfica más compacta, campos legibles y controles dentro de la primera vista de escritorio, sin F11. Incluye ajuste de pantallas de portátil de poca altura y mantiene los controles pegajosos del formulario en móvil. No cambia las preguntas, validaciones ni el envío.
+
+## Contacto editorial (actualización 2026-10-09)
+
+El diseño elegido para **Contacto directo** se implementa como JSX accesible
+en `components/ContactSection.tsx`, con estilos exclusivos en
+`app/contact-editorial.css`. La URL del fondo entregado por el cliente está
+en ese CSS, dentro de `.contact-ambient`, y se utiliza directamente como
+imagen de fondo. No se ha descargado/copied el PNG a los assets locales:
+desde el entorno actual no se ha podido verificar la disponibilidad de Blogger.
+Existe un fondo degradado CSS de respaldo cuando esa imagen no carga.
+
+La sección conserva exactamente los enlaces funcionales previos al WhatsApp
+(`NEXT_PUBLIC_WHATSAPP_NUMBER` con valor predeterminado 593990601620)
+y al correo `aivanstudiosgps@gmail.com`. Son botones reales, no una imagen
+de las tarjetas. Incluye encabezado editorial, dos tarjetas con iconos, flechas,
+descripciones, y beneficios. Respeta responsive y `prefers-reduced-motion`.
+El resto de la página permanece intacto.

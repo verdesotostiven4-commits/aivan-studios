@@ -4,6 +4,7 @@ import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
 import CinematicHero from "@/components/CinematicHero";
+import ContactSection from "@/components/ContactSection";
 import PortfolioShowcase from "@/components/PortfolioShowcase";
 import ServiceExplorer from "@/components/ServiceExplorer";
 import Wordmark from "@/components/Wordmark";
@@ -113,19 +114,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="contact-section" id="contacto">
-        <div className="contact-shell" data-reveal>
-          <div>
-            <p className="micro-label">CONTACTO DIRECTO</p>
-            <h2>¿Prefieres hablar<br />sin llenar el brief?</h2>
-            <p>Escríbenos directamente por WhatsApp o correo. Si ya tienes claro lo que necesitas, este es el camino más rápido.</p>
-          </div>
-          <div className="contact-links">
-            <a href={whatsappHref} target="_blank" rel="noreferrer"><span>WhatsApp</span><strong>+593 99 060 1620</strong><b>↗</b></a>
-            <a href={emailHref}><span>Correo</span><strong>{contactEmail}</strong><b>↗</b></a>
-          </div>
-        </div>
-      </section>
+      <ContactSection whatsappHref={whatsappHref} emailHref={emailHref} email={contactEmail} phone="+593 99 060 1620" />
 
       <section className="closing-section">
         <div className="closing-orbit orbit-one" /><div className="closing-orbit orbit-two" />
