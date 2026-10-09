@@ -250,3 +250,53 @@
   .contact-editorial-arrow{transition:none!important}
   .contact-section--editorial .contact-editorial-card:hover{transform:none!important}
 }
+
+/*
+ * AIVAN — Brief to Contact blend / custom WhatsApp artwork.
+ * The shared warm-ivory hue at the seam and the progressive alpha mask
+ * eliminate the hard horizontal boundary while preserving the form and cards.
+ */
+.brief-section {
+  background:
+    radial-gradient(ellipse 51% 27% at 86% 102%, rgba(225,127,171,.075), transparent 77%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper) 66%, #f6f4f0 100%);
+}
+.contact-section.contact-section--editorial {
+  background:
+    radial-gradient(ellipse at 78% 78%, rgba(133,118,246,.12), transparent 43%),
+    radial-gradient(ellipse at 62% 35%, rgba(255,162,108,.09), transparent 44%),
+    #f6f4f0;
+}
+.contact-section--editorial .contact-ambient {
+  /* At the top the beige Brief color passes through; the orbital art then
+     gradually comes into view rather than beginning abruptly at the edge. */
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.2) 8%, rgba(0,0,0,.8) 22%, #000 34%);
+  mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.2) 8%, rgba(0,0,0,.8) 22%, #000 34%);
+}
+.contact-section--editorial .contact-editorial-icon--whatsapp:has(.contact-whatsapp-image) {
+  background:transparent;
+  border-radius:0;
+}
+.contact-section--editorial .contact-whatsapp-image {
+  display:block;
+  width:126%;
+  height:126%;
+  max-width:none;
+  object-fit:contain;
+  flex:none;
+  user-select:none;
+  pointer-events:none;
+  filter:none;
+}
+@media (max-width:850px) {
+  .contact-section--editorial .contact-ambient {
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.52) 12%, #000 29%);
+    mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.52) 12%, #000 29%);
+  }
+}
+@media (max-width:540px) {
+  .contact-section--editorial .contact-whatsapp-image {
+    width:119%;
+    height:119%;
+  }
+}

@@ -1,3 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
+/** Approved custom gradient WhatsApp icon provided by the studio. */
+const WHATSAPP_ICON_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgFJMLspsTRLe2aBl94MZ9zkNjs3iSsjGM5-pn79WXFFDHYs5GtIIiqZbj-ab-tn3pxGr04Jj99qeiP7eR0fyobsNXau3Zv5vBqtiEIkmp1XyMn0SuY7A-9alVUbNjEGtutYxLGF829za_2yC8UctYrwv1I2t291MqXw9zmL7NO1jvKNh7du1NOiS6Sa6o/s1600/image.png";
+
 type ContactSectionProps = {
   whatsappHref: string;
   emailHref: string;
@@ -41,6 +48,8 @@ function BenefitIcon({ type }: { type: "fast" | "people" | "trust" }) {
 }
 
 export default function ContactSection({ whatsappHref, emailHref, email, phone }: ContactSectionProps) {
+  const [whatsappIconError, setWhatsappIconError] = useState(false);
+
   return (
     <section className="contact-section contact-section--editorial" id="contacto" aria-labelledby="contact-title">
       <div className="contact-ambient" aria-hidden="true" />
@@ -57,7 +66,24 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
         </div>
         <div className="contact-editorial-actions" data-reveal>
           <a className="contact-editorial-card" href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={`Escribir a AIVAN por WhatsApp: ${phone}`}>
-            <span className="contact-editorial-icon contact-editorial-icon--whatsapp"><ContactSymbol kind="whatsapp" /></span>
+            <span className="contact-editorial-icon contact-editorial-icon--whatsapp">
+              {whatsappIconError ? (
+                <ContactSymbol kind="whatsapp" />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="contact-whatsapp-image"
+                  src={WHATSAPP_ICON_URL}
+                  alt=""
+                  width={160}
+                  height={160}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                  onError={() => setWhatsappIconError(true)}
+                />
+              )}
+            </span>
             <span className="contact-editorial-card-body">
               <span className="contact-editorial-eyebrow">WHATSAPP</span>
               <strong>{phone}</strong>

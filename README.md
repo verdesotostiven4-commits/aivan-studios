@@ -169,3 +169,9 @@ y al correo `aivanstudiosgps@gmail.com`. Son botones reales, no una imagen
 de las tarjetas. Incluye encabezado editorial, dos tarjetas con iconos, flechas,
 descripciones, y beneficios. Respeta responsive y `prefers-reduced-motion`.
 El resto de la página permanece intacto.
+
+## Icono WhatsApp y unión Brief / Contacto (2026-10-09)
+
+- En `components/ContactSection.tsx`, la tarjeta de WhatsApp utiliza ahora la imagen PNG aprobada y proporcionada por el cliente (constante `WHATSAPP_ICON_URL`, alojada en Blogger). Se muestra sin recortar ni modificar el logo, y el componente conserva un SVG de respaldo si el PNG externo no carga. El enlace de WhatsApp sigue funcionando.
+- En `app/contact-editorial.css`, se añadió una transición visual entre el fondo beige del Brief y el fondo orbital de Contacto, con el mismo color de base en el borde y un fundido progresivo de la imagen (mask). No hay una franja horizontal rígida ni se superponen los formularios.
+- En móvil la máscara se ajusta para que el fondo mantenga contraste y sea ligero; no hay animaciones costosas de filtro en scroll.
