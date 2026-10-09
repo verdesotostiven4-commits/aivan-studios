@@ -113,3 +113,11 @@ animaciones. No reactivar las capas de neón sin aprobación.
 
 La corrección mantiene interacción ligera (paralaje de todo el conjunto,
 zoom discreto) y soporte de movimiento reducido.
+
+### Archivo original aprobado (restauración definitiva)
+Se restauró la composición original tal cual en `public/images/aivan-galapagos-approved.avif`:
+el asset fue convertido de la imagen original de la conversación a AVIF de 900×507
+para servirlo rápidamente, manteniendo exactamente paisaje, posiciones y trazos.
+Ahora `AivanOrbitalArtwork` utiliza únicamente esta ilustración; las siete URL
+reconstruidas se guardan como `archivedOrbitalLayers` pero no se renderizan.
+El movimiento se aplica al **conjunto entero**, para no desalinear elementos.
