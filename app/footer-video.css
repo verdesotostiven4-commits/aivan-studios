@@ -8,7 +8,8 @@
 .aivan-footer-video-frame {
   position: relative;
   width: 100%;
-  height: clamp(320px, 36vw, 560px);
+  /* Compact cinematic strip: trim sky and water, never squash logos. */
+  height: clamp(230px, 26vw, 430px);
   overflow: hidden;
   background: linear-gradient(120deg,#d2c4b7 0%,#f5e3c4 48%,#b5b7bd 100%);
 }
@@ -18,7 +19,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 53%;
+  object-position: center 51%;
   opacity: 0;
   transition: opacity .35s ease;
 }
@@ -27,12 +28,13 @@
 .aivan-footer-video.is-playing + .site-footer.aivan-signature-footer { display: none; }
 @media (max-width: 760px) {
   .aivan-footer-video-frame {
-    height: auto;
-    aspect-ratio: 16/9;
+    /* Reduce the footer height on phones without shrinking the whole image. */
+    height: clamp(155px, 39vw, 220px);
+    aspect-ratio: auto;
   }
   .aivan-footer-video-media {
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: center 51%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
