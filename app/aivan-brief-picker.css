@@ -135,3 +135,37 @@
   .aivan-service-options{animation:none}
   .aivan-service-chevron,.aivan-service-option{transition:none}
 }
+
+/* Brief consent — a clear affirmative action, not a pre-selected checkbox. */
+.brief-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px 19px;
+  border: 1px solid rgba(15,15,22,.12);
+  border-radius: 16px;
+  background: rgba(246,246,248,.75);
+  color: #55545b;
+  font-size: 13px;
+  line-height: 1.65;
+  cursor: pointer;
+}
+.brief-consent input {
+  appearance: auto;
+  flex: 0 0 auto;
+  accent-color: #7858df;
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  cursor: pointer;
+}
+.brief-consent a {
+  color: #1a151f;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.brief-consent:focus-within {
+  border-color: #7861dc;
+  box-shadow: 0 0 0 3px rgba(120,97,220,.11);
+}

@@ -31,6 +31,10 @@ export async function POST(request: NextRequest) {
     if (new TextEncoder().encode(raw).length > LIMIT_BYTES) return reply("Solicitud demasiado grande.", 413);
     const payload: unknown = JSON.parse(raw);
     if (!payload || typeof payload !== "object" || Array.isArray(payload)) return reply("Revisa los datos del brief.", 400);
+    // A separate, affirmative acknowledgement is required for new briefs.
+    if ((payload as Record<string, unknown>).privacyAccepted !== true) {
+      return reply("Confirma que leíste el aviso de privacidad para enviar tu solicitud.", 400);
+    }
 
     const upstream = await fetch(ENDPOINT, {
       method: "POST",

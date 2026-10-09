@@ -74,6 +74,7 @@ Deno.serve(async (req: Request) => {
   try {
     const body = await req.json();
     if (clean(body.companyWebsite, 120)) return json(req, { ok:true }, 200);
+    if (body.privacyAccepted !== true) return json(req, { ok:false, message:"Confirma que leíste el aviso de privacidad." }, 400);
 
     const allowedServices = new Set(["aibrand","aimark","aiprod","aipacks","no-se"]);
     const service = clean(body.service, 20).toLowerCase();
@@ -93,6 +94,8 @@ Deno.serve(async (req: Request) => {
       website: clean(body.website,220) || null,
       source: "website",
       status: "nuevo",
+      privacy_consent_at: new Date().toISOString(),
+      privacy_notice_version: "2026-10-09",
       utm: cleanUtm(body.utm),
     };
 

@@ -131,7 +131,7 @@ export default function Home() {
         <nav aria-label="Enlaces del pie">
           <a href="#servicios">Servicios</a><a href="#proceso">Proceso</a>
           <a href="#brief">Brief</a><a href="#contacto">Contacto</a>
-          <a href="/privacidad">Privacidad</a>
+          <a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
         </nav>
         <div className="footer-signatures" aria-label="Créditos de creación">
           <div className="footer-signature footer-signature--kiubo">

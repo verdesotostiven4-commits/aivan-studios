@@ -12,12 +12,12 @@ const networks = ["Instagram", "Facebook", "TikTok", "LinkedIn", "YouTube", "Otr
 type FormDataState = {
   businessName: string; industry: string; productFocus: string; challenge: string; service: string;
   goal: string; budget: string; networks: string[]; name: string; email: string; phone: string;
-  city: string; website: string; companyWebsite: string;
+  city: string; website: string; companyWebsite: string; privacyAccepted: boolean;
 };
 
 const initial: FormDataState = {
   businessName: "", industry: "", productFocus: "", challenge: "", service: "no-se", goal: "", budget: "",
-  networks: [], name: "", email: "", phone: "", city: "", website: "", companyWebsite: "",
+  networks: [], name: "", email: "", phone: "", city: "", website: "", companyWebsite: "", privacyAccepted: false,
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,6 +62,7 @@ export default function BriefForm() {
       if (!form.email.trim() && !form.phone.trim()) return "Déjanos al menos un correo o un número de WhatsApp.";
       if (form.email.trim() && !emailPattern.test(form.email.trim())) return "Revisa el correo: parece que falta algo.";
       if (form.phone.trim() && form.phone.replace(/\D/g, "").length < 7) return "Revisa el teléfono: necesitamos un número válido.";
+      if (!form.privacyAccepted) return "Confirma que leíste el aviso de privacidad antes de enviar tu solicitud.";
     }
     return "";
   }
@@ -158,7 +159,10 @@ export default function BriefForm() {
             <Field label="WhatsApp / teléfono"><input value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+593 …" inputMode="tel" autoComplete="tel" maxLength={40} /></Field>
           </div>
           <label className="hp-field" aria-hidden="true">Website<input tabIndex={-1} autoComplete="off" value={form.companyWebsite} onChange={(e) => update("companyWebsite", e.target.value)} /></label>
-          <p className="privacy-note">Al enviar autorizas a AIVAN a usar estos datos únicamente para revisar tu solicitud y contactarte sobre este proyecto. <a href="/privacidad" target="_blank" rel="noreferrer">Ver aviso de privacidad ↗</a></p>
+          <label className="brief-consent">
+            <input type="checkbox" checked={form.privacyAccepted} onChange={(e) => update("privacyAccepted", e.target.checked)} aria-required="true" />
+            <span>He leído el <a href="/privacidad" target="_blank" rel="noopener noreferrer">aviso de privacidad</a> y autorizo a AIVAN a utilizar mis datos exclusivamente para revisar este proyecto y contactarme. <a href="/terminos" target="_blank" rel="noopener noreferrer">Términos del sitio ↗</a></span>
+          </label>
         </>}
       </div>
 
