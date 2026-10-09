@@ -204,7 +204,7 @@ const CircularCarousel = ({
   cornerRadius = 12,
   captions = false,
   onChange = undefined,
-  onItemClick = undefined,
+  onItemClick,
   className = '',
   style = undefined
 }) => {
