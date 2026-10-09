@@ -6,14 +6,6 @@ import { useEffect, useRef, useState } from "react";
 // override it later without requiring another code change.
 const VIDEO_URL = process.env.NEXT_PUBLIC_AIVAN_FOOTER_VIDEO_URL?.trim() || "https://videotourl.com/videos/1791559511407-a260cc55-06d5-4965-ab46-0793886c5732.webm";
 
-const footerLinks = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#proceso", label: "Proceso" },
-  { href: "#brief", label: "Brief" },
-  { href: "#contacto", label: "Contacto" },
-  { href: "/privacidad", label: "Privacidad" },
-];
-
 export default function FooterVideo() {
   const host = useRef<HTMLElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -70,22 +62,7 @@ export default function FooterVideo() {
           disablePictureInPicture
           aria-hidden="true"
         />
-        <a
-          className="aivan-footer-video-logo-link"
-          href="#inicio"
-          aria-label="AIVAN — Volver al inicio"
-        />
-        <nav className="aivan-footer-video-overlay-nav" aria-label="Navegación del cierre de AIVAN">
-          {footerLinks.map(({ href, label }) => (
-            <a href={href} key={href} aria-label={label}><span className="sr-only">{label}</span></a>
-          ))}
-        </nav>
       </div>
-      {/* The embedded credits stay in the video. Only the real links are
-          repeated on small screens where baked-in text is too small. */}
-      <nav className="aivan-footer-video-mobile-nav" aria-label="Enlaces del pie de página">
-        {footerLinks.map(({ href, label }) => <a href={href} key={href}>{label}</a>)}
-      </nav>
     </section>
   );
 }

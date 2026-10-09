@@ -25,36 +25,6 @@
 .aivan-footer-video-media.is-ready { opacity: 1; }
 /* No duplicated logo blocks: the existing footer is the fallback only. */
 .aivan-footer-video.is-playing + .site-footer.aivan-signature-footer { display: none; }
-.aivan-footer-video-logo-link,
-.aivan-footer-video-overlay-nav {
-  position: absolute;
-  z-index: 2;
-  pointer-events: auto;
-}
-.aivan-footer-video-logo-link {
-  left: 5%;
-  top: 28%;
-  width: 28%;
-  height: 30%;
-}
-.aivan-footer-video-overlay-nav {
-  left: 35%;
-  width: 32%;
-  top: 35%;
-  height: 19%;
-  display: flex;
-}
-.aivan-footer-video-overlay-nav a {
-  flex: 1;
-  min-width: 0;
-  display: block;
-}
-.aivan-footer-video a:focus-visible {
-  outline: 2px solid #111;
-  outline-offset: 3px;
-  border-radius: 5px;
-}
-.aivan-footer-video-mobile-nav { display:none; }
 @media (max-width: 760px) {
   .aivan-footer-video-frame {
     height: auto;
@@ -63,23 +33,6 @@
   .aivan-footer-video-media {
     object-fit: contain;
     object-position: center;
-  }
-  .aivan-footer-video-logo-link,
-  .aivan-footer-video-overlay-nav { display: none; }
-  .aivan-footer-video-mobile-nav {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 12px 18px;
-    padding: 16px 18px 19px;
-    background: #f4f3ef;
-  }
-  .aivan-footer-video-mobile-nav a {
-    font-size: 13px;
-    color: #18181b;
-    text-decoration: none;
-    white-space: nowrap;
   }
 }
 @media (prefers-reduced-motion: reduce) {
