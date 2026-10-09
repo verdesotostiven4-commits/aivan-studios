@@ -15,6 +15,7 @@ const links = [
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#inicio");
+  const [overHero, setOverHero] = useState(true);
 
   useEffect(() => {
     const sections = ["#inicio", ...links.map(([, href]) => href)]
@@ -36,6 +37,28 @@ export default function SiteHeader() {
   }, []);
 
   useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      const hero = document.getElementById("inicio");
+      if (!hero) return;
+      const rect = hero.getBoundingClientRect();
+      setOverHero(rect.bottom > 105 && rect.top < 60);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => { frame = 0; update(); });
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
@@ -45,7 +68,7 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="site-header compact">
+    <header className={`site-header compact${overHero ? " is-over-hero" : ""}`}>
       <a href="#inicio" className="brand-link" aria-label="AIVAN STUDIOS — Inicio" onClick={() => setOpen(false)}>
         <Wordmark />
       </a>

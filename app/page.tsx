@@ -2,9 +2,10 @@ import AvatarShowcase from "@/components/AvatarShowcase";
 import BriefForm from "@/components/BriefForm";
 import HomeMotion from "@/components/HomeMotion";
 import SiteHeader from "@/components/SiteHeader";
+import CinematicHero from "@/components/CinematicHero";
 import ProjectsSection from "@/components/ProjectsSection";
 import Wordmark from "@/components/Wordmark";
-import { BridgeSequence, FinchSignature, FlipFadeWord, HeroBeams, HeroFlipWord, HeroMediaFrame, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
 const services = [
   { code: "01", id: "brand", name: "AIBRAND", label: "Branding & diseño", copy: "Identidad y sistemas visuales para que una marca se reconozca, se ordene y crezca con coherencia.", items: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones personalizadas", "Afiches técnicos", "Modelado 3D"] },
@@ -50,28 +51,7 @@ export default function Home() {
       <HomeMotion />
       <SiteHeader />
 
-      <section className="hero" id="inicio">
-        <HeroBeams />
-        <div className="hero-copy" data-reveal>
-          <p className="micro-label">ESTUDIO CREATIVO · GALÁPAGOS</p>
-          <h1>
-            <span className="hero-line">Tu negocio no necesita un cambio.</span>
-            <span className="hero-line hero-evolution-line">Necesita una <HeroFlipWord text="evolución." /></span>
-          </h1>
-          <p className="hero-lead">Estrategia, creatividad y producción digital trabajando como un solo sistema para que tu marca crezca, conecte y evolucione con intención.</p>
-          <div className="hero-actions">
-            <a className="button button-dark" href="#brief">Quiero que analicen mi negocio <span>↗</span></a>
-            <a className="button button-quiet hero-secondary" href={whatsappHref} target={whatsapp ? "_blank" : undefined} rel={whatsapp ? "noreferrer" : undefined}>Hablar con AIVAN</a>
-          </div>
-          <div className="hero-proof">
-            <div><strong>01</strong><span>Entendemos antes de crear</span></div>
-            <div><strong>02</strong><span>Diseñamos un sistema</span></div>
-            <div><strong>03</strong><span>Producimos con propósito</span></div>
-          </div>
-        </div>
-
-        <HeroMediaFrame />
-      </section>
+      <CinematicHero />
 
       <section className="human-section" id="aivan">
         <div className="human-panel" data-reveal>
