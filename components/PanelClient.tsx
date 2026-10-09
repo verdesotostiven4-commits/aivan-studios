@@ -109,7 +109,9 @@ export default function PanelClient() {
     event.preventDefault();
     if (!supabase || !email.trim()) return;
     setAuthLoading(true); setAuthMessage("");
-    const redirectTo = `${window.location.origin}/panel`;
+    // Always return to the canonical production panel, even from preview or alternate domains.
+    // Supabase Auth must also allow this exact URL in its Redirect URLs settings.
+    const redirectTo = "https://aivan-studios.vercel.app/panel";
     const { error } = await supabase.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { emailRedirectTo: redirectTo, shouldCreateUser: true } });
     setAuthLoading(false);
     setAuthMessage(error ? error.message : "Te enviamos un enlace de acceso. Revisa tu correo.");
