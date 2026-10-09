@@ -34,10 +34,16 @@ const ORDER: LayerName[] = ["guides", "clouds", "portal", "orbit", "amber", "mag
  * Avoid reconstructing it from independently generated layers:
  * previous rebuild showed neon artifacts, misaligned planets and changed
  * photography. Seven experimental URLs are archived above for reference.
+ * New transparent cutout supplied by the client is loaded directly; original
+ * local artwork is displayed only if Blogger fails to deliver the PNG.
  */
+const APPROVED_TRANSPARENT_ORBITAL_IMAGE = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzuwnoOHoQXtyMZbBGBhj_780heltZ5olr4-vVD2A_XNKiol9cLuv-eLSdl3hFn_ekEJg5xnqwPR8q1onfJzolf-xgeKDzP1T55MpiBuLsca7ZtdpPFD9v-pSuEC9RcasQllYokUmKkMAkwO0JLrGKA433GxeyvmUj0loPFVM72HvTaWCy5s8FcCwB0-8/s1600/image.png";
+const ORIGINAL_LOCAL_FALLBACK = "/images/aivan-galapagos-approved.avif";
+
 export default function AivanOrbitalArtwork() {
   const ref = useRef<HTMLButtonElement>(null);
   const [focused, setFocused] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -80,9 +86,10 @@ export default function AivanOrbitalArtwork() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="aivan-approved-composite"
-          src="/images/aivan-galapagos-approved.avif"
-          width={900}
-          height={507}
+          src={useFallback ? ORIGINAL_LOCAL_FALLBACK : APPROVED_TRANSPARENT_ORBITAL_IMAGE}
+          width={1600}
+          height={900}
+          onError={() => setUseFallback(true)}
           alt=""
           draggable={false}
           decoding="async"
