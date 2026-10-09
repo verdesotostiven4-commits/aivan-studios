@@ -50,3 +50,26 @@ npm run build
 - Número oficial de WhatsApp.
 - Correos que tendrán acceso al panel.
 - Dominio final.
+
+## Animación archivada: pinzón, huevo y cascarón (FinchSignature)
+
+**Estado actual: DESACTIVADA A PROPÓSITO (no eliminada).**
+La animación del pinzón de Galápagos que sale del huevo, crece, camina y reinicia
+su ciclo sigue conservada en `components/BrandMotion.tsx` (export `FinchSignature`)
+con todos sus estilos en `app/globals.css` (selectores `.finch-*`,
+`.finch-evolution-v3`). Se mantuvo intacta para poder restaurarla.
+
+**Cómo recuperarla en otro chat o más adelante:** busca en `app/page.tsx`
+`ENABLE_FINCH_SIGNATURE = false` y cámbiala a `true`. Esto restaura
+`<FinchSignature />` en lugar del bloque editorial `.aivan-insight`.
+No hay que recrear ni descargar animaciones. Palabras clave:
+`pinzon`, `pinzón`, `huevo`, `cascarón`, `eclosión`, `evolución`,
+`finch`, `FinchSignature`, `bird evolution`, `roamer`,
+`finch-evolution-v3`. Esta sección usa la misma posición que tenía antes.
+
+## Fotografía y portafolio de referencia
+
+Las fotografías actuales de `components/PortfolioShowcase.tsx` y de las
+cuatro áreas en `components/ServiceExplorer.tsx` son **referencias
+ilustrativas**, no proyectos aprobados ni realizados por AIVAN. Sustituir
+fuentes y descripciones al recibir material oficial.

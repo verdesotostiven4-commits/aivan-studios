@@ -8,6 +8,9 @@ import ServiceExplorer from "@/components/ServiceExplorer";
 import Wordmark from "@/components/Wordmark";
 import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
 
+// The original animated finch is intentionally archived, not deleted.
+const ENABLE_FINCH_SIGNATURE = false;
+
 const processSteps = [
   ["01", "Conocemos", "Entendemos el negocio, su contexto y el problema antes de hablar de soluciones."],
   ["02", "Analizamos", "Detectamos qué mover primero, qué está frenando la marca y qué todavía no necesita."],
@@ -42,7 +45,25 @@ export default function Home() {
           </div>
           <AvatarShowcase />
         </div>
-        <FinchSignature />
+        {/* FEATURE ARCHIVE: FinchSignature / PINZÓN / HUEVO / CASCARÓN /
+            FINCH EVOLUTION / CRECIMIENTO / ECLOSIÓN. Preserved in
+            components/BrandMotion.tsx and app/globals.css.
+            To restore: set ENABLE_FINCH_SIGNATURE to true. */}
+        {ENABLE_FINCH_SIGNATURE ? <FinchSignature /> : (
+          <div className="aivan-insight" data-reveal>
+            <div className="aivan-insight-art" aria-hidden="true">
+              <div className="aivan-insight-rings"><span /><span /><span /></div>
+              <div className="aivan-insight-path"><span /><span /><span /></div>
+              <span className="aivan-insight-legend">UNA DIRECCIÓN / MUCHAS FORMAS DE CRECER</span>
+            </div>
+            <div className="aivan-insight-copy">
+              <p className="micro-label">DESDE GALÁPAGOS</p>
+              <h3>Una mirada que <em>observa,</em><br />adapta y evoluciona.</h3>
+              <p>No se trata solo de crear. Se trata de entender el entorno, encontrar nuevas posibilidades y darles una dirección.</p>
+              <div className="aivan-insight-pills"><span>01 — OBSERVA</span><span>02 — ADAPTA</span><span>03 — EVOLUCIONA</span></div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="statement" id="enfoque">

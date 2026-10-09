@@ -16,19 +16,10 @@ const blobs = [
   "https://blogger.googleusercontent.com/img/a/AVvXsEi3I3EX4gdgV5EyZPf7UaQyedmvMZU4mjGhUVZWujCps_vXESOgJyOnCkIcWRmEeqh2gENPwW1nMOI9hd_npZkFfFt3XCxarvg2gf6RfbgfZO7hD5Ne2Rv22dynsxrtA4qKNle4JMg--7vwvJZuQJqKiS483OrIgRctfGKSemDsERvn-LJqUda1fXyuDyQ",
 ] as const;
 
-const labels = ["principal", "cercana", "segura", "presentación"] as const;
-
-function nextAutoAvatar(current: number) {
-  if (current === 0) return 1;
-  if (current === 1) return 2;
-  return 0;
-}
-
-function nextBlob(current: number) {
-  if (current === 0) return 3;
-  if (current === 3) return 1;
-  return 0;
-}
+// One shared timeline controls BOTH the pose and its associated background.
+const ROTATION_DELAY = 12500;
+const FADE_OUT_MS = 260;
+const FADE_IN_MS = 620;
 
 export default function AvatarShowcase() {
   const stageRef = useRef<HTMLButtonElement>(null);
@@ -36,17 +27,16 @@ export default function AvatarShowcase() {
   const targetPointer = useRef({ x: 0, y: 0 });
   const currentPointer = useRef({ x: 0, y: 0 });
 
-  const avatarSwapTimer = useRef<number | null>(null);
-  const avatarUnlockTimer = useRef<number | null>(null);
-  const blobSwapTimer = useRef<number | null>(null);
-  const blobUnlockTimer = useRef<number | null>(null);
-  const avatarSwitching = useRef(false);
-  const blobSwitching = useRef(false);
-
-  const [avatarIndex, setAvatarIndex] = useState(0);
-  const [avatarVisible, setAvatarVisible] = useState(true);
-  const [blobIndex, setBlobIndex] = useState(0);
-  const [blobVisible, setBlobVisible] = useState(true);
+  const currentIndex = useRef(0);
+  const swapping = useRef(false);
+  const isVisible = useRef(false);
+  const motionReduced = useRef(false);
+  const autoTimer = useRef<number | null>(null);
+  const fadeTimer = useRef<number | null>(null);
+  const unlockTimer = useRef<number | null>(null);
+  const revealFrame = useRef<number | null>(null);
+  const [index, setIndex] = useState(0);
+  const [show, setShow] = useState(true);
   const [inView, setInView] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -72,120 +62,100 @@ export default function AvatarShowcase() {
     return () => observer.disconnect();
   }, []);
 
-  function runPointerEase() {
-    if (pointerFrame.current || reduceMotion) return;
+  function clearAuto() {
+    if (autoTimer.current !== null) window.clearTimeout(autoTimer.current);
+    autoTimer.current = null;
+  }
 
+  function scheduleAuto() {
+    clearAuto();
+    if (!isVisible.current || motionReduced.current) return;
+    // Restart the entire countdown after every manual interaction.
+    autoTimer.current = window.setTimeout(() => changeVisual(), ROTATION_DELAY);
+  }
+
+  function changeVisual() {
+    if (swapping.current) return;
+    clearAuto();
+    const next = (currentIndex.current + 1) % avatars.length;
+    // Every pose has a stable companion shape; no double random timers.
+    if (motionReduced.current) {
+      currentIndex.current = next;
+      setIndex(next);
+      return;
+    }
+    swapping.current = true;
+    setShow(false);
+    fadeTimer.current = window.setTimeout(() => {
+      currentIndex.current = next;
+      setIndex(next);
+      revealFrame.current = window.requestAnimationFrame(() => {
+        setShow(true);
+        revealFrame.current = null;
+      });
+      unlockTimer.current = window.setTimeout(() => {
+        swapping.current = false;
+        scheduleAuto();
+      }, FADE_IN_MS);
+    }, FADE_OUT_MS);
+  }
+
+  useEffect(() => {
+    isVisible.current = inView;
+    motionReduced.current = reduceMotion;
+    if (inView && !reduceMotion && !swapping.current) scheduleAuto();
+    else clearAuto();
+    return () => clearAuto();
+  // Timer reset is controlled by visibility and motion preferences, never by a pose change.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, reduceMotion]);
+
+  useEffect(() => {
+    // Prefetch all approved avatar assets so a first click isn't a blank frame.
+    [...avatars, ...blobs].forEach((src) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.src = src;
+    });
+    return () => {
+      clearAuto();
+      if (fadeTimer.current !== null) window.clearTimeout(fadeTimer.current);
+      if (unlockTimer.current !== null) window.clearTimeout(unlockTimer.current);
+      if (revealFrame.current !== null) window.cancelAnimationFrame(revealFrame.current);
+      if (pointerFrame.current !== null) window.cancelAnimationFrame(pointerFrame.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function runPointerEase() {
+    if (pointerFrame.current !== null || reduceMotion) return;
     const tick = () => {
       const stage = stageRef.current;
       if (!stage) {
         pointerFrame.current = null;
         return;
       }
-
       const current = currentPointer.current;
       const target = targetPointer.current;
-      const easing = 0.085;
-
-      current.x += (target.x - current.x) * easing;
-      current.y += (target.y - current.y) * easing;
-
+      current.x += (target.x - current.x) * 0.085;
+      current.y += (target.y - current.y) * 0.085;
       if (Math.abs(target.x - current.x) < 0.0015) current.x = target.x;
       if (Math.abs(target.y - current.y) < 0.0015) current.y = target.y;
-
       stage.style.setProperty("--ax", current.x.toFixed(4));
       stage.style.setProperty("--ay", current.y.toFixed(4));
-
       if (current.x === target.x && current.y === target.y) {
         pointerFrame.current = null;
-        return;
+      } else {
+        pointerFrame.current = window.requestAnimationFrame(tick);
       }
-
-      pointerFrame.current = window.requestAnimationFrame(tick);
     };
-
     pointerFrame.current = window.requestAnimationFrame(tick);
   }
 
-  function swapAvatar(next: number) {
-    if (next === avatarIndex || avatarSwitching.current) return;
-
-    const preload = new Image();
-    preload.decoding = "async";
-    preload.src = avatars[next];
-
-    if (reduceMotion) {
-      setAvatarIndex(next);
-      return;
-    }
-
-    avatarSwitching.current = true;
-    setAvatarVisible(false);
-
-    if (avatarSwapTimer.current) window.clearTimeout(avatarSwapTimer.current);
-    if (avatarUnlockTimer.current) window.clearTimeout(avatarUnlockTimer.current);
-
-    avatarSwapTimer.current = window.setTimeout(() => {
-      setAvatarIndex(next);
-      window.requestAnimationFrame(() => setAvatarVisible(true));
-      avatarUnlockTimer.current = window.setTimeout(() => {
-        avatarSwitching.current = false;
-      }, 680);
-    }, 300);
-  }
-
-  function swapBlob(next: number) {
-    if (next === blobIndex || blobSwitching.current) return;
-
-    const preload = new Image();
-    preload.decoding = "async";
-    preload.src = blobs[next];
-
-    if (reduceMotion) {
-      setBlobIndex(next);
-      return;
-    }
-
-    blobSwitching.current = true;
-    setBlobVisible(false);
-
-    if (blobSwapTimer.current) window.clearTimeout(blobSwapTimer.current);
-    if (blobUnlockTimer.current) window.clearTimeout(blobUnlockTimer.current);
-
-    blobSwapTimer.current = window.setTimeout(() => {
-      setBlobIndex(next);
-      window.requestAnimationFrame(() => setBlobVisible(true));
-      blobUnlockTimer.current = window.setTimeout(() => {
-        blobSwitching.current = false;
-      }, 920);
-    }, 380);
-  }
-
-  useEffect(() => {
-    if (!inView || reduceMotion) return;
-    const timer = window.setTimeout(() => swapAvatar(nextAutoAvatar(avatarIndex)), 14000);
-    return () => window.clearTimeout(timer);
-  }, [avatarIndex, inView, reduceMotion]);
-
-  useEffect(() => {
-    if (!inView || reduceMotion) return;
-    const timer = window.setTimeout(() => swapBlob(nextBlob(blobIndex)), 21000);
-    return () => window.clearTimeout(timer);
-  }, [blobIndex, inView, reduceMotion]);
-
-  useEffect(() => () => {
-    if (pointerFrame.current) window.cancelAnimationFrame(pointerFrame.current);
-    if (avatarSwapTimer.current) window.clearTimeout(avatarSwapTimer.current);
-    if (avatarUnlockTimer.current) window.clearTimeout(avatarUnlockTimer.current);
-    if (blobSwapTimer.current) window.clearTimeout(blobSwapTimer.current);
-    if (blobUnlockTimer.current) window.clearTimeout(blobUnlockTimer.current);
-  }, []);
-
   function onPointerMove(event: React.PointerEvent<HTMLButtonElement>) {
     if (event.pointerType === "touch" || reduceMotion) return;
-
     const stage = stageRef.current;
     if (!stage) return;
-
     const rect = stage.getBoundingClientRect();
     targetPointer.current = {
       x: Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2)),
@@ -199,40 +169,28 @@ export default function AvatarShowcase() {
     runPointerEase();
   }
 
-  function cycleAvatar() {
-    swapAvatar((avatarIndex + 1) % avatars.length);
-  }
-
   return (
     <button
       ref={stageRef}
       type="button"
       className="human-visual avatar-showcase"
-      aria-label="Cambiar pose de Axel y Emma"
-      onClick={cycleAvatar}
+      aria-label="Cambiar pose de los avatares"
+      onClick={changeVisual}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
     >
       <span className="avatar-atmosphere" aria-hidden="true" />
-
       <span className="blob-stack" aria-hidden="true">
-        <span className={`blob-layer blob-variant-${blobIndex}${blobVisible ? " is-visible" : ""}`}>
-          <img src={blobs[blobIndex]} alt="" loading="lazy" decoding="async" draggable={false} />
+        <span className={`blob-layer blob-variant-${index % blobs.length}${show ? " is-visible" : ""}`}>
+          <img src={blobs[index % blobs.length]} alt="" loading="eager" decoding="async" draggable={false} />
         </span>
       </span>
-
       <span className="avatar-stack" aria-hidden="true">
-        <span className={`avatar-layer${avatarVisible ? " is-visible" : ""}`}>
-          <img src={avatars[avatarIndex]} alt="" loading="lazy" decoding="async" draggable={false} />
+        <span className={`avatar-layer${show ? " is-visible" : ""}`}>
+          <img src={avatars[index]} alt="" loading="eager" decoding="async" draggable={false} />
         </span>
       </span>
-
-      <span className="avatar-caption">
-        <i aria-hidden="true" />
-        <strong>AXEL + EMMA</strong>
-        <span>Representantes digitales</span>
-      </span>
-      <span className="avatar-state" aria-live="polite">Pose {labels[avatarIndex]}</span>
+      <span className="avatar-state" aria-live="polite">Imagen {index + 1} de {avatars.length}</span>
     </button>
   );
 }
