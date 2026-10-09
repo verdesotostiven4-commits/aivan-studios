@@ -1,5 +1,5 @@
+// @ts-nocheck — original React Bits JavaScript component
 'use client';
-// @ts-nocheck — upstream React Bits JavaScript + CSS component
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 

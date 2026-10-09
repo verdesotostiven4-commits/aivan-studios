@@ -14,7 +14,7 @@ export const inspiration = [
   { src: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1300&q=85&auto=format&fit=crop", alt: "Cámara de cine profesional en primer plano", title: "Detrás de cada toma", subtitle: "AIPROD · Cine", description: "Pensar antes de grabar permite crear piezas que no solo se ven bien: comunican con intención." },
   { src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1300&q=85&auto=format&fit=crop", alt: "Paisaje cálido al atardecer", title: "Territorio e inspiración", subtitle: "Dirección creativa", description: "La observación del entorno es el punto de partida de historias y conceptos con arraigo." },
   { src: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1300&q=85&auto=format&fit=crop", alt: "Mesa creativa con computadora y materiales", title: "Ideas que evolucionan", subtitle: "AIPACKS · Integración", description: "Cuando identidad, estrategia y contenido se integran, la marca gana consistencia y espacio para crecer." },
-] as const;
+];
 
 export default function PortfolioShowcase() {
   const [selected, setSelected] = useState<number | null>(null);
