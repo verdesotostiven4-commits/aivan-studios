@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const VIDEO_URL = process.env.NEXT_PUBLIC_AIVAN_FOOTER_VIDEO_URL?.trim() || "";
-const POSTER_URL = process.env.NEXT_PUBLIC_AIVAN_FOOTER_POSTER_URL?.trim() || "";
+// The source is a user-provided direct WebM link. A configured asset can
+// override it later without requiring another code change.
+const VIDEO_URL = process.env.NEXT_PUBLIC_AIVAN_FOOTER_VIDEO_URL?.trim() || "https://videotourl.com/videos/1791559511407-a260cc55-06d5-4965-ab46-0793886c5732.webm";
 
 const footerLinks = [
   { href: "#servicios", label: "Servicios" },
@@ -16,65 +17,75 @@ const footerLinks = [
 export default function FooterVideo() {
   const host = useRef<HTMLElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduceMotion(media.matches);
-    sync();
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
+    const update = () => setReduceMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
-    if (!VIDEO_URL || reduceMotion || !host.current || !video.current) return;
+    if (reduceMotion || failed || !host.current || !video.current) return;
     const element = video.current;
+    // Fetch video only when the closing section is near the viewport.
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        element.play().catch(() => undefined);
+        element.play().catch(() => {
+          // Keep the original, usable footer if playback is blocked.
+          setFailed(true);
+        });
       } else {
         element.pause();
       }
     }, { rootMargin: "300px 0px" });
     observer.observe(host.current);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, [reduceMotion, failed]);
 
-  // Never show the video shell when its asset is not published: the original
-  // functional footer remains in place, with no broken blank or 404 frame.
-  if (!VIDEO_URL) return null;
+  // Accessibility and failure protection: original footer remains unchanged.
+  if (reduceMotion || failed) return null;
 
   return (
-    <section ref={host} className="aivan-footer-video" aria-label="Paisaje animado de Galápagos y créditos de AIVAN">
+    <section
+      ref={host}
+      className={playing ? "aivan-footer-video is-playing" : "aivan-footer-video"}
+      aria-label="Paisaje animado de Galápagos, AIVAN y créditos creativos"
+    >
       <div className="aivan-footer-video-frame">
-        {POSTER_URL ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="aivan-footer-video-poster" src={POSTER_URL} alt="" loading="lazy" decoding="async" />
-        ) : null}
-        {!reduceMotion && (
-          <video
-            ref={video}
-            className={ready ? "aivan-footer-video-media is-ready" : "aivan-footer-video-media"}
-            src={VIDEO_URL}
-            muted
-            playsInline
-            loop
-            preload="none"
-            autoPlay={false}
-            onLoadedData={() => setReady(true)}
-            onError={() => setReady(false)}
-            aria-hidden="true"
-            disablePictureInPicture
-          />
-        )}
-        <div className="aivan-footer-video-link-zones">
-          <a href="#inicio" aria-label="AIVAN — Ir al inicio" className="aivan-footer-video-logo-link" />
-          <nav aria-label="Navegación del paisaje de AIVAN" className="aivan-footer-video-nav">
-            {footerLinks.map(link => <a href={link.href} key={link.href} aria-label={link.label}><span className="sr-only">{link.label}</span></a>)}
-          </nav>
-        </div>
+        <video
+          ref={video}
+          className={playing ? "aivan-footer-video-media is-ready" : "aivan-footer-video-media"}
+          src={VIDEO_URL}
+          muted
+          playsInline
+          loop
+          preload="none"
+          onPlaying={() => setPlaying(true)}
+          onError={() => setFailed(true)}
+          disablePictureInPicture
+          aria-hidden="true"
+        />
+        <a
+          className="aivan-footer-video-logo-link"
+          href="#inicio"
+          aria-label="AIVAN — Volver al inicio"
+        />
+        <nav className="aivan-footer-video-overlay-nav" aria-label="Navegación del cierre de AIVAN">
+          {footerLinks.map(({ href, label }) => (
+            <a href={href} key={href} aria-label={label}><span className="sr-only">{label}</span></a>
+          ))}
+        </nav>
       </div>
+      {/* The embedded credits stay in the video. Only the real links are
+          repeated on small screens where baked-in text is too small. */}
+      <nav className="aivan-footer-video-mobile-nav" aria-label="Enlaces del pie de página">
+        {footerLinks.map(({ href, label }) => <a href={href} key={href}>{label}</a>)}
+      </nav>
     </section>
   );
 }
