@@ -7,7 +7,6 @@ html.cinema-intro-active{overflow:hidden}
 .brand-opening-content .wordmark{width:min(70vw,330px);color:white}
 .brand-opening-content p{font-size:10px;font-weight:800;letter-spacing:.28em;color:#acabb0;text-align:center;margin:0;animation:cinemaCopyEnter .6s .38s both}
 .brand-opening-rule{width:0;height:2px;border-radius:2px;background:linear-gradient(90deg,#ff9418,#dd3487,#5c8cff);animation:cinemaRule .6s .36s forwards}
-.brand-opening-skip{position:absolute;bottom:38px;right:5vw;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:999px;padding:10px 17px;font-size:12px;cursor:pointer}
 .brand-opening-exit{animation:cinemaCurtain .78s cubic-bezier(.74,0,.18,1) forwards;pointer-events:none}
 @keyframes cinemaLogoEnter{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes cinemaCopyEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -78,4 +77,150 @@ html.cinema-intro-active{overflow:hidden}
 .cinematic-hero .hero-evolution-color{opacity:1!important;clip-path:inset(0)!important;animation:none!important}
 .cinematic-hero .hero-evolution-wipe{display:none!important}
 .cinematic-hero .hero-flip-base{opacity:0!important;animation:none!important}
+}
+
+/* 2026-10-09 — Cinematic polish and resilient foreground contrast.
+   Explicit positive stacking fixes missing CDN backdrops over black surfaces.
+   Specific scoped white text defeats old global .hero-* typography rules. */
+.cinematic-hero{isolation:isolate!important}
+.cinematic-hero .cinema-backdrops{z-index:0!important}
+.cinematic-hero .cinema-shade{z-index:1!important}
+.cinematic-hero .cinema-copy{z-index:3!important;max-width:none!important;width:calc(100% - 11vw)!important}
+.cinematic-hero .cinema-counter,
+.cinematic-hero .cinema-footer-controls{z-index:4}
+.cinematic-hero .cinema-line--white{
+  display:block!important;
+  opacity:1;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  background:none!important;
+  -webkit-background-clip:border-box!important;
+  background-clip:border-box!important;
+}
+.cinematic-hero h1{
+  font-size:clamp(62px,min(7.8vw,12vh),130px)!important;
+  max-width:1040px!important;
+  font-weight:590!important;
+  line-height:.95!important;
+  letter-spacing:-.065em!important;
+}
+.cinematic-hero .cinema-line{
+  background:none!important;
+  -webkit-background-clip:border-box!important;
+  color:#fff!important;
+}
+.cinematic-hero .hero-flip-word,
+.cinematic-hero .hero-flip-base,
+.cinematic-hero .hero-flip-char{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+}
+.cinematic-hero .hero-evolution-color{
+  -webkit-text-fill-color:transparent!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+}
+.cinematic-hero .hero-evolution-wipe{pointer-events:none!important}
+.cinematic-hero.is-ready .cinema-line--white{
+  animation:cinemaWhiteLineIn .86s .11s cubic-bezier(.18,.78,.18,1) both!important;
+}
+@keyframes cinemaWhiteLineIn{
+  from{opacity:0;transform:translateY(24px);filter:blur(6px)}
+  to{opacity:1;transform:none;filter:none}
+}
+/* Photo loading starts from a meaningful fallback rather than a blank black surface. */
+.cinema-backdrops{
+  background-color:#101014!important;
+  background-image:
+    linear-gradient(90deg,rgba(0,0,0,.52),rgba(0,0,0,.08)),
+    url("https://images.pexels.com/photos/8089662/pexels-photo-8089662.jpeg?auto=compress&cs=tinysrgb&w=1200")!important;
+  background-position:center,center 48%;
+  background-size:cover;
+}
+.cinema-photo.is-current{
+  animation-duration:12s;
+}
+/* The intro holds for an extra beat; both layers move as one reveal. */
+.brand-opening-exit{
+  animation:cinemaCurtainV2 1.16s cubic-bezier(.72,0,.19,1) both!important;
+  pointer-events:none;
+}
+.brand-opening-exit .brand-opening-content{
+  animation:cinemaLogoDissolve .9s cubic-bezier(.4,0,.2,1) both!important;
+}
+.brand-opening-exit:after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  left:0;
+  right:0;
+  bottom:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.38) 27%,#d53f8d 55%,#6e89ff 78%,transparent 100%);
+  opacity:.9;
+}
+@keyframes cinemaCurtainV2{
+  from{transform:translateY(0)}
+  to{transform:translateY(-101%)}
+}
+@keyframes cinemaLogoDissolve{
+  0%{opacity:1;transform:scale(1)}
+  75%{opacity:.18;transform:translateY(-35px) scale(1.075)}
+  100%{opacity:0;transform:translateY(-48px) scale(1.08)}
+}
+.cinematic-hero .cinema-copy{
+  transition:opacity .9s ease,transform 1.05s cubic-bezier(.16,.84,.22,1)!important;
+}
+.cinematic-hero:not(.is-ready) .cinema-copy{transform:translateY(42px) scale(.985)!important}
+.cinematic-hero.is-ready .cinema-copy{transform:none!important}
+.cinema-footer-controls{
+  position:absolute;
+  right:5vw;
+  bottom:clamp(20px,5vh,50px);
+  display:flex;
+  align-items:center;
+  gap:24px;
+  color:rgba(255,255,255,.75);
+}
+.cinema-footer-controls .cinema-temp-label{position:static;max-width:none}
+.cinema-sound-toggle{
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  color:rgba(255,255,255,.8);
+  background:rgba(0,0,0,.18);
+  padding:8px 12px;
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.025em;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:background .25s ease,border-color .25s ease,color .25s ease;
+}
+.cinema-sound-toggle:hover,.cinema-sound-toggle:focus-visible{
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  border-color:rgba(255,255,255,.65);
+}
+.cinema-sound-toggle span{font-size:13px;margin-right:7px}
+@media(max-width:980px){
+  .cinematic-hero h1{font-size:clamp(56px,8.5vw,102px)!important}
+}
+@media(max-width:760px){
+  .cinematic-hero .cinema-copy{width:calc(100% - 40px)!important}
+  .cinematic-hero h1{
+    font-size:clamp(44px,10.5vw,78px)!important;
+    line-height:.98!important;
+  }
+  .cinema-footer-controls{right:20px;bottom:22px;gap:8px;flex-direction:column;align-items:flex-end}
+  .cinema-footer-controls .cinema-temp-label{font-size:6px;max-width:148px;text-align:right}
+  .cinema-sound-toggle{font-size:9px;padding:8px 10px}
+}
+@media(max-width:390px){
+  .cinematic-hero .cinema-copy{width:calc(100% - 32px)!important}
+  .cinematic-hero h1{font-size:clamp(39px,10vw,50px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .brand-opening-exit,.brand-opening-exit .brand-opening-content{animation:none!important}
+  .cinematic-hero.is-ready .cinema-line--white{animation:none!important}
+  .cinematic-hero .cinema-line--white{opacity:1!important;filter:none!important;transform:none!important}
 }
