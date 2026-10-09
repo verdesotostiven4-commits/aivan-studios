@@ -121,3 +121,15 @@ para servirlo rápidamente, manteniendo exactamente paisaje, posiciones y trazos
 Ahora `AivanOrbitalArtwork` utiliza únicamente esta ilustración; las siete URL
 reconstruidas se guardan como `archivedOrbitalLayers` pero no se renderizan.
 El movimiento se aplica al **conjunto entero**, para no desalinear elementos.
+
+### Imagen orbital PNG sin fondo del cliente (2026-10-09)
+
+`components/AivanOrbitalArtwork.tsx` usa la nueva URL del cliente en
+`APPROVED_TRANSPARENT_ORBITAL_IMAGE`. Al cargar el PNG se respeta su canal
+alfa sin máscaras CSS; hay un fallback a
+`public/images/aivan-galapagos-approved.avif` solo si Blogger falla. La
+interacción existente mueve el conjunto como una sola unidad. No utilizar las
+siete capas antiguas (archivadas en `archivedOrbitalLayers`) porque la
+reconstrucción alteró el diseño original. La URL de Blogger no pudo descargarse
+en el entorno de desarrollo, por lo que la transparencia y carga de producción
+deben comprobarse visualmente en navegador.
