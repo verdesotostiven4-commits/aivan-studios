@@ -146,3 +146,9 @@ deben comprobarse visualmente en navegador.
 - `components/CinematicHero.tsx`: suspende deriva de las fotos cuando el inicio deja de estar visible.
 
 Se preservaron el código del pinzón archivado, los diseños de otras secciones y los assets oficiales tal como estaban.
+
+## Ajustes de navegación y Brief (2026-10-09)
+
+El menú principal y móvil comparte el array de `components/SiteHeader.tsx`, ahora ordenado **Qué es AIVAN → Servicios → Acompañamientos → Nuestro método → Brief → Contacto**. El enlace de Acompañamientos abre el área AIPACKS.
+
+En `app/aivan-interaction-polish.css` se equilibró el Brief en ventanas de navegador normales: menos espacio superior vacío, columnas proporcionadas, jerarquía tipográfica más compacta, campos legibles y controles dentro de la primera vista de escritorio, sin F11. Incluye ajuste de pantallas de portátil de poca altura y mantiene los controles pegajosos del formulario en móvil. No cambia las preguntas, validaciones ni el envío.

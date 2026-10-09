@@ -126,3 +126,92 @@ html{
    Existing one-off reveal animations continue to work. */
 [data-reveal]:not(.is-visible){will-change:auto}
 [data-reveal].is-visible{will-change:auto}
+
+/* AIVAN Brief — viewport-balanced layout (2026-10-09).
+   Keep the primary CTA fully visible on a normal laptop browser window,
+   not only in fullscreen. No inner scroll areas or clipped footer controls. */
+.brief-section{
+  padding-top:clamp(38px,5svh,62px);
+  padding-bottom:clamp(64px,7vw,105px);
+}
+.brief-shell{
+  grid-template-columns:minmax(0,.79fr) minmax(0,1.21fr);
+  gap:clamp(30px,4.2vw,64px);
+  align-items:start;
+}
+.brief-intro h2{
+  font-size:clamp(45px,4.45vw,70px);
+  line-height:.97;
+  margin:14px 0 21px;
+}
+.brief-intro > p{line-height:1.52}
+.brief-intro .brief-note{margin-top:24px;padding-top:16px}
+.brief-form{
+  min-height:0;
+  padding:clamp(20px,1.9vw,28px);
+}
+.brief-stage{
+  padding:clamp(22px,3.4svh,32px) 0 5px;
+}
+.brief-question h3{
+  font-size:clamp(32px,2.8vw,45px);
+  line-height:1.04;
+  margin:10px 0 24px;
+}
+.brief-form .form-grid{gap:10px}
+.brief-form .form-field{padding:11px 14px}
+.brief-form .form-field > span{margin-bottom:7px}
+.brief-form .form-feedback-slot{min-height:12px}
+.brief-form .brief-controls{
+  margin-top:12px;
+  padding-top:14px;
+  gap:14px;
+  align-items:center;
+}
+.brief-form .brief-controls .button{
+  min-height:48px;
+  padding-inline:23px;
+}
+.brief-form .brief-controls .button-dark{
+  min-width:150px;
+  white-space:nowrap;
+}
+/* Tight laptop-height treatment, preserving readable text and tap targets. */
+@media (min-width:1101px) and (max-height:850px){
+  .brief-section{padding-top:clamp(30px,4svh,42px)}
+  .brief-intro h2{font-size:clamp(44px,4.15vw,66px)}
+  .brief-form{padding:22px 26px}
+  .brief-stage{padding-top:20px;padding-bottom:2px}
+  .brief-question h3{font-size:clamp(31px,2.6vw,42px);margin-bottom:18px}
+  .brief-form .form-field{padding:10px 13px}
+  .brief-form .form-feedback-slot{min-height:8px}
+  .brief-form .brief-controls{margin-top:8px;padding-top:11px}
+}
+@media(max-width:1100px){
+  .brief-shell{grid-template-columns:1fr;gap:28px}
+  .brief-intro{position:static}
+  .brief-intro h2{max-width:720px}
+  .brief-section{padding-top:52px}
+}
+@media(max-width:760px){
+  .brief-section{padding:48px 18px 70px}
+  .brief-shell{gap:25px}
+  .brief-intro h2{font-size:clamp(38px,9vw,52px)}
+  .brief-form{padding:20px 18px}
+  .brief-stage{padding-top:26px}
+  .brief-question h3{font-size:clamp(29px,7.7vw,36px);margin-bottom:22px}
+  .brief-form .brief-controls{
+    position:sticky;
+    bottom:calc(8px + env(safe-area-inset-bottom,0px));
+    margin:12px -8px -8px;
+    padding:10px 8px;
+    z-index:8;
+    background:rgba(255,255,255,.97);
+    border-radius:14px;
+    backdrop-filter:none;
+  }
+  .brief-form .brief-controls .button{min-width:0;padding-inline:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .brief-form .brief-controls .button{transition:none}
+}

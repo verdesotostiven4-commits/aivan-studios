@@ -6,8 +6,8 @@ import Wordmark from "./Wordmark";
 const links = [
   ["Qué es AIVAN", "#aivan"],
   ["Servicios", "#servicios"],
-  ["Nuestro método", "#proceso"],
   ["Acompañamientos", "#aipacks"],
+  ["Nuestro método", "#proceso"],
   ["Brief", "#brief"],
   ["Contacto", "#contacto"],
 ] as const;
