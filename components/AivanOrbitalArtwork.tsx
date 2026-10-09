@@ -42,9 +42,13 @@ const ORIGINAL_LOCAL_FALLBACK = "/images/aivan-galapagos-approved.avif";
 
 export default function AivanOrbitalArtwork() {
   const ref = useRef<HTMLButtonElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+  const nextRef = useRef({ x: 0, y: 0 });
   const [focused, setFocused] = useState(false);
   const [useFallback, setUseFallback] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -54,47 +58,88 @@ export default function AivanOrbitalArtwork() {
     return () => media.removeEventListener("change", sync);
   }, []);
 
-  function onMove(event: React.PointerEvent<HTMLButtonElement>) {
-    if (reduced || event.pointerType === "touch" || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - .5;
-    const y = (event.clientY - rect.top) / rect.height - .5;
-    ref.current.style.setProperty("--aivan-tilt-x", (x * 6).toFixed(2) + "px");
-    ref.current.style.setProperty("--aivan-tilt-y", (y * 4).toFixed(2) + "px");
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || !("IntersectionObserver" in window)) {
+      setVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.12 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => () => {
+    if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+  }, []);
+
+  function writeTilt() {
+    frameRef.current = null;
+    const element = ref.current;
+    if (!element) return;
+    element.style.setProperty("--aivan-tilt-x", `${nextRef.current.x.toFixed(2)}px`);
+    element.style.setProperty("--aivan-tilt-y", `${nextRef.current.y.toFixed(2)}px`);
   }
 
-  function reset() {
-    ref.current?.style.setProperty("--aivan-tilt-x", "0px");
-    ref.current?.style.setProperty("--aivan-tilt-y", "0px");
+  function scheduleTilt() {
+    if (frameRef.current === null) frameRef.current = window.requestAnimationFrame(writeTilt);
+  }
+
+  function onPointerEnter(event: React.PointerEvent<HTMLButtonElement>) {
+    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+    rectRef.current = event.currentTarget.getBoundingClientRect();
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLButtonElement>) {
+    if (reduced || !visible || event.pointerType === "touch") return;
+    const rect = rectRef.current || event.currentTarget.getBoundingClientRect();
+    rectRef.current = rect;
+    nextRef.current = {
+      x: Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1)) * 6,
+      y: Math.max(-1, Math.min(1, (event.clientY - rect.top) / rect.height * 2 - 1)) * 4,
+    };
+    scheduleTilt();
+  }
+
+  function onPointerLeave() {
+    rectRef.current = null;
+    nextRef.current = { x: 0, y: 0 };
+    scheduleTilt();
   }
 
   return (
     <button
       ref={ref}
       type="button"
-      className={`aivan-orbital-art aivan-orbital-original-layout${focused ? " is-focused" : ""}`}
+      className={`aivan-orbital-art aivan-orbital-original-layout${focused ? " is-focused" : ""}${visible ? " is-visible" : ""}`}
       aria-label={focused ? "Volver a la vista completa de Galápagos" : "Acercar la composición de Galápagos"}
       aria-pressed={focused}
       title={focused ? "Volver a la vista completa" : "Explorar el paisaje"}
-      onClick={() => setFocused(value => !value)}
-      onPointerMove={onMove}
-      onPointerLeave={reset}
-      onKeyDown={event => { if (event.key === "Escape") setFocused(false); }}
+      onClick={() => setFocused((value) => !value)}
+      onPointerEnter={onPointerEnter}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      onKeyDown={(event) => { if (event.key === "Escape") setFocused(false); }}
     >
-      <span className="aivan-original-artboard" aria-hidden="true">
-        {/* Original approved composite: no neon overlays or duplicate planets. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="aivan-approved-composite"
-          src={useFallback ? ORIGINAL_LOCAL_FALLBACK : APPROVED_TRANSPARENT_ORBITAL_IMAGE}
-          width={1600}
-          height={900}
-          onError={() => setUseFallback(true)}
-          alt=""
-          draggable={false}
-          decoding="async"
-          loading="eager"
-        />
+      <span className="aivan-orbital-float-shell" aria-hidden="true">
+        <span className="aivan-original-artboard">
+          {/* Keep the approved original image as a single, perfectly aligned composition. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="aivan-approved-composite"
+            src={useFallback ? ORIGINAL_LOCAL_FALLBACK : APPROVED_TRANSPARENT_ORBITAL_IMAGE}
+            width={1600}
+            height={900}
+            alt=""
+            draggable={false}
+            decoding="async"
+            loading="lazy"
+            onError={() => setUseFallback(true)}
+          />
+        </span>
       </span>
       <span className="aivan-orbital-instruction" aria-hidden="true">
         {focused ? "VOLVER ↗" : "EXPLORAR ↗"}

@@ -1,0 +1,128 @@
+/*
+ * AIVAN — navigation, performance and organic motion polish.
+ * 2026-10-09. Import LAST in app/layout.tsx.
+ *
+ * Anchors use only scroll-padding-top, NOT both scroll-padding and
+ * scroll-margin (their offsets would be added).
+ */
+:root{--aivan-nav-clearance:clamp(94px,11svh,112px)}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:var(--aivan-nav-clearance);
+  overflow-anchor:auto;
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Nested AIPACKS navigation lands at the section INTRO, not a card hidden
+   behind the header. ServiceExplorer opens the AIPACKS detail on hashchange. */
+.section-nav-anchor{display:block;position:relative;height:0;max-height:0;scroll-margin-top:0}
+#inicio,#aivan,#servicios,#aipacks,#proceso,#brief,#contacto,#enfoque{scroll-margin-top:0!important}
+
+/* Legacy content-visibility used incorrect 720px phantom measurements.
+   When jumping between hash links it could shift the entire document
+   as Chromium replaced intrinsic heights with their real sizes. */
+.services-section,
+.bridge-section,
+.process-section,
+.contact-section,
+.closing-section{
+  content-visibility:visible!important;
+  contain-intrinsic-size:none!important;
+}
+
+/* The fixed translucent navigation stays premium but has less costly
+   backdrop compositing while the user scrolls. */
+.site-header.compact{
+  -webkit-backdrop-filter:blur(10px) saturate(110%);
+  backdrop-filter:blur(10px) saturate(110%);
+}
+
+/* Anchor targets should show their headlines immediately, even in
+   a standard browser window with address bar and taskbar visible. */
+.process-section{padding-top:clamp(54px,5vw,78px)}
+.brief-section{padding-top:clamp(65px,6vw,86px)}
+.services-section{position:relative}
+.contact-section{scroll-margin-top:0}
+@media(max-width:760px){
+  :root{--aivan-nav-clearance:90px}
+  .process-section{padding-top:62px}
+  .brief-section{padding-top:64px}
+}
+
+/* The cinematic hero should not keep animating a fullscreen photo once
+   it has left the viewport. Preserve the existing visual when visible. */
+.cinematic-hero:not(.is-in-viewport) .cinema-photo.is-current{
+  animation-play-state:paused;
+}
+
+/*
+ * Approved orbital PNG: gently floats as ONE complete composition.
+ * The image itself is never cropped, re-rendered, split or recolored.
+ * Tilt applies to an inner wrapper; flotation animates an outer wrapper.
+ * This avoids transform animation/hover conflicts.
+ */
+.aivan-orbital-original-layout .aivan-orbital-float-shell{
+  display:block;
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  animation:aivan-float-alive 10.5s ease-in-out infinite;
+  animation-play-state:paused;
+  transform-origin:50% 50%;
+}
+.aivan-orbital-original-layout.is-visible .aivan-orbital-float-shell{
+  animation-play-state:running;
+}
+.aivan-orbital-original-layout .aivan-original-artboard{
+  position:absolute;
+  inset:0;
+  display:block;
+  pointer-events:none;
+  transform:translate3d(var(--aivan-tilt-x),var(--aivan-tilt-y),0) scale(1);
+  transition:transform .52s cubic-bezier(.2,.75,.22,1);
+  will-change:auto;
+}
+.aivan-orbital-original-layout.is-visible .aivan-original-artboard{
+  will-change:transform;
+}
+.aivan-orbital-original-layout.is-focused .aivan-original-artboard{
+  transform:translate3d(var(--aivan-tilt-x),var(--aivan-tilt-y),0) scale(1.035);
+}
+.aivan-orbital-original-layout .aivan-approved-composite{
+  display:block;
+  position:absolute;
+  inset:0;
+  height:100%;
+  width:100%;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+  transform:none!important;
+  animation:none!important;
+  filter:none!important;
+  mask-image:none!important;
+  -webkit-mask-image:none!important;
+}
+@keyframes aivan-float-alive{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  25%{transform:translate3d(1px,-5px,0) rotate(-.2deg)}
+  50%{transform:translate3d(3px,-8px,0) rotate(0deg)}
+  75%{transform:translate3d(-2px,-4px,0) rotate(.2deg)}
+}
+.page-hidden .aivan-orbital-float-shell{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){
+  .aivan-orbital-original-layout .aivan-orbital-float-shell{
+    animation:none!important;
+    transform:none!important;
+  }
+  .aivan-orbital-original-layout .aivan-original-artboard,
+  .aivan-orbital-original-layout.is-focused .aivan-original-artboard{
+    transition:none!important;
+    transform:none!important;
+    will-change:auto!important;
+  }
+}
+
+/* Avoid promoting every long text block into a permanent GPU layer.
+   Existing one-off reveal animations continue to work. */
+[data-reveal]:not(.is-visible){will-change:auto}
+[data-reveal].is-visible{will-change:auto}

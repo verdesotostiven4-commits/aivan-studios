@@ -128,7 +128,7 @@ export default function CinematicHero() {
           </div>
         </div>
       )}
-      <section className={`cinematic-hero${heroReady ? " is-ready" : ""}`} ref={heroRef} id="inicio">
+      <section className={`cinematic-hero${heroReady ? " is-ready" : ""}${inView ? " is-in-viewport" : ""}`} ref={heroRef} id="inicio">
         <div className="cinema-backdrops" aria-hidden="true">
           {scenes.map((scene, index) => (
             <img

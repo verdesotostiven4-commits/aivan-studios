@@ -79,6 +79,7 @@ export default function Home() {
       <PortfolioShowcase />
 
       <section className="services-section" id="servicios">
+        <span id="aipacks" className="section-nav-anchor" aria-hidden="true" />
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
           <p>Entramos por el punto que tu negocio necesita hoy y dejamos espacio para que el sistema crezca mañana.</p>

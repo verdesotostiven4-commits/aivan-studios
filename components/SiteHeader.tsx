@@ -74,7 +74,7 @@ export default function SiteHeader() {
       </a>
       <nav className="desktop-nav" aria-label="Navegación principal">
         {links.map(([label, href]) => (
-          <a href={href} key={href} aria-current={active === href ? "location" : undefined}>{label}</a>
+          <a href={href} key={href} aria-current={active === href ? "location" : undefined} onClick={() => { setActive(href); if (href === "#aipacks") window.dispatchEvent(new Event("aivan:navigate-packs")); }}>{label}</a>
         ))}
       </nav>
       <a className="header-cta header-cta-split" href="#brief"><span className="header-cta-label">Empezar proyecto</span><span className="header-cta-arrow" aria-hidden="true">↗</span></a>
@@ -91,7 +91,7 @@ export default function SiteHeader() {
       {open && (
         <nav className="mobile-menu" id="mobile-menu" aria-label="Navegación móvil">
           {links.map(([label, href]) => (
-            <a href={href} key={href} aria-current={active === href ? "location" : undefined} onClick={() => setOpen(false)}>
+            <a href={href} key={href} aria-current={active === href ? "location" : undefined} onClick={() => { setOpen(false); setActive(href); if (href === "#aipacks") window.dispatchEvent(new Event("aivan:navigate-packs")); }}>
               {label}<span aria-hidden="true">↗</span>
             </a>
           ))}

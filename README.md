@@ -133,3 +133,16 @@ siete capas antiguas (archivadas en `archivedOrbitalLayers`) porque la
 reconstrucción alteró el diseño original. La URL de Blogger no pudo descargarse
 en el entorno de desarrollo, por lo que la transparencia y carga de producción
 deben comprobarse visualmente en navegador.
+
+## Navegación y fluidez de AIVAN (2026-10-09)
+
+- `components/SiteHeader.tsx`: orden del menú **Qué es AIVAN · Servicios · Acompañamientos · Nuestro método · Brief · Contacto**.
+- Acompañamientos mantiene `#aipacks`; `app/page.tsx` sitúa un ancla al inicio de la sección de servicios, mientras `ServiceExplorer` abre directamente AIPACKS. La opción no queda tapada por el header.
+- `app/aivan-interaction-polish.css`: un único `scroll-padding-top` para enlaces internos, sin sumar un `scroll-margin-top`. Ajusta paddings de método y brief para mostrar el título al llegar.
+- Se desactivó `content-visibility:auto` en secciones con altura dinámica: las alturas estimadas producían saltos de posición al navegar por `#hash`.
+- `components/HomeMotion.tsx`: mantiene `IntersectionObserver` para revelar contenido y pausar pestañas ocultas, pero ya no intercepta globalmente `wheel`, `touchmove`, zoom, selección ni portapapeles, pues degradaba desplazamiento y accesibilidad.
+- `components/CircularCarousel.tsx`: evita `document.elementFromPoint` por fotograma, limita cálculos 3D a ~30fps, los suspende durante el scroll y deja pasar rueda horizontal/vertical de manera pasiva.
+- `components/AivanOrbitalArtwork.tsx`: capa única original PNG de Blogger con respaldo local, flotación de 10.5s solo cuando se ve, parallax ligero y escrituras al DOM agrupadas con requestAnimationFrame. Respeta movimiento reducido.
+- `components/CinematicHero.tsx`: suspende deriva de las fotos cuando el inicio deja de estar visible.
+
+Se preservaron el código del pinzón archivado, los diseños de otras secciones y los assets oficiales tal como estaban.

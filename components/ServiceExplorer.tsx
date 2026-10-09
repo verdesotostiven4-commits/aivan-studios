@@ -43,7 +43,12 @@ export default function ServiceExplorer() {
     const selectFromHash = () => { if (window.location.hash === "#aipacks") setOpen(3); };
     selectFromHash();
     window.addEventListener("hashchange", selectFromHash);
-    return () => window.removeEventListener("hashchange", selectFromHash);
+    const openPacks = () => setOpen(3);
+    window.addEventListener("aivan:navigate-packs", openPacks);
+    return () => {
+      window.removeEventListener("hashchange", selectFromHash);
+      window.removeEventListener("aivan:navigate-packs", openPacks);
+    };
   }, []);
   const current = offerings[open];
   return (

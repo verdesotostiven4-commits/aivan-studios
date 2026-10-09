@@ -614,8 +614,24 @@ const CircularCarousel = ({
       }
     };
 
+    // Yield the expensive 3D projection updates to compositor scrolling.
+    // 30 FPS is enough for this slow rotating gallery and avoids frame spikes.
+    let lastPaintAt = 0;
+    let scrollQuietUntil = 0;
+    const onScroll = () => { scrollQuietUntil = performance.now() + 150; };
+
     const frame = now => {
       raf = 0;
+      if (now < scrollQuietUntil) {
+        state.last = now;
+        if (visible && !document.hidden) raf = requestAnimationFrame(frame);
+        return;
+      }
+      if (lastPaintAt && now - lastPaintAt < 32) {
+        if (visible && !document.hidden) raf = requestAnimationFrame(frame);
+        return;
+      }
+      lastPaintAt = now;
       const s = settingsRef.current;
       const dt = state.last ? Math.min((now - state.last) / 1000, 0.05) : 1 / 60;
       state.last = now;
@@ -660,7 +676,6 @@ const CircularCarousel = ({
       if (!s.draggable) return;
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : 0;
       if (!delta) return;
-      event.preventDefault();
       const perPixel = 180 / (Math.PI * s.radius * state.fit);
       state.target = null;
       state.angle -= delta * perPixel * (s.layout.inward ? -1 : 1);
@@ -673,7 +688,8 @@ const CircularCarousel = ({
       }, 140);
       wake();
     };
-    root.addEventListener('wheel', onWheel, { passive: false });
+    root.addEventListener('wheel', onWheel, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
 
     measure();
@@ -686,6 +702,7 @@ const CircularCarousel = ({
       io.disconnect();
       clearTimeout(state.wheelTimer);
       root.removeEventListener('wheel', onWheel);
+      window.removeEventListener('scroll', onScroll);
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
