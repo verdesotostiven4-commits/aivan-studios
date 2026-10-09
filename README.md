@@ -181,3 +181,7 @@ El resto de la página permanece intacto.
 El carrusel `CircularCarousel` ya NO se pausa en desplazamiento vertical. Se quitó la espera de 150ms tras cada evento de scroll; conserva límite cercano a 30 FPS para reducir trabajo de la CPU y pausa por mouse exclusivamente en la tarjeta frontal activa. Ahora inicia el efecto interno `rise` solamente cuando entra en la pantalla. Se añadió `data-reveal` a `portfolio-carousel-wrap` para una entrada escalonada en `Ideas para explorar`.
 
 El recurso orbital oficial permanece una única imagen intacta, con nueva flotación suave más perceptible y halo sutil. `app/aivan-queued-improvements.css` mejora los campos del Brief, elimina dobles contornos al escribir, fusiona los fondos Brief/Contacto mediante color común y fundido, oculta el fragmento circular cerca del pie oscuro y muestra el icono PNG de correo enviado por el cliente (con respaldo SVG).
+
+## Identidad cromática de las cuatro áreas (2026-10-09)
+
+En `components/ServiceExplorer.tsx` cada opción del explorador tiene una clase semántica `service-option--{brand,mark,prod,packs}`. `app/aivan-queued-improvements.css` asigna los degradados oficiales a los nombres (sin imágenes): AIBRAND dorado/naranja, AIMARK coral/fucsia/violeta, AIPROD añil/azul/celeste y AIPACKS grafito/negro. Las flechas usan el acento correspondiente. Los colores se ven también en opciones inactivas; las selecciones son sutiles y el comportamiento, imágenes de referencia y responsive no se alteran.

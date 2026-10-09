@@ -55,7 +55,7 @@ export default function ServiceExplorer() {
     <div className="service-explorer">
       <div className="service-picker" aria-label="Explorar las cuatro áreas de AIVAN">
         {offerings.map((service, index) => (
-          <div className={`service-option ${open === index ? "is-active" : ""}`} id={service.id === "packs" ? "aipacks" : undefined} key={service.id}>
+          <div className={`service-option service-option--${service.id} ${open === index ? "is-active" : ""}`} id={service.id === "packs" ? "aipacks" : undefined} key={service.id}>
             <button type="button" onClick={() => setOpen(index)} aria-expanded={open === index} aria-controls="service-detail">
               <span className="service-option-num">{service.code}</span>
               <span className="service-option-main"><strong>{service.name}</strong><small>{service.label}</small></span>

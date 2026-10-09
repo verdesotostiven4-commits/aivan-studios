@@ -145,3 +145,70 @@
 @media(max-width:540px){
   .contact-section--editorial .contact-email-image{width:119%;height:119%}
 }
+
+/* AIVAN department typography — reference-approved color language */
+/*
+ * All department names keep their identity color in every state:
+ * AIBRAND  — warm amber -> orange
+ * AIMARK   — coral -> fuchsia -> violet
+ * AIPROD   — electric indigo -> sky blue
+ * AIPACKS  — restrained graphite -> almost black
+ * The text remains native, sharp, selectable and accessible.
+ */
+.service-explorer .service-option--brand {
+  --service-ink:#d48a00;
+  --service-selected:rgba(218,151,20,.057);
+  --service-name-gradient:linear-gradient(103deg,#d0aa00 0%,#de8f00 39%,#f56b22 100%);
+}
+.service-explorer .service-option--mark {
+  --service-ink:#c42a7a;
+  --service-selected:rgba(202,48,117,.052);
+  --service-name-gradient:linear-gradient(103deg,#e25145 0%,#d92f78 46%,#853dbd 100%);
+}
+.service-explorer .service-option--prod {
+  --service-ink:#5a8df4;
+  --service-selected:rgba(87,137,244,.06);
+  --service-name-gradient:linear-gradient(103deg,#635dde 0%,#4f83f4 52%,#54b6fa 100%);
+}
+.service-explorer .service-option--packs {
+  --service-ink:#333237;
+  --service-selected:rgba(24,24,28,.037);
+  --service-name-gradient:linear-gradient(103deg,#47464b 0%,#242427 49%,#09090c 100%);
+}
+.service-explorer .service-option .service-option-main strong,
+.service-explorer .service-option.is-active .service-option-main strong {
+  color:var(--service-ink,#17171a);
+  background-image:var(--service-name-gradient,none);
+  background-size:100% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:none;
+  filter:none;
+  transition:opacity .25s ease;
+}
+.service-explorer .service-option .service-option-arrow,
+.service-explorer .service-option.is-active .service-option-arrow {
+  color:var(--service-ink,#17171a);
+  transition:transform .3s cubic-bezier(.2,.75,.2,1),color .2s ease;
+}
+.service-explorer .service-option.is-active button {
+  background:var(--service-selected,rgba(15,15,18,.035));
+}
+.service-explorer .service-option button:hover {
+  background:var(--service-selected,rgba(15,15,18,.035));
+}
+.service-explorer .service-option button:hover .service-option-arrow {
+  transform:translate(2px,-2px);
+}
+.service-explorer .service-option button:focus-visible {
+  outline:2px solid var(--service-ink,#18181c);
+  outline-offset:-4px;
+  border-radius:4px;
+}
+@media (prefers-reduced-motion:reduce) {
+  .service-explorer .service-option .service-option-arrow,
+  .service-explorer .service-option .service-option-main strong {
+    transition:none;
+  }
+}
