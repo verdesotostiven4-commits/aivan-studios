@@ -50,7 +50,7 @@ export default function PortfolioShowcase() {
           <span>Desliza, gira y toca una imagen para descubrir más.</span>
         </div>
       </div>
-      <div className="portfolio-carousel-wrap">
+      <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>
         <CircularCarousel
           items={inspiration}
           preset="cylinder"

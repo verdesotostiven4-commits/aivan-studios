@@ -5,6 +5,9 @@ import { useState } from "react";
 /** Approved custom gradient WhatsApp icon provided by the studio. */
 const WHATSAPP_ICON_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgFJMLspsTRLe2aBl94MZ9zkNjs3iSsjGM5-pn79WXFFDHYs5GtIIiqZbj-ab-tn3pxGr04Jj99qeiP7eR0fyobsNXau3Zv5vBqtiEIkmp1XyMn0SuY7A-9alVUbNjEGtutYxLGF829za_2yC8UctYrwv1I2t291MqXw9zmL7NO1jvKNh7du1NOiS6Sa6o/s1600/image.png";
 
+/** Transparent custom email icon supplied by AIVAN (2026-10-09). */
+const EMAIL_ICON_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFOUQqnGiFPqerhOKjJ0UT6_Fz-cksZtMH8tyJH8DveKzW0AzQXaEova0PHFYGr7v51mwNcAMv72PkDMM_kMxA3wK3dXjrwZ1wKo9z7voB5U6YBoq_V89nJcCPZsGV5O7LBcpah_W9F3rUhQ9OowdCeH21GusgNH8g5Hqy1-nR9gowXDZ5GhR_1mptQVA/s1600/image.png";
+
 type ContactSectionProps = {
   whatsappHref: string;
   emailHref: string;
@@ -49,6 +52,7 @@ function BenefitIcon({ type }: { type: "fast" | "people" | "trust" }) {
 
 export default function ContactSection({ whatsappHref, emailHref, email, phone }: ContactSectionProps) {
   const [whatsappIconError, setWhatsappIconError] = useState(false);
+  const [emailIconError, setEmailIconError] = useState(false);
 
   return (
     <section className="contact-section contact-section--editorial" id="contacto" aria-labelledby="contact-title">
@@ -92,7 +96,14 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             <span className="contact-editorial-arrow"><ArrowSymbol /></span>
           </a>
           <a className="contact-editorial-card" href={emailHref} aria-label={`Enviar correo a AIVAN: ${email}`}>
-            <span className="contact-editorial-icon contact-editorial-icon--email"><ContactSymbol kind="email" /></span>
+            <span className="contact-editorial-icon contact-editorial-icon--email">
+              {emailIconError ? (
+                <ContactSymbol kind="email" />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="contact-email-image" src={EMAIL_ICON_URL} alt="" width={160} height={160} loading="lazy" decoding="async" draggable={false} onError={() => setEmailIconError(true)} />
+              )}
+            </span>
             <span className="contact-editorial-card-body">
               <span className="contact-editorial-eyebrow">CORREO</span>
               <strong>{email}</strong>

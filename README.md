@@ -175,3 +175,9 @@ El resto de la página permanece intacto.
 - En `components/ContactSection.tsx`, la tarjeta de WhatsApp utiliza ahora la imagen PNG aprobada y proporcionada por el cliente (constante `WHATSAPP_ICON_URL`, alojada en Blogger). Se muestra sin recortar ni modificar el logo, y el componente conserva un SVG de respaldo si el PNG externo no carga. El enlace de WhatsApp sigue funcionando.
 - En `app/contact-editorial.css`, se añadió una transición visual entre el fondo beige del Brief y el fondo orbital de Contacto, con el mismo color de base en el borde y un fundido progresivo de la imagen (mask). No hay una franja horizontal rígida ni se superponen los formularios.
 - En móvil la máscara se ajusta para que el fondo mantenga contraste y sea ligero; no hay animaciones costosas de filtro en scroll.
+
+## Mejora aprobada de fluidez y detalles visuales (2026-10-09)
+
+El carrusel `CircularCarousel` ya NO se pausa en desplazamiento vertical. Se quitó la espera de 150ms tras cada evento de scroll; conserva límite cercano a 30 FPS para reducir trabajo de la CPU y pausa por mouse exclusivamente en la tarjeta frontal activa. Ahora inicia el efecto interno `rise` solamente cuando entra en la pantalla. Se añadió `data-reveal` a `portfolio-carousel-wrap` para una entrada escalonada en `Ideas para explorar`.
+
+El recurso orbital oficial permanece una única imagen intacta, con nueva flotación suave más perceptible y halo sutil. `app/aivan-queued-improvements.css` mejora los campos del Brief, elimina dobles contornos al escribir, fusiona los fondos Brief/Contacto mediante color común y fundido, oculta el fragmento circular cerca del pie oscuro y muestra el icono PNG de correo enviado por el cliente (con respaldo SVG).

@@ -276,7 +276,7 @@ const CircularCarousel = ({
     press: null,
     drag: false,
     hover: false,
-    pointer: { inside: false, x: 0, y: 0, clientX: 0, clientY: 0 },
+    pointer: { inside: false, x: 0, y: 0, clientX: 0, clientY: 0, cardIndex: -1 },
     yaw: 0,
     pitch: 0,
     intro: null,
@@ -396,7 +396,7 @@ const CircularCarousel = ({
     if (!root || !stage || !camera || !ring) return undefined;
     const state = stateRef.current;
     let raf = 0;
-    let visible = true;
+    let visible = false;
 
     const nearest = angle => Math.round(angle / settingsRef.current.step) * settingsRef.current.step;
 
@@ -496,9 +496,7 @@ const CircularCarousel = ({
       if (s.pauseOnHover && s.pauseOnlyOnActive) {
         hoverPause = false;
         if (state.pointer.inside) {
-          const element = document.elementFromPoint(state.pointer.clientX, state.pointer.clientY);
-          const card = element?.closest?.('[data-cc-index]');
-          hoverPause = Boolean(card && Number(card.getAttribute('data-cc-index')) === activeRef.current);
+          hoverPause = state.pointer.cardIndex === activeRef.current;
         }
       }
       const paused = hoverPause || state.drag || now < state.holdUntil;
@@ -617,16 +615,9 @@ const CircularCarousel = ({
     // Yield the expensive 3D projection updates to compositor scrolling.
     // 30 FPS is enough for this slow rotating gallery and avoids frame spikes.
     let lastPaintAt = 0;
-    let scrollQuietUntil = 0;
-    const onScroll = () => { scrollQuietUntil = performance.now() + 150; };
 
     const frame = now => {
       raf = 0;
-      if (now < scrollQuietUntil) {
-        state.last = now;
-        if (visible && !document.hidden) raf = requestAnimationFrame(frame);
-        return;
-      }
       if (lastPaintAt && now - lastPaintAt < 32) {
         if (visible && !document.hidden) raf = requestAnimationFrame(frame);
         return;
@@ -689,7 +680,6 @@ const CircularCarousel = ({
       wake();
     };
     root.addEventListener('wheel', onWheel, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
 
     measure();
@@ -702,7 +692,6 @@ const CircularCarousel = ({
       io.disconnect();
       clearTimeout(state.wheelTimer);
       root.removeEventListener('wheel', onWheel);
-      window.removeEventListener('scroll', onScroll);
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
@@ -740,6 +729,9 @@ const CircularCarousel = ({
     const pointer = stateRef.current.pointer;
     pointer.clientX = event.clientX;
     pointer.clientY = event.clientY;
+    // Event-driven hit target: no layout hit testing in the animation loop.
+    const hoveredCard = event.target instanceof Element ? event.target.closest('[data-cc-index]') : null;
+    pointer.cardIndex = hoveredCard ? Number(hoveredCard.getAttribute('data-cc-index')) : -1;
     pointer.x = clamp(((event.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
     pointer.y = clamp(((event.clientY - rect.top) / rect.height) * 2 - 1, -1, 1);
   };
@@ -813,7 +805,7 @@ const CircularCarousel = ({
     const velocity = span > 0.008 ? clamp((last.angle - first.angle) / span, -1400, 1400) : 0;
     state.velocity = velocity;
     if (Math.abs(velocity) > 60) state.dir = Math.sign(velocity);
-    const coasting = s.autoplay === 'drift' && !(s.pauseOnHover && state.hover && event.pointerType === 'mouse');
+    const coasting = s.autoplay === 'drift' && !(s.pauseOnHover && state.hover && (!s.pauseOnlyOnActive || state.pointer.cardIndex === activeRef.current) && event.pointerType === 'mouse');
     if (s.snap && !coasting) {
       const tau = 0.18 + s.momentum * 1.5;
       state.target = Math.round((state.angle + velocity * tau * 0.55) / s.step) * s.step;
@@ -834,6 +826,7 @@ const CircularCarousel = ({
     if (event.pointerType === 'mouse') {
       state.hover = false;
       state.pointer.inside = false;
+      state.pointer.cardIndex = -1;
     }
     wakeRef.current();
   };

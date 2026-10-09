@@ -1,0 +1,147 @@
+
+/* AIVAN / 2026-10-09 — refinement batch, preserves approved graphics. */
+.portfolio-carousel-wrap.portfolio-arrival[data-reveal]{
+  opacity:0;
+  transform:translate3d(0,58px,0) scale(.965);
+  transition:opacity 1s cubic-bezier(.16,.8,.23,1),
+    transform 1.25s cubic-bezier(.16,.8,.23,1);
+}
+.portfolio-carousel-wrap.portfolio-arrival[data-reveal].is-visible{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+}
+.portfolio-arrival[data-reveal].is-visible .circular-carousel{
+  animation:aivan-gallery-reveal 1.3s cubic-bezier(.18,.8,.22,1) both;
+}
+@keyframes aivan-gallery-reveal {
+  from{opacity:.55;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+/* Keep the source image intact: animate the assembled orbital composite
+   instead of moving its lines and planets independently. */
+.aivan-orbital-original-layout.is-visible .aivan-orbital-float-shell{
+  animation-duration:7.3s;
+  animation-timing-function:ease-in-out;
+}
+@keyframes aivan-float-alive{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  24%{transform:translate3d(5px,-11px,0) rotate(-.34deg)}
+  53%{transform:translate3d(-3px,-16px,0) rotate(.2deg)}
+  79%{transform:translate3d(-8px,-5px,0) rotate(.32deg)}
+}
+.aivan-orbital-original-layout .aivan-orbital-float-shell::before{
+  content:"";
+  position:absolute;
+  width:65%;height:58%;left:20%;top:18%;
+  pointer-events:none;
+  background:radial-gradient(ellipse,rgba(218,153,209,.095),rgba(107,156,245,.045) 40%,transparent 73%);
+  animation:aivan-orbit-aura 9s ease-in-out infinite alternate;
+  animation-play-state:paused;
+}
+.aivan-orbital-original-layout.is-visible .aivan-orbital-float-shell::before{animation-play-state:running}
+@keyframes aivan-orbit-aura{
+  from{opacity:.55;transform:scale(.95)}
+  to{opacity:1;transform:scale(1.13)}
+}
+/* Brief focus refinement: one clean accent border, no inner browser
+   rectangle or double outline around the input text. */
+.brief-form .form-field{
+  position:relative;
+  background:linear-gradient(145deg,#fff,#fbfafb);
+  border:1px solid #e6e2e7;
+  border-radius:19px;
+  box-shadow:0 2px 6px rgba(34,28,50,.025);
+  transition:background .2s ease,border-color .22s ease,
+    box-shadow .28s ease,transform .25s ease;
+  overflow:hidden;
+  cursor:text;
+}
+.brief-form .form-field::before{
+  content:"";pointer-events:none;
+  position:absolute;inset:0 0 auto;
+  height:2px;border-radius:19px 19px 0 0;
+  background:linear-gradient(90deg,#e9a123,#cc287d,#805be1,#5b8df7);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1);
+}
+.brief-form .form-field:focus-within{
+  transform:translateY(-1px);
+  border-color:rgba(130,91,200,.7);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(131,86,206,.105),
+    0 10px 26px rgba(48,31,89,.055);
+}
+.brief-form .form-field:focus-within::before{transform:scaleX(1)}
+.brief-form .form-field:focus-within>span{color:#7250b3}
+.brief-form .form-field :is(input,textarea,select){
+  box-shadow:none!important;
+  outline:none!important;
+  border:0!important;
+  appearance:none;
+  font-family:inherit;
+  color:#17131c;
+  caret-color:#a13cc1;
+  min-width:0;
+  line-height:1.45;
+}
+.brief-form .form-field :is(input,textarea,select):focus-visible{
+  outline:none!important;box-shadow:none!important;
+}
+.brief-form .form-field input::placeholder,
+.brief-form .form-field textarea::placeholder{color:#96919c;opacity:1}
+.brief-form .form-field:focus-within input::placeholder,
+.brief-form .form-field:focus-within textarea::placeholder{color:#b4adb9}
+.brief-form .form-field :is(input,textarea,select)::selection{background:#e8dbfb;color:#18111f}
+.brief-form .form-field select{appearance:auto}
+@media(prefers-reduced-motion:reduce){
+  .portfolio-carousel-wrap.portfolio-arrival[data-reveal],
+  .portfolio-arrival[data-reveal].is-visible .circular-carousel{transition:none!important;animation:none!important;opacity:1!important;transform:none!important}
+  .aivan-orbital-original-layout .aivan-orbital-float-shell::before{animation:none!important;opacity:.55}
+  .brief-form .form-field,.brief-form .form-field::before{transition:none!important}
+}
+/* Seam correction: Brief and Contact share exactly the same boundary color,
+   and the art fades in from zero. This also hides the tiny stray orbit
+   sphere at the bottom before the charcoal footer starts. */
+.brief-section{
+  background:linear-gradient(180deg,var(--paper) 0%,#f6f4f0 74%,#f6f4f0 100%);
+}
+.contact-section.contact-section--editorial{
+  background:#f6f4f0;
+}
+.contact-section.contact-section--editorial::before{
+  content:"";
+  position:absolute;top:0;left:0;right:0;
+  height:clamp(130px,22svh,225px);
+  pointer-events:none;
+  z-index:0;
+  background:linear-gradient(to bottom,#f6f4f0 0%,rgba(246,244,240,.93) 24%,rgba(246,244,240,.54) 65%,transparent 100%);
+}
+.contact-section--editorial .contact-shell--editorial{z-index:1}
+.contact-section--editorial .contact-ambient{
+  background-position:center 56%;
+  background-size:cover;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.33) 13%,#000 31%,#000 83%,rgba(0,0,0,.7) 90%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.33) 13%,#000 31%,#000 83%,rgba(0,0,0,.7) 90%,transparent 100%);
+}
+.contact-section--editorial .contact-editorial-icon--email:has(.contact-email-image){
+  background:transparent;
+  border-radius:0;
+}
+.contact-section--editorial .contact-email-image{
+  display:block;
+  width:125%;height:125%;max-width:none;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+  filter:none;
+}
+@media(max-width:850px){
+  .contact-section--editorial .contact-ambient{
+    background-position:60% 54%;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.55) 14%,#000 33%,#000 83%,transparent 100%);
+    mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.55) 14%,#000 33%,#000 83%,transparent 100%);
+  }
+}
+@media(max-width:540px){
+  .contact-section--editorial .contact-email-image{width:119%;height:119%}
+}
