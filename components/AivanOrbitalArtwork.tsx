@@ -26,7 +26,7 @@ export const archivedOrbitalLayers = {
   clouds: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhe_ONkRLiVNbBWeS2vzxGdZcFVr_E81cxPH-hxr1rI3L8_DBCILDe11DDwmHuWihpLwqFAy-_1TbzUewLRkhHKFm22BSYwy5qLC0EFs5p2us9DZH5m0J9aR0cjlxMHqQtXyIDDVqdQm39IM86Mr4kV_9xh4zzfFlAOq7j9qsXgajlIqa5D8ZE37T0y63M/s1600/image.png",
 } as const;
 
-type LayerName = keyof typeof layers;
+type LayerName = keyof typeof archivedOrbitalLayers;
 const ORDER: LayerName[] = ["guides", "clouds", "portal", "orbit", "amber", "magenta", "blue"];
 
 /**
