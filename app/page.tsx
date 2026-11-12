@@ -49,11 +49,11 @@ export default function Home() {
           </div>
           <div className="aivan-team-spotlight" aria-label="Equipo de AIVAN STUDIOS">
             <figure className="aivan-team-person">
-              <img src="/media/alexander-portrait.webp" alt="Alexander Castillo, del equipo AIVAN STUDIOS" width="950" height="950" loading="lazy" />
+              <img src="/media/alexander-portrait-selected.png" alt="Alexander Castillo, del equipo AIVAN STUDIOS" width="1122" height="1402" loading="lazy" />
               <figcaption><span>PRODUCCIÓN · CREATIVIDAD</span><strong>Alexander Castillo</strong></figcaption>
             </figure>
             <figure className="aivan-team-person">
-              <img src="/media/andrea-portrait.webp" alt="Andrea Segura, del equipo AIVAN STUDIOS" width="950" height="950" loading="lazy" />
+              <img src="/media/andrea-portrait-selected.png" alt="Andrea Segura, del equipo AIVAN STUDIOS" width="1122" height="1402" loading="lazy" />
               <figcaption><span>ESTRATEGIA · MARCA</span><strong>Andrea Segura</strong></figcaption>
             </figure>
             <span className="aivan-team-caption">PERSONAS REALES · ESTUDIO CREATIVO EN GALÁPAGOS</span>

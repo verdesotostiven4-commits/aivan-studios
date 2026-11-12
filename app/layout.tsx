@@ -20,6 +20,7 @@ import "./aivan-editorial-qa.css";
 import "./aivan-authentic-media.css";
 import "./aivan-media-final.css";
 import "./aivan-gallery-modal-polish.css";
+import "./aivan-team-portrait-polish.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://aivan-studios.vercel.app"),
