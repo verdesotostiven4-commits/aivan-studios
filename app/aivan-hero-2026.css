@@ -1,0 +1,116 @@
+/* AIVAN 2026: art direction for the user-selected 16:9 photo/video sequence.
+   Kept isolated so the rest of the original site remains unchanged. */
+.cinematic-hero .cinema-backdrops{
+  background:#111015 url("/media/hero-2026-studio-camera.webp") center center/cover no-repeat;
+}
+.cinematic-hero .cinema-photo,
+.cinematic-hero .cinema-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:var(--hero-position,center center);
+  display:block;
+  opacity:0;
+  visibility:visible;
+  transform:scale(1.012);
+  animation:none;
+  filter:saturate(.87) contrast(1.035) brightness(.84);
+  transition:opacity 1.15s cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+}
+.cinematic-hero .cinema-photo.is-current,
+.cinematic-hero .cinema-video.is-current{
+  opacity:1;
+  transform:scale(1.012);
+  animation:none;
+}
+.cinematic-hero .cinema-shade{
+  background:
+    linear-gradient(90deg,
+      rgba(6,6,10,.94) 0%,
+      rgba(6,6,10,.85) 28%,
+      rgba(6,6,10,.71) 48%,
+      rgba(6,6,10,.37) 70%,
+      rgba(6,6,10,.12) 100%),
+    linear-gradient(0deg,rgba(4,4,7,.48),transparent 34%,rgba(4,4,7,.1));
+}
+.cinematic-hero .cinema-scene-caption{
+  position:absolute;
+  z-index:4;
+  right:5.5%;
+  bottom:75px;
+  font-size:9px;
+  font-weight:750;
+  letter-spacing:.16em;
+  color:rgba(255,255,255,.88);
+  text-transform:uppercase;
+  background:rgba(11,10,14,.34);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:9px 13px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.cinematic-hero .cinema-slide-select{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:6px;
+  align-items:center;
+  margin-left:14px;
+}
+.cinematic-hero .cinema-slide-select button{
+  width:21px;
+  height:3px;
+  padding:0;
+  border:none;
+  border-radius:99px;
+  cursor:pointer;
+  background:rgba(255,255,255,.34);
+  transition:width .32s,background .32s;
+}
+.cinematic-hero .cinema-slide-select button.is-active{
+  width:27px;
+  background:#fff;
+}
+.cinematic-hero .cinema-slide-select button:disabled{
+  cursor:default;
+  opacity:.2;
+}
+.cinematic-hero .cinema-slide-select button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:6px;
+}
+@media (min-width:1050px){
+  .cinematic-hero .cinema-copy{width:min(89%,1500px)}
+  .cinematic-hero .cinema-lead{max-width:760px}
+}
+@media (max-width:760px){
+  .cinematic-hero .cinema-photo,
+  .cinematic-hero .cinema-video{
+    object-position:var(--hero-mobile-position,center center);
+    transform:none;
+  }
+  .cinematic-hero .cinema-photo.is-current,
+  .cinematic-hero .cinema-video.is-current{transform:none}
+  .cinematic-hero .cinema-shade{
+    background:
+      linear-gradient(90deg,rgba(5,5,9,.86),rgba(5,5,9,.69) 65%,rgba(5,5,9,.52)),
+      linear-gradient(0deg,rgba(5,5,9,.65),transparent 45%,rgba(5,5,9,.25));
+  }
+  .cinematic-hero .cinema-scene-caption{display:none}
+  .cinematic-hero .cinema-counter{gap:7px}
+  .cinematic-hero .cinema-counter>span{width:22px}
+  .cinematic-hero .cinema-slide-select{gap:4px;margin-left:5px}
+  .cinematic-hero .cinema-slide-select button{width:13px;height:3px}
+  .cinematic-hero .cinema-slide-select button.is-active{width:17px}
+}
+@media (max-width:390px){
+  .cinematic-hero .cinema-slide-select button{width:10px}
+  .cinematic-hero .cinema-slide-select button.is-active{width:13px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cinematic-hero .cinema-photo,
+  .cinematic-hero .cinema-video{transition:none;transform:none!important;animation:none!important}
+}
