@@ -45,7 +45,7 @@ export default function PortfolioShowcase() {
           <h2 id="gallery-title">Ideas para <em>explorar.</em></h2>
         </div>
         <div>
-          <p>Fotografías y recursos compartidos por el equipo que muestran parte del proceso, la identidad y el trabajo creativo del estudio.</p>
+          <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
           <span>Desliza, gira y toca una imagen para descubrir más.</span>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function PortfolioShowcase() {
           onItemClick={(_item: unknown, index: number) => setSelected(index)}
         />
       </div>
-      <p className="portfolio-disclaimer">Imágenes y materiales del equipo AIVAN. Esta selección documenta procesos e identidad propia; no identifica proyectos de clientes.</p>
+      <p className="portfolio-disclaimer">Galería conceptual con materiales de referencia y del equipo. Los proyectos oficiales de AIVAN se incorporarán próximamente.</p>
 
       {current && (
         <div className="portfolio-modal-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>

@@ -7,8 +7,8 @@ import { HeroFlipWord } from "./BrandMotion";
 // Fotografías originales proporcionadas por el equipo AIVAN; copias WebP locales optimizadas.
 const scenes = [
   { id: "studio", src: "/media/hero-studio.webp", position: "center 48%" },
-  { id: "production", src: "/media/hero-production.webp", position: "center 48%" },
-  { id: "galapagos", src: "/media/hero-location.webp", position: "center 45%" },
+  { id: "production", src: "/media/hero-production.webp", position: "center 51%" },
+  { id: "interview", src: "/media/production-interview.webp", position: "center 48%" },
 ] as const;
 
 type IntroStage = "opening" | "exit" | "done";
@@ -18,7 +18,8 @@ export default function CinematicHero() {
   const [heroReady, setHeroReady] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [current, setCurrent] = useState(0);
-  const [loaded, setLoaded] = useState([false, false, false]);
+  const [loaded, setLoaded] = useState<boolean[]>(() => scenes.map(() => false));
+  const [failed, setFailed] = useState<boolean[]>(() => scenes.map(() => false));
   const [inView, setInView] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
 
@@ -64,17 +65,45 @@ export default function CinematicHero() {
     return () => observer.disconnect();
   }, []);
 
+  // Load the next frames eagerly. Lazy background images previously kept the
+  // sequence waiting forever on a slide that had never been requested.
   useEffect(() => {
-    if (reduced) return;
-    const id = window.setInterval(() => {
-      if (document.hidden || !inView) return;
-      setCurrent((old) => {
-        const next = (old + 1) % scenes.length;
-        return loaded[next] ? next : old;
+    let live = true;
+    const preloaders = scenes.map((scene, index) => {
+      const image = new Image();
+      image.onload = () => {
+        if (!live) return;
+        setLoaded((previous) => previous.map((ready, i) => i === index ? true : ready));
+      };
+      image.onerror = () => {
+        if (!live) return;
+        setFailed((previous) => previous.map((failedBefore, i) => i === index ? true : failedBefore));
+      };
+      image.src = scene.src;
+      return image;
+    });
+    return () => {
+      live = false;
+      preloaders.forEach((image) => { image.onload = null; image.onerror = null; });
+    };
+  }, []);
+
+  // Every visit starts at scene 01. A slide is shown for a full interval,
+  // then the sequence loops 01 -> 02 -> 03 -> 01 without getting stuck.
+  useEffect(() => {
+    if (reduced || !heroReady || !inView) return;
+    const timer = window.setInterval(() => {
+      if (document.hidden) return;
+      setCurrent((previous) => {
+        for (let step = 1; step <= scenes.length; step += 1) {
+          const next = (previous + step) % scenes.length;
+          if (loaded[next] && !failed[next]) return next;
+        }
+        return previous;
       });
-    }, 7200);
-    return () => clearInterval(id);
-  }, [reduced, inView, loaded]);
+    }, 6700);
+    return () => window.clearInterval(timer);
+  }, [reduced, heroReady, inView, loaded, failed]);
 
   // No misleading sound toggle. A gentle one-shot brand cue is unlocked by
   // the first genuine gesture, since browsers prohibit audible autoplay.
@@ -135,12 +164,12 @@ export default function CinematicHero() {
               className={`cinema-photo${current === index && loaded[index] ? " is-current" : ""}`}
               style={{ objectPosition: scene.position }}
               alt=""
-              loading={index === 0 ? "eager" : "lazy"}
+              loading="eager"
               fetchPriority={index === 0 ? "high" : "low"}
               decoding="async"
               draggable={false}
               onLoad={() => setLoaded((values) => values[index] ? values : values.map((value, i) => i === index ? true : value))}
-              onError={() => setLoaded((values) => values.map((value, i) => i === index ? false : value))}
+              onError={() => setFailed((values) => values.map((value, i) => i === index ? true : value))}
             />
           ))}
         </div>
@@ -165,6 +194,19 @@ export default function CinematicHero() {
         </div>
         <div className="cinema-counter" aria-label={`Fotografía ${current + 1} de ${scenes.length}`}>
           <strong>{String(current + 1).padStart(2, "0")}</strong><span /><small>{String(scenes.length).padStart(2, "0")}</small>
+          <div className="cinema-slide-select" aria-label="Elegir fotografía de portada">
+            {scenes.map((scene, index) => (
+              <button
+                type="button"
+                key={scene.id}
+                className={index === current ? "is-active" : ""}
+                aria-label={`Ver fotografía ${index + 1}`}
+                aria-current={index === current ? "true" : undefined}
+                disabled={!loaded[index] || failed[index]}
+                onClick={() => setCurrent(index)}
+              />
+            ))}
+          </div>
         </div>
         <span className="cinema-scroll-hint" aria-hidden="true">DESLIZA PARA EXPLORAR <span>↓</span></span>
       </section>

@@ -16,11 +16,11 @@ import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, Typi
 const ENABLE_FINCH_SIGNATURE = false;
 
 const processSteps = [
-  ["01", "Conocemos", "Entendemos el negocio, su contexto y el problema antes de hablar de soluciones."],
-  ["02", "Analizamos", "Detectamos qué mover primero, qué está frenando la marca y qué todavía no necesita."],
-  ["03", "Direccionamos", "Definimos la ruta que alinea estrategia, creatividad y producción."],
-  ["04", "Creamos", "Convertimos la dirección en piezas, contenido y materiales listos para el mundo real."],
-  ["05", "Evolucionamos contigo", "Leemos la respuesta, ajustamos y hacemos que el sistema madure con el negocio."],
+  ["01", "Conocemos", "Escuchamos tu historia, conocemos tu negocio y entendemos sus objetivos y desafíos."],
+  ["02", "Analizamos", "Evaluamos tu marca, la experiencia de tus clientes y las oportunidades de mejora."],
+  ["03", "Direccionamos", "Definimos las prioridades y las soluciones que tu negocio necesita antes de crear."],
+  ["04", "Creamos", "Desarrollamos identidad, estrategia y contenido según la dirección establecida."],
+  ["05", "Evolucionamos contigo", "Acompañamos la implementación, evaluamos los avances y ajustamos lo necesario."],
 ];
 
 export default function Home() {
@@ -77,9 +77,9 @@ export default function Home() {
             </div>
             <div className="aivan-insight-copy">
               <p className="micro-label">DESDE GALÁPAGOS</p>
-              <h3>Nuestro origen inspira<br /><em>otra forma de crear.</em></h3>
+              <h3>Nuestro origen inspira<br /><em>una forma diferente de crear.</em></h3>
               <p>Nuestro entorno nos inspira a mirar desde nuevas perspectivas, adaptarnos a la era digital y explorar nuevas formas de comunicar. Una visión que llevamos a cada proyecto.</p>
-              <div className="aivan-insight-pills"><span>01 — ENTENDEMOS EL ENTORNO</span><span>02 — ADAPTAMOS TU COMUNICACIÓN</span><span>03 — EVOLUCIONAMOS TU MARCA</span></div>
+              <div className="aivan-insight-pills"><span>01 — ENTENDEMOS EL ENTORNO</span><span>02 — ADAPTAMOS TU COMUNICACIÓN</span><span>03 — HACEMOS EVOLUCIONAR TU MARCA</span></div>
             </div>
           </div>
         )}
@@ -102,24 +102,47 @@ export default function Home() {
           <p>AIVAN tiene tres áreas creativas y una solución que las integra: AIPACKS. Cada negocio necesita una combinación diferente.</p>
         </div>
         <ServiceExplorer />
+      </section>
+
+      <section className="aivan-packs-section" aria-label="AIPACKS, acompañamiento integral">
         <AipackPlans />
       </section>
 
       <section className="bridge-section">
         <div className="bridge-copy" data-reveal>
-          <p className="micro-label">LO IMPORTANTE NO ES EL SERVICIO</p>
-          <h2>Es saber <em>cuándo</em> usarlo.</h2>
+          <p className="micro-label">NO SE TRATA DE CONTRATAR MÁS SERVICIOS</p>
+          <h2>Se trata de saber <em>qué necesita</em> tu negocio.</h2>
+          <p className="diagnostic-lead">Cada negocio tiene prioridades diferentes. Por eso, antes de recomendar una solución, analizamos su situación y definimos dónde es necesario actuar.</p>
+          <div className="diagnostic-grid" aria-label="Cuatro puntos de diagnóstico">
+            <article><span>01 / IDENTIDAD</span><h3>¿Tu marca se diferencia?</h3></article>
+            <article><span>02 / EXPERIENCIA</span><h3>¿Es fácil comprarte?</h3></article>
+            <article><span>03 / ESTRATEGIA</span><h3>¿Sabes a quién llegar?</h3></article>
+            <article><span>04 / COMUNICACIÓN</span><h3>¿Se entiende tu valor?</h3></article>
+          </div>
         </div>
         <BridgeSequence />
       </section>
 
       <section className="process-section" id="proceso">
         <div className="section-intro" data-reveal>
-          <div><p className="micro-label">NUESTRO MÉTODO</p><h2>De la conversación<br />a algo que funciona.</h2></div>
-          <div className="process-intro-copy"><p>Un proceso entendible también es parte de una buena experiencia. Sabes qué estamos haciendo, por qué y qué viene después.</p><TypingSignal text="entender → enfocar → construir → activar → evolucionar" /></div>
+          <div><p className="micro-label">NUESTRO MÉTODO</p><h2>De entender tu negocio<br />a crear con propósito.</h2></div>
+          <div className="process-intro-copy"><p>Cada proyecto sigue un proceso claro. Conocemos tu negocio, identificamos qué necesita mejorar y desarrollamos soluciones que tienen una razón de ser.</p><TypingSignal text="conocer → analizar → direccionar → crear → evolucionar" /></div>
         </div>
         <div className="process-rail" data-reveal>
           {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
+        </div>
+        <div className="method-duality" data-reveal>
+          <article className="method-duality-surface">
+            <span>LO QUE SE VE</span>
+            <h3>No empezamos publicando.</h3>
+            <p>Publicar más no significa tener un negocio con dirección clara.</p>
+          </article>
+          <article className="method-duality-depth">
+            <span>LO QUE HAY DETRÁS</span>
+            <h3>Empezamos entendiendo.</h3>
+            <strong>ESTRATEGIA · CONTEXTO · DIRECCIÓN · PROPÓSITO</strong>
+            <p>Antes de crear, identificamos qué mejorar y cómo integrar branding, marketing y producción audiovisual con un objetivo común.</p>
+          </article>
         </div>
       </section>
 
