@@ -116,7 +116,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
         <div className="contact-brief-integrated" id="brief" aria-labelledby="contact-brief-title">
           <div className="contact-brief-intro" data-reveal>
             <p className="micro-label">PRIMER CONTACTO</p>
-            <h3 id="contact-brief-title">Tú conoces tu negocio.<br /><em>Nosotros te ayudamos a encontrar el siguiente paso.</em></h3>
+            <h3 id="contact-brief-title"><span>Tú conoces tu negocio.</span><span className="contact-brief-promise">Nosotros te ayudamos a encontrar el siguiente paso.</span></h3>
             <p>Cuéntanos qué haces y qué te gustaría mejorar. Con esta información podremos conocer tu situación y preparar una conversación más útil para tu negocio.</p>
             <span>Un brief breve, claro y privado. Tu información llega directamente al equipo de AIVAN.</span>
           </div>

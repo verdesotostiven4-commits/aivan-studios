@@ -8,11 +8,9 @@ export const inspiration = [
   { src: "/media/hero-studio.webp", alt: "Cámara de producción en una grabación de entrevista", title: "Detrás de cámara", subtitle: "AIPROD · Rodaje", description: "Preparación de cámara, luz y composición durante una producción audiovisual." },
   { src: "/media/production-food-shot.webp", alt: "Grabación de contenido gastronómico con un teléfono en soporte", title: "Contenido con intención", subtitle: "AIMARK · Contenido", description: "Una mirada a la producción de contenido para comunicar productos y experiencias." },
   { src: "/media/brand-studios.webp", alt: "Identidad gráfica multicolor de AIVAN STUDIOS", title: "Identidad AIVAN", subtitle: "AIBRAND · Identidad propia", description: "Exploración de la identidad visual del estudio: tipografía y color como parte del sistema de marca." },
-  { src: "/media/hero-location.webp", alt: "Equipo grabando contenido en exteriores", title: "Historias en el territorio", subtitle: "AIPROD · Exteriores", description: "Grabación en exteriores, adaptando el encuadre y la producción a cada espacio." },
   { src: "/media/production-interview.webp", alt: "Set de entrevista con cámara e iluminación", title: "Cada toma importa", subtitle: "AIPROD · Entrevistas", description: "Organización de una producción con iluminación, cámara y puesta en escena." },
   { src: "/media/marketing-food-bts.webp", alt: "Persona realizando la grabación de un plato de comida", title: "Comunicar desde lo real", subtitle: "AIMARK · Producción de contenido", description: "Trabajo detrás de cámaras para mostrar un producto con claridad y atractivo." },
   { src: "/media/hero-production.webp", alt: "Set de producción audiovisual y equipo en estudio", title: "Crear en equipo", subtitle: "AIPROD · Proceso", description: "Producción audiovisual realizada con preparación técnica y colaboración." },
-  { src: "/media/brand-symbol.webp", alt: "Símbolo circular de la marca AIVAN sobre fondo multicolor", title: "Una marca, un símbolo", subtitle: "AIBRAND · Identidad propia", description: "El isotipo de AIVAN y su interpretación dentro del universo cromático de la marca." },
 ];
 
 export default function PortfolioShowcase() {
@@ -46,7 +44,7 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Desliza, gira y toca una imagen para descubrir más.</span>
+          <span>Seis miradas al estudio. Desliza y toca una imagen para conocerla.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>

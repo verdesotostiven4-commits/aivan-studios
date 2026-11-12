@@ -47,23 +47,16 @@ export default function Home() {
               <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
             </div>
           </div>
-          <AvatarShowcase />
-        </div>
-        <div className="aivan-team-editorial" aria-labelledby="aivan-team-title" data-reveal>
-          <div className="aivan-team-heading">
-            <p className="micro-label">PERSONAS DETRÁS DE AIVAN</p>
-            <h3 id="aivan-team-title">Ideas con personas <em>reales.</em></h3>
-            <p>El trabajo empieza por escuchar, observar y crear en equipo. Conoce a quienes forman parte de AIVAN STUDIOS.</p>
-          </div>
-          <div className="aivan-team-cards">
-            <figure className="aivan-team-card">
-              <img src="/media/alexander-portrait.webp" alt="Retrato de Alexander Castillo, del equipo AIVAN" loading="lazy" width="950" height="950" />
-              <figcaption><span>01 / EQUIPO AIVAN</span><strong>Alexander Castillo</strong></figcaption>
+          <div className="aivan-team-spotlight" aria-label="Equipo de AIVAN STUDIOS">
+            <figure className="aivan-team-person">
+              <img src="/media/alexander-portrait.webp" alt="Alexander Castillo, del equipo AIVAN STUDIOS" width="950" height="950" loading="lazy" />
+              <figcaption><span>PRODUCCIÓN · CREATIVIDAD</span><strong>Alexander Castillo</strong></figcaption>
             </figure>
-            <figure className="aivan-team-card">
-              <img src="/media/andrea-portrait.webp" alt="Retrato de Andrea Segura, del equipo AIVAN" loading="lazy" width="950" height="950" />
-              <figcaption><span>02 / EQUIPO AIVAN</span><strong>Andrea Segura</strong></figcaption>
+            <figure className="aivan-team-person">
+              <img src="/media/andrea-portrait.webp" alt="Andrea Segura, del equipo AIVAN STUDIOS" width="950" height="950" loading="lazy" />
+              <figcaption><span>ESTRATEGIA · MARCA</span><strong>Andrea Segura</strong></figcaption>
             </figure>
+            <span className="aivan-team-caption">PERSONAS REALES · ESTUDIO CREATIVO EN GALÁPAGOS</span>
           </div>
         </div>
         {/* FEATURE ARCHIVE: FinchSignature / PINZÓN / HUEVO / CASCARÓN /
@@ -109,16 +102,18 @@ export default function Home() {
       </section>
 
       <section className="bridge-section">
-        <div className="bridge-copy" data-reveal>
+        <div className="bridge-copy diagnostic-intro" data-reveal>
           <p className="micro-label">NO SE TRATA DE CONTRATAR MÁS SERVICIOS</p>
-          <h2>Se trata de saber <em>qué necesita</em> tu negocio.</h2>
-          <p className="diagnostic-lead">Cada negocio tiene prioridades diferentes. Por eso, antes de recomendar una solución, analizamos su situación y definimos dónde es necesario actuar.</p>
-          <div className="diagnostic-grid" aria-label="Cuatro puntos de diagnóstico">
-            <article><span>01 / IDENTIDAD</span><h3>¿Tu marca se diferencia?</h3></article>
-            <article><span>02 / EXPERIENCIA</span><h3>¿Es fácil comprarte?</h3></article>
-            <article><span>03 / ESTRATEGIA</span><h3>¿Sabes a quién llegar?</h3></article>
-            <article><span>04 / COMUNICACIÓN</span><h3>¿Se entiende tu valor?</h3></article>
+          <div className="diagnostic-intro-main">
+            <h2>Se trata de saber <em>qué necesita</em> tu negocio.</h2>
+            <p className="diagnostic-lead">Cada negocio tiene prioridades diferentes. Por eso, antes de recomendar una solución, analizamos su situación y definimos dónde es necesario actuar.</p>
           </div>
+        </div>
+        <div className="diagnostic-grid" aria-label="Cuatro puntos de diagnóstico" data-reveal>
+          <article><span>01 / IDENTIDAD</span><h3>¿Tu marca se diferencia?</h3></article>
+          <article><span>02 / EXPERIENCIA</span><h3>¿Es fácil comprarte?</h3></article>
+          <article><span>03 / ESTRATEGIA</span><h3>¿Sabes a quién llegar?</h3></article>
+          <article><span>04 / COMUNICACIÓN</span><h3>¿Se entiende tu valor?</h3></article>
         </div>
         <BridgeSequence />
       </section>
@@ -130,6 +125,15 @@ export default function Home() {
         </div>
         <div className="process-rail" data-reveal>
           {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
+        </div>
+        <div className="method-creative-stage" data-reveal>
+          <div className="method-creative-copy">
+            <p className="micro-label">UN EQUIPO QUE CREA CONTIGO</p>
+            <h3>Las ideas toman forma <em>en movimiento.</em></h3>
+            <p>La estrategia, el diseño y la producción se conectan en cada proyecto. Explora las ilustraciones interactivas del universo creativo de AIVAN.</p>
+            <span>TOCA LA ILUSTRACIÓN PARA DESCUBRIR OTRA ESCENA ↗</span>
+          </div>
+          <AvatarShowcase />
         </div>
         <div className="method-duality" data-reveal>
           <article className="method-duality-surface">

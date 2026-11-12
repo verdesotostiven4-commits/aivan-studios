@@ -1,0 +1,230 @@
+/* AIVAN / editorial QA 2026-11 — preserve visual identity, correct unreadable layouts. */
+
+/* BRAND NAMES: gradient ink needs paint padding on all four sides to avoid clipped K/D glyphs. */
+.service-explorer .service-option .service-option-main{min-width:0;overflow:visible}
+.service-explorer .service-option .service-option-main strong{
+  display:inline-block;
+  width:max-content;
+  max-width:100%;
+  box-sizing:content-box;
+  line-height:1.15;
+  padding:.09em .18em .13em .035em;
+  margin:-.09em -.18em -.13em -.035em;
+  overflow:visible;
+  letter-spacing:-.052em;
+}
+.service-explorer .service-option button{overflow:visible}
+.service-explorer .service-option .service-option-main small{margin-top:2px;line-height:1.4}
+.service-explorer .service-option--brand,
+.service-explorer .service-option--mark,
+.service-explorer .service-option--prod{min-width:0}
+@media(max-width:760px){
+ .service-explorer .service-option button,.service-explorer .service-option.is-active button{padding:12px 12px;overflow:visible}
+ .service-explorer .service-option .service-option-main strong{font-size:clamp(17px,4.35vw,24px);letter-spacing:-.04em;padding-right:.24em}
+}
+@media(max-width:390px){.service-explorer .service-option .service-option-main strong{font-size:16px}}
+
+/* DIAGNÓSTICO: one editorial introduction and a separate, roomy grid. */
+.bridge-section{max-width:1440px;padding:clamp(68px,7.5vw,112px) clamp(22px,4.5vw,64px) clamp(86px,8vw,118px)}
+.bridge-section .diagnostic-intro{
+  display:block;
+  border-top:1px solid rgba(24,24,28,.19);
+  padding:31px 0 0;
+  max-width:1312px;
+  margin:0 auto;
+}
+.bridge-section .diagnostic-intro .micro-label{
+  display:block;max-width:none;margin:0 0 27px;
+  font-size:11px;letter-spacing:.17em;
+  line-height:1.45;color:#77727b;
+}
+.diagnostic-intro-main{
+  display:grid;grid-template-columns:minmax(0,1.23fr) minmax(300px,.77fr);
+  column-gap:clamp(36px,6vw,110px);align-items:end;
+}
+.bridge-section .diagnostic-intro-main h2{
+  font-size:clamp(40px,4.45vw,72px);
+  max-width:760px;line-height:1.05;
+  letter-spacing:-.055em;
+  overflow-wrap:normal;
+  text-wrap:balance;
+}
+.bridge-section .diagnostic-intro-main h2 em{color:#b74981;font-weight:400;font-style:normal;font-family:inherit}
+.bridge-section .diagnostic-intro .diagnostic-lead{
+  margin:0 0 6px;max-width:430px;
+  font-size:clamp(14px,1.2vw,17px);line-height:1.75;
+  color:#66616b;
+}
+.bridge-section>.diagnostic-grid{
+  width:100%;max-width:1312px;margin:clamp(30px,4vw,54px) auto 0;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.25vw,17px);
+}
+.bridge-section>.diagnostic-grid article{
+  min-width:0;min-height:178px;padding:clamp(20px,2.1vw,29px);
+  display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:32px;
+  background:#fff;border:1px solid #e4e0e1;border-radius:23px;
+  box-shadow:0 8px 24px rgba(24,21,28,.018);
+  transition:transform .26s ease,border-color .26s ease,box-shadow .26s ease;
+}
+.bridge-section>.diagnostic-grid article:hover{
+  transform:translateY(-4px);border-color:#cfb3c3;box-shadow:0 16px 38px rgba(23,18,30,.045);
+}
+.bridge-section>.diagnostic-grid article span{
+  color:#ae457b;font-weight:750;letter-spacing:.12em;font-size:11px;line-height:1.45;
+}
+.bridge-section>.diagnostic-grid article h3{
+  font-size:clamp(19px,2vw,30px);font-weight:680;line-height:1.15;
+  letter-spacing:-.045em;margin:0;max-width:260px;
+  overflow-wrap:normal;word-break:normal;text-wrap:balance;
+}
+.bridge-section>.bridge-visual{max-width:1312px;margin:clamp(60px,6vw,95px) auto 0}
+@media(max-width:1020px){
+  .diagnostic-intro-main{grid-template-columns:minmax(0,1fr) minmax(260px,.85fr);gap:35px}
+  .bridge-section>.diagnostic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .bridge-section>.diagnostic-grid article{min-height:145px;padding:24px}
+  .bridge-section>.diagnostic-grid article h3{font-size:clamp(22px,3vw,29px)}
+}
+@media(max-width:680px){
+  .bridge-section{padding:62px 19px 84px}
+  .bridge-section .diagnostic-intro .micro-label{margin-bottom:22px;font-size:10px}
+  .diagnostic-intro-main{grid-template-columns:1fr;gap:18px}
+  .bridge-section .diagnostic-intro-main h2{font-size:clamp(38px,9vw,57px);line-height:1.06}
+  .bridge-section .diagnostic-intro .diagnostic-lead{font-size:14px;max-width:560px;margin:0}
+  .bridge-section>.diagnostic-grid{gap:9px;margin-top:29px}
+  .bridge-section>.diagnostic-grid article{padding:18px 16px;min-height:150px;border-radius:18px;gap:18px}
+  .bridge-section>.diagnostic-grid article h3{font-size:clamp(18px,4.3vw,26px)}
+  .bridge-section>.diagnostic-grid article span{font-size:9px}
+  .bridge-section>.bridge-visual{margin-top:60px}
+}
+@media(max-width:350px){
+  .bridge-section>.diagnostic-grid{grid-template-columns:1fr}
+  .bridge-section>.diagnostic-grid article{min-height:105px}
+}
+
+/* CONTACT: contemporary humanist type, rose accent only as direction cue. */
+.contact-brief-intro h3{
+  font-size:clamp(38px,4.2vw,64px);
+  line-height:1.08;letter-spacing:-.052em;
+  max-width:650px;margin:21px 0 27px;
+  font-weight:690;overflow-wrap:normal;
+}
+.contact-brief-intro h3>span{display:block;text-wrap:balance}
+.contact-brief-intro h3 .contact-brief-promise{
+  font-family:inherit;
+  font-size:.69em;line-height:1.18;
+  letter-spacing:-.037em;font-weight:590;
+  color:#5b4b56;-webkit-text-fill-color:#5b4b56;
+  margin-top:.28em;padding-left:19px;
+  border-left:3px solid #c35487;
+  max-width:600px;
+}
+.contact-brief-intro .micro-label{font-size:11px;letter-spacing:.17em;color:#a34f7c}
+.contact-brief-intro>p:not(.micro-label){max-width:510px;font-size:15px}
+.contact-brief-intro>span{max-width:480px}
+@media(max-width:1000px){
+  .contact-brief-intro h3{font-size:clamp(40px,6.25vw,60px);max-width:800px}
+  .contact-brief-intro h3 .contact-brief-promise{max-width:720px}
+}
+@media(max-width:600px){
+  .contact-brief-intro h3{font-size:clamp(36px,9vw,52px);margin-top:14px}
+  .contact-brief-intro h3 .contact-brief-promise{font-size:.69em;margin-top:.35em;padding-left:14px;border-left-width:2px}
+  .contact-brief-intro>p:not(.micro-label){font-size:14px}
+}
+
+/* HUMANIZE AIVAN: real team photographs replace avatars in Quiénes somos. */
+.human-panel>.aivan-team-spotlight{
+  width:100%;min-width:0;position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:13px;
+  align-self:stretch;align-items:stretch;min-height:430px;
+  border-radius:29px;overflow:visible;
+}
+.aivan-team-spotlight .aivan-team-person{
+  position:relative;min-width:0;overflow:hidden;margin:0;isolation:isolate;
+  border-radius:22px;background:#29252e;
+  border:1px solid rgba(255,255,255,.15);
+}
+.aivan-team-spotlight .aivan-team-person:nth-child(2){transform:translateY(24px)}
+.aivan-team-spotlight .aivan-team-person img{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:center 18%;
+  filter:saturate(.85) contrast(1.03);transition:transform .55s ease;
+}
+.aivan-team-spotlight .aivan-team-person:hover img{transform:scale(1.035)}
+.aivan-team-spotlight .aivan-team-person:after{
+  content:"";position:absolute;inset:38% 0 0;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));pointer-events:none;
+}
+.aivan-team-spotlight .aivan-team-person figcaption{
+  position:absolute;bottom:19px;left:17px;right:12px;z-index:2;
+  display:grid;gap:6px;color:#fff;
+}
+.aivan-team-spotlight .aivan-team-person figcaption span{
+  color:#dfd9df;font-size:8px;letter-spacing:.09em;font-weight:690;
+}
+.aivan-team-spotlight .aivan-team-person figcaption strong{
+  font-size:clamp(15px,1.5vw,24px);line-height:1.07;font-weight:660;letter-spacing:-.045em;
+}
+.aivan-team-spotlight>.aivan-team-caption{
+  position:absolute;bottom:-38px;left:3px;color:#b7b5bd;
+  font-size:9px;font-weight:750;letter-spacing:.13em;
+}
+@media(max-width:1100px){
+ .human-panel>.aivan-team-spotlight{min-height:360px;max-width:740px;gap:12px;margin:0 auto 34px}
+ .aivan-team-spotlight .aivan-team-person:nth-child(2){transform:translateY(12px)}
+}
+@media(max-width:700px){
+ .human-panel>.aivan-team-spotlight{min-height:280px;gap:8px;margin-bottom:37px}
+ .aivan-team-spotlight .aivan-team-person{border-radius:16px}
+ .aivan-team-spotlight .aivan-team-person figcaption{bottom:12px;left:10px;right:6px;gap:4px}
+ .aivan-team-spotlight .aivan-team-person figcaption strong{font-size:clamp(13px,3.6vw,19px)}
+ .aivan-team-spotlight .aivan-team-person figcaption span{font-size:7px;letter-spacing:.04em}
+ .aivan-team-spotlight>.aivan-team-caption{font-size:8px;bottom:-33px;max-width:100%}
+}
+
+/* The interactive avatars were moved to the Method section, not discarded. */
+.process-section>.method-creative-stage{
+  max-width:1312px;margin:63px auto 0;min-width:0;
+  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  align-items:center;gap:clamp(24px,5vw,76px);
+  background:#111116;color:#fff;border-radius:34px;
+  padding:clamp(26px,4vw,50px);overflow:hidden;isolation:isolate;
+  position:relative;
+}
+.method-creative-stage:before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 84% 22%,rgba(158,85,194,.24),transparent 44%);
+  pointer-events:none;
+}
+.method-creative-copy{position:relative;z-index:2;min-width:0}
+.method-creative-copy .micro-label{font-size:10px;letter-spacing:.17em;color:#d1a5c1}
+.method-creative-copy h3{
+  font-size:clamp(35px,4.25vw,61px);font-weight:690;
+  letter-spacing:-.055em;line-height:1.06;margin:22px 0;
+  text-wrap:balance;
+}
+.method-creative-copy h3 em{font-family:inherit;font-weight:520;font-style:normal;color:#e7a0c9}
+.method-creative-copy p:not(.micro-label){font-size:15px;line-height:1.7;color:#c8c3ce;max-width:420px}
+.method-creative-copy>span{display:block;margin-top:27px;font-size:9px;font-weight:790;color:#e8c9d9;letter-spacing:.14em;line-height:1.5}
+.method-creative-stage>.avatar-showcase.human-visual{
+  margin:0;width:100%;max-width:none;height:390px;min-width:0;
+  display:block;flex:none;align-self:stretch;
+  cursor:pointer;box-shadow:0 22px 70px rgba(0,0,0,.22);
+}
+.method-creative-stage>.avatar-showcase:focus-visible{outline:2px solid #e9afd5;outline-offset:4px}
+@media(max-width:920px){
+ .process-section>.method-creative-stage{grid-template-columns:1fr;gap:22px;padding:28px}
+ .method-creative-copy h3{max-width:690px}
+ .method-creative-copy p:not(.micro-label){max-width:660px}
+ .method-creative-stage>.avatar-showcase.human-visual{height:370px}
+}
+@media(max-width:600px){
+ .process-section>.method-creative-stage{margin-top:34px;border-radius:23px;padding:20px}
+ .method-creative-copy h3{font-size:clamp(32px,8vw,44px)}
+ .method-creative-copy>span{font-size:8px;margin-top:16px}
+ .method-creative-stage>.avatar-showcase.human-visual{height:290px;border-radius:19px}
+}
+@media(prefers-reduced-motion:reduce){
+ .bridge-section>.diagnostic-grid article,
+ .aivan-team-spotlight .aivan-team-person img{transition:none}
+ .bridge-section>.diagnostic-grid article:hover,
+ .aivan-team-spotlight .aivan-team-person:hover img{transform:none}
+}
