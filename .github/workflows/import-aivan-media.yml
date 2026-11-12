@@ -1,0 +1,41 @@
+name: Import AIVAN approved media
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-aivan-media.yml"
+      - "tools/import_aivan_media.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aivan-approved-media-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout current source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: true
+      - name: Install image optimizer
+        run: python -m pip install "Pillow==11.3.0"
+      - name: Import and verify ten approved files
+        run: python tools/import_aivan_media.py
+      - name: Commit validated WebP assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/*.webp
+          if git diff --cached --quiet; then
+            echo "No media updates required."
+          else
+            git commit -m "fix(media): store complete optimized AIVAN photographs"
+            git push origin HEAD:main
+          fi
