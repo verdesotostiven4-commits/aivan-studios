@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: true
       - name: Install frame dependencies
-        run: python -m pip install "Pillow==11.3.0" "gdown==5.2.0"
+        run: python -m pip install "Pillow==11.3.0" "gdown==5.2.0" "imageio-ffmpeg==0.6.0"
       - name: Extract verified original frame
         run: python tools/import_aivan_process_frame.py
       - name: Commit authentic frame
