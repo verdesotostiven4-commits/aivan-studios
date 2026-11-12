@@ -61,8 +61,8 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
       <div className="contact-shell contact-shell--editorial">
         <div className="contact-editorial-copy" data-reveal>
           <div className="contact-editorial-kicker"><span>CONTACTO DIRECTO</span><i aria-hidden="true" /></div>
-          <h2 id="contact-title">¿Prefieres hablar <span>sin llenar el brief?</span></h2>
-          <p className="contact-editorial-lead">Escríbenos directamente por WhatsApp o correo. Si ya tienes claro lo que necesitas, este es el camino más rápido.</p>
+          <h2 id="contact-title">¿Tienes alguna duda? <span>Hablemos.</span></h2>
+          <p className="contact-editorial-lead">Si tienes preguntas sobre nuestros servicios o necesitas información adicional, también puedes comunicarte con nosotros directamente.</p>
           <div className="contact-editorial-benefits" aria-label="Ventajas del contacto directo">
             <div><BenefitIcon type="fast" /><span>Respuesta<br/>rápida</span></div>
             <div><BenefitIcon type="people" /><span>Atención<br/>directa</span></div>
