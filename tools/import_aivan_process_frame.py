@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 import subprocess
 
 import gdown
+import imageio_ffmpeg
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,7 +23,7 @@ with TemporaryDirectory() as work:
     DEST.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
-            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+            imageio_ffmpeg.get_ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-y",
             "-ss", "8.4", "-i", str(original), "-frames:v", "1",
             "-vf", "scale=1440:-2:flags=lanczos",
             "-c:v", "libwebp", "-quality", "80", "-compression_level", "5",
