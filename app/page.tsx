@@ -7,6 +7,7 @@ import CinematicHero from "@/components/CinematicHero";
 import ContactSection from "@/components/ContactSection";
 import PortfolioShowcase from "@/components/PortfolioShowcase";
 import ServiceExplorer from "@/components/ServiceExplorer";
+import AipackPlans from "@/components/AipackPlans";
 import BrandAsset from "@/components/BrandAsset";
 import FooterVideo from "@/components/FooterVideo";
 import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
@@ -39,8 +40,8 @@ export default function Home() {
         <div className="human-panel" data-reveal>
           <div className="human-copy">
             <p className="micro-label">QUÉ ES AIVAN</p>
-            <h2>Somos un estudio <span className="liquid-word">creativo</span><br />que transforma negocios.</h2>
-            <p>Combinamos estrategia, diseño y producción digital para ayudar a marcas a crecer, conectar y evolucionar en un mundo visual.</p>
+            <h2>No solo creamos.<br /><span className="liquid-word">Damos dirección</span> a tu marca.</h2>
+            <p>Somos un estudio creativo y estratégico nacido en Galápagos. Vivimos como emprendedores, profesionales y negocios locales que saben algo más que contenido: una identidad clara y una mejor forma de comunicar el valor de lo que ofrecen.</p>
             <a className="human-cta" href="#servicios">Conoce cómo trabaja AIVAN <span aria-hidden="true">→</span></a>
             <div className="human-values" aria-label="Pilares de AIVAN">
               <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
@@ -59,9 +60,9 @@ export default function Home() {
             </div>
             <div className="aivan-insight-copy">
               <p className="micro-label">DESDE GALÁPAGOS</p>
-              <h3>Una mirada que <em>observa,</em><br />adapta y evoluciona.</h3>
-              <p>No se trata solo de crear. Se trata de entender el entorno, encontrar nuevas posibilidades y darles una dirección.</p>
-              <div className="aivan-insight-pills"><span>01 — OBSERVA</span><span>02 — ADAPTA</span><span>03 — EVOLUCIONA</span></div>
+              <h3>Nuestro origen inspira<br /><em>otra forma de crear.</em></h3>
+              <p>Nuestro entorno nos inspira a mirar desde nuevas perspectivas, adaptarnos a la era digital y explorar nuevas formas de comunicar. Una visión que llevamos a cada proyecto.</p>
+              <div className="aivan-insight-pills"><span>01 — ENTENDEMOS EL ENTORNO</span><span>02 — ADAPTAMOS TU COMUNICACIÓN</span><span>03 — EVOLUCIONAMOS TU MARCA</span></div>
             </div>
           </div>
         )}
@@ -78,15 +79,13 @@ export default function Home() {
         </div>
       </section>
 
-      <PortfolioShowcase />
-
       <section className="services-section" id="servicios">
-        <span id="aipacks" className="section-nav-anchor" aria-hidden="true" />
         <div className="section-intro" data-reveal>
-          <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Cuatro áreas.<br />Una sola dirección.</h2></div>
-          <p>Entramos por el punto que tu negocio necesita hoy y dejamos espacio para que el sistema crezca mañana.</p>
+          <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Tres especialidades.<br />Una sola dirección.</h2></div>
+          <p>AIVAN tiene tres áreas creativas y una solución que las integra: AIPACKS. Cada negocio necesita una combinación diferente.</p>
         </div>
         <ServiceExplorer />
+        <AipackPlans />
       </section>
 
       <section className="bridge-section">
@@ -108,12 +107,7 @@ export default function Home() {
       </section>
 
 
-      <section className="brief-section" id="brief">
-        <div className="brief-shell">
-          <div className="brief-intro" data-reveal><p className="micro-label">PRIMER CONTACTO</p><h2>Cuéntanos el problema.<br />No hace falta que sepas la solución.</h2><p>Tu brief llega directamente al equipo de AIVAN. No tendrás que copiarlo a WhatsApp ni enviarlo otra vez por correo.</p><div className="brief-note"><span>↳</span><p>Responderlo toma unos minutos y nos permite llegar a la primera conversación con contexto.</p></div></div>
-          <BriefForm />
-        </div>
-      </section>
+      <PortfolioShowcase />
 
       <ContactSection whatsappHref={whatsappHref} emailHref={emailHref} email={contactEmail} phone="+593 99 060 1620" />
 
@@ -130,7 +124,7 @@ export default function Home() {
         <p>Creatividad, estrategia y producción desde Galápagos.</p>
         <nav aria-label="Enlaces del pie">
           <a href="#servicios">Servicios</a><a href="#proceso">Proceso</a>
-          <a href="#brief">Brief</a><a href="#contacto">Contacto</a>
+          <a href="#contacto">Contacto</a>
           <a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
         </nav>
         <div className="footer-signatures" aria-label="Créditos de creación">
