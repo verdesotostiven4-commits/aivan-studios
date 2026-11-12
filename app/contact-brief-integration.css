@@ -25,3 +25,16 @@
   .contact-brief-intro>p:not(.micro-label){font-size:14px}
   .contact-brief-integrated .brief-form{padding:19px;border-radius:24px}
 }
+
+/* Document order: brief first, then direct contact, without duplicating a menu item. */
+.contact-section--editorial .contact-shell--editorial .contact-brief-integrated{
+  grid-row:1;grid-column:1/-1;margin-top:0;padding-top:0;
+  padding-bottom:clamp(48px,6vw,86px);border-top:0;border-bottom:1px solid rgba(60,45,64,.16);
+}
+.contact-section--editorial .contact-shell--editorial .contact-editorial-copy{grid-column:1;grid-row:2}
+.contact-section--editorial .contact-shell--editorial .contact-editorial-actions{grid-column:2;grid-row:2}
+@media(max-width:850px){
+  .contact-section--editorial .contact-shell--editorial .contact-brief-integrated{grid-row:1;grid-column:1}
+  .contact-section--editorial .contact-shell--editorial .contact-editorial-copy{grid-row:2;grid-column:1}
+  .contact-section--editorial .contact-shell--editorial .contact-editorial-actions{grid-row:3;grid-column:1}
+}
