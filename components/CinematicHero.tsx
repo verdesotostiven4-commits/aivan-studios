@@ -1,15 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import Wordmark from "./Wordmark";
 import { HeroFlipWord } from "./BrandMotion";
 
-// Secuencia editorial auténtica. Los fotogramas y fotografías son originales
-// del equipo; los diseños panorámicos solo combinan esas imágenes sin recrear rostros.
+// Secuencia de portada aprobada: seis composiciones fotográficas seleccionadas
+// por el equipo y tres clips de proceso, silenciosos y optimizados para web.
+// Las imágenes son piezas visuales seleccionadas; los videos son clips de apoyo.
 const scenes = [
-  { id: "studio", src: "/media/hero-authentic-studio.webp", position: "center 48%" },
-  { id: "outdoors", src: "/media/hero-authentic-location.webp", position: "right 50%" },
-  { id: "food", src: "/media/hero-authentic-food.webp", position: "right 50%" },
+  { id: "studio", kind: "image", src: "/media/hero-2026-studio-camera.webp", position: "center 50%", mobile: "68% center", caption: "AIPROD · EN EL SET" },
+  { id: "portrait", kind: "image", src: "/media/hero-2026-studio-presenter.webp", position: "center 50%", mobile: "64% center", caption: "AIPROD · PRODUCCIÓN" },
+  { id: "planning", kind: "video", src: "/media/hero-2026-planning.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "58% center", caption: "ESTRATEGIA · PLANIFICACIÓN" },
+  { id: "branding", kind: "image", src: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "58% center", caption: "AIBRAND · DISEÑO" },
+  { id: "editing", kind: "video", src: "/media/hero-2026-color-grading.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "55% center", caption: "AIPROD · POSPRODUCCIÓN" },
+  { id: "plaza", kind: "image", src: "/media/hero-2026-plaza.webp", position: "center 50%", mobile: "54% center", caption: "AIPROD · EN GALÁPAGOS" },
+  { id: "food", kind: "image", src: "/media/hero-2026-food-production.webp", position: "center 50%", mobile: "66% center", caption: "AIPROD · GASTRONOMÍA" },
+  { id: "sketch", kind: "video", src: "/media/hero-2026-creative-sketching.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "55% center", caption: "AIBRAND · IDEAS EN PROCESO" },
+  { id: "coast", kind: "image", src: "/media/hero-2026-coastal-shoot.webp", position: "center 50%", mobile: "52% center", caption: "AIPROD · HISTORIAS DE ISLAS" },
 ] as const;
 
 type IntroStage = "opening" | "exit" | "done";
@@ -23,6 +31,7 @@ export default function CinematicHero() {
   const [failed, setFailed] = useState<boolean[]>(() => scenes.map(() => false));
   const [inView, setInView] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
@@ -80,7 +89,7 @@ export default function CinematicHero() {
         if (!live) return;
         setFailed((previous) => previous.map((failedBefore, i) => i === index ? true : failedBefore));
       };
-      image.src = scene.src;
+      image.src = scene.kind === "video" ? scene.poster : scene.src;
       return image;
     });
     return () => {
@@ -88,6 +97,20 @@ export default function CinematicHero() {
       preloaders.forEach((image) => { image.onload = null; image.onerror = null; });
     };
   }, []);
+
+  // Only the visible video is played: no offscreen decoding, no sound.
+  // Video autoplay is muted; reduced-motion visitors keep a static cover.
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      if (index === current && heroReady && inView && !reduced && !failed[index]) {
+        try { video.currentTime = 0; } catch { /* Video metadata is still loading. */ }
+        void video.play().catch(() => { /* Poster stays visible if autoplay is restricted. */ });
+      } else {
+        video.pause();
+      }
+    });
+  }, [current, heroReady, inView, reduced, failed]);
 
   // Every visit starts at scene 01. A slide is shown for a full interval,
   // then the sequence loops 01 -> 02 -> 03 -> 01 without getting stuck.
@@ -158,21 +181,44 @@ export default function CinematicHero() {
       )}
       <section className={`cinematic-hero${heroReady ? " is-ready" : ""}${inView ? " is-in-viewport" : ""}`} ref={heroRef} id="inicio">
         <div className="cinema-backdrops" aria-hidden="true">
-          {scenes.map((scene, index) => (
-            <img
-              key={scene.id}
-              src={scene.src}
-              className={`cinema-photo${current === index && loaded[index] ? " is-current" : ""}`}
-              style={{ objectPosition: scene.position }}
-              alt=""
-              loading="eager"
-              fetchPriority={index === 0 ? "high" : "low"}
-              decoding="async"
-              draggable={false}
-              onLoad={() => setLoaded((values) => values[index] ? values : values.map((value, i) => i === index ? true : value))}
-              onError={() => setFailed((values) => values.map((value, i) => i === index ? true : value))}
-            />
-          ))}
+          {scenes.map((scene, index) => {
+            const active = current === index && loaded[index] && !failed[index];
+            const mediaStyle = {
+              "--hero-position": scene.position,
+              "--hero-mobile-position": scene.mobile,
+            } as CSSProperties;
+            return scene.kind === "video" ? (
+              <video
+                key={scene.id}
+                ref={(node) => { videoRefs.current[index] = node; }}
+                className={`cinema-photo cinema-video${active ? " is-current" : ""}`}
+                src={scene.src}
+                poster={scene.poster}
+                style={mediaStyle}
+                muted
+                playsInline
+                loop
+                preload="metadata"
+                aria-hidden="true"
+                onLoadedMetadata={() => setLoaded((values) => values[index] ? values : values.map((value, i) => i === index ? true : value))}
+                onError={() => setFailed((values) => values.map((value, i) => i === index ? true : value))}
+              />
+            ) : (
+              <img
+                key={scene.id}
+                src={scene.src}
+                className={`cinema-photo${active ? " is-current" : ""}`}
+                style={mediaStyle}
+                alt=""
+                loading="eager"
+                fetchPriority={index === 0 ? "high" : "low"}
+                decoding="async"
+                draggable={false}
+                onLoad={() => setLoaded((values) => values[index] ? values : values.map((value, i) => i === index ? true : value))}
+                onError={() => setFailed((values) => values.map((value, i) => i === index ? true : value))}
+              />
+            );
+          })}
         </div>
         <div className="cinema-shade" aria-hidden="true" />
         <div className="cinema-copy">
@@ -193,15 +239,15 @@ export default function CinematicHero() {
             <a className="cinema-secondary-cta" href="#servicios">Explorar servicios <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className="cinema-counter" aria-label={`Fotografía ${current + 1} de ${scenes.length}`}>
+        <div className="cinema-counter" aria-label={`Escena ${current + 1} de ${scenes.length}`}>
           <strong>{String(current + 1).padStart(2, "0")}</strong><span /><small>{String(scenes.length).padStart(2, "0")}</small>
-          <div className="cinema-slide-select" aria-label="Elegir fotografía de portada">
+          <div className="cinema-slide-select" aria-label="Elegir escena de portada">
             {scenes.map((scene, index) => (
               <button
                 type="button"
                 key={scene.id}
                 className={index === current ? "is-active" : ""}
-                aria-label={`Ver fotografía ${index + 1}`}
+                aria-label={`Ver escena ${index + 1}`}
                 aria-current={index === current ? "true" : undefined}
                 disabled={!loaded[index] || failed[index]}
                 onClick={() => setCurrent(index)}
@@ -209,6 +255,7 @@ export default function CinematicHero() {
             ))}
           </div>
         </div>
+        <span className="cinema-scene-caption" aria-hidden="true">{scenes[current].caption}</span>
         <span className="cinema-scroll-hint" aria-hidden="true">DESLIZA PARA EXPLORAR <span>↓</span></span>
       </section>
     </>
