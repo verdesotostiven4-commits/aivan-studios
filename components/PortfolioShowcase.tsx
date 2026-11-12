@@ -5,12 +5,12 @@ import CircularCarousel from "./CircularCarousel";
 
 // Selección real del proceso creativo y la identidad del estudio; no se presenta como portafolio de clientes.
 export const inspiration = [
-  { src: "/media/brand-sketch-process.webp", alt: "Mano dibujando una ilustración en una libreta, fotograma de un vídeo original", title: "Todo empieza con un boceto", subtitle: "AIBRAND · Proceso creativo", description: "Un momento real de dibujo y exploración visual del material compartido por el equipo." },
-  { src: "/media/marketing-food-bts.webp", alt: "Persona grabando contenido gastronómico con teléfono y trípode", title: "Preparar la historia", subtitle: "AIMARK · Detrás de cámaras", description: "Preparación de una toma gastronómica con equipo y luz natural." },
-  { src: "/media/hero-production.webp", alt: "Grabación de una entrevista con cámara, luces y un equipo de producción", title: "El rodaje", subtitle: "AIPROD · Producción", description: "Registro auténtico de una jornada de grabación con iluminación y cámara." },
-  { src: "/media/production-food-shot.webp", alt: "Plano cercano de un teléfono capturando un plato de comida", title: "El detalle importa", subtitle: "AIMARK · Contenido", description: "Composición del encuadre para comunicar un producto gastronómico." },
-  { src: "/media/brand-studios.webp", alt: "Versión de la identidad gráfica de AIVAN STUDIOS", title: "Nuestra identidad", subtitle: "AIBRAND · Marca propia", description: "Una muestra de los recursos gráficos que identifican al estudio." },
-  { src: "/media/production-interview.webp", alt: "Set de producción con cámara, iluminación y persona frente a cámara", title: "Crear con intención", subtitle: "AIPROD · Detrás de cámara", description: "Montaje real del set durante una producción audiovisual." },
+  { src: "/media/brand-sketch-process.webp", alt: "Boceto original hecho a lápiz, mostrado en el video del proceso creativo del estudio", title: "Primero, una idea", subtitle: "AIBRAND · Del papel a la marca", description: "Un fotograma auténtico del proceso de ilustración compartido por el equipo." },
+  { src: "/media/gallery-authentic-mascot.webp", alt: "Pantalla original con la ilustración de una tortuga verde vestida con sudadera morada", title: "Una identidad cobra vida", subtitle: "AIBRAND · Ilustración digital", description: "Captura original del proceso de desarrollo digital de una mascota ilustrada." },
+  { src: "/media/gallery-authentic-levid.webp", alt: "Pantalla real con la investigación de color para una identidad gráfica de LeVid Galápagos", title: "Color con intención", subtitle: "AIBRAND · Dirección visual", description: "Material de diseño y exploración cromática procedente del vídeo original del estudio." },
+  { src: "/media/gallery-authentic-bmdance.webp", alt: "Pantalla del equipo con distintas variantes del diseño de identidad BM Dance Academy", title: "Probar, diseñar, refinar", subtitle: "AIBRAND · Variantes gráficas", description: "Diferentes aproximaciones visuales registradas en un archivo de proceso creativo." },
+  { src: "/media/marketing-food-bts.webp", alt: "Persona grabando contenido gastronómico con teléfono montado en trípode", title: "La historia tras el contenido", subtitle: "AIMARK · Detrás de cámaras", description: "Fotografía del proceso de grabación de contenido gastronómico en una locación real." },
+  { src: "/media/hero-production.webp", alt: "Set real de producción audiovisual con cámara e iluminación", title: "El valor de cada toma", subtitle: "AIPROD · Rodaje", description: "Material original de una sesión de grabación con iluminación y cámara." },
 ];
 
 export default function PortfolioShowcase() {
@@ -44,7 +44,7 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Seis registros originales de diseño y producción. Desliza para explorar.</span>
+          <span>Seis registros auténticos del proceso creativo. Desliza para explorar.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>
@@ -66,7 +66,7 @@ export default function PortfolioShowcase() {
           onItemClick={(_item: unknown, index: number) => setSelected(index)}
         />
       </div>
-      <p className="portfolio-disclaimer">Galería conceptual con materiales de referencia y del equipo. Los proyectos oficiales de AIVAN se incorporarán próximamente.</p>
+      <p className="portfolio-disclaimer">Archivo de procesos y material original proporcionado por el equipo. Las imágenes de diseños no implican una atribución comercial ni sustituyen los casos de estudio autorizados.</p>
 
       {current && (
         <div className="portfolio-modal-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>

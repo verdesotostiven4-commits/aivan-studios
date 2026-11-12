@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Wordmark from "./Wordmark";
 import { HeroFlipWord } from "./BrandMotion";
 
-// Fotografías originales proporcionadas por el equipo AIVAN; copias WebP locales optimizadas.
+// Secuencia editorial auténtica. Los fotogramas y fotografías son originales
+// del equipo; los diseños panorámicos solo combinan esas imágenes sin recrear rostros.
 const scenes = [
-  { id: "studio", src: "/media/hero-studio.webp", position: "center 48%" },
-  { id: "production", src: "/media/hero-production.webp", position: "center 51%" },
-  { id: "interview", src: "/media/production-interview.webp", position: "center 48%" },
+  { id: "studio", src: "/media/hero-authentic-studio.webp", position: "center 48%" },
+  { id: "outdoors", src: "/media/hero-authentic-location.webp", position: "right 50%" },
+  { id: "food", src: "/media/hero-authentic-food.webp", position: "right 50%" },
 ] as const;
 
 type IntroStage = "opening" | "exit" | "done";

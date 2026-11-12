@@ -1,0 +1,18 @@
+/* Original photographs, carefully art directed in the layout—not AI reconstructions. */
+.cinematic-hero .cinema-photo{
+  filter:saturate(.75) contrast(1.055) brightness(.91);
+}
+.cinematic-hero .cinema-shade{
+  background:
+    linear-gradient(90deg,rgba(3,3,8,.88) 0%,rgba(3,3,8,.69) 43%,rgba(3,3,8,.30) 76%,rgba(3,3,8,.20) 100%),
+    linear-gradient(0deg,rgba(4,4,8,.45),transparent 52%);
+}
+.portfolio-showcase .portfolio-disclaimer{line-height:1.65;max-width:900px;}
+@media(max-width:720px){
+ .cinematic-hero .cinema-photo{filter:saturate(.64) contrast(1.06) brightness(.81)}
+ .cinematic-hero .cinema-shade{
+   background:linear-gradient(90deg,rgba(3,3,8,.88),rgba(3,3,8,.58)),linear-gradient(0deg,rgba(0,0,0,.5),transparent 60%);
+ }
+}
+/* Keep original flat artboards legible inside carousel and modal. */
+.portfolio-modal-image img{object-fit:contain;background:#19171d}
