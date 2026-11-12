@@ -8,7 +8,7 @@ const offerings = [
     headline: "La marca empieza por lo que eres.",
     copy: "Desarrollamos identidad y sistemas visuales que hacen que una marca se reconozca, se ordene y crezca con coherencia.",
     tags: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones", "Afiches técnicos"],
-    image: "/media/brand-sketch-process.webp",
+    image: "/media/brand-sketch-approved.webp",
   },
   {
     code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo",
@@ -22,7 +22,7 @@ const offerings = [
     headline: "Historias que merecen ser vistas.",
     copy: "Fotografía, vídeo, edición y motion con una intención detrás de cada encuadre, sonido y transición.",
     tags: ["Fotografía profesional", "Producción de contenido", "Edición audiovisual", "Motion graphics"],
-    image: "/media/hero-production.webp",
+    image: "/media/production-studio-approved.webp",
   },
 ] as const;
 
@@ -51,8 +51,8 @@ export default function ServiceExplorer() {
           {current.id === "brand" ? (
             <div className="service-real-composition service-real-composition--brand">
               <figure className="service-real-frame service-real-frame--process">
-                <img src="/media/brand-sketch-process.webp" alt="Boceto de ilustración en desarrollo, extraído de un vídeo original del equipo" loading="lazy" />
-                <figcaption>PROCESO CREATIVO / BOCETO REAL</figcaption>
+                <img src="/media/brand-sketch-approved.webp" alt="Boceto ilustrado de una mascota con lápiz sobre cuaderno de cuadrícula" loading="lazy" />
+                <figcaption>PROCESO CREATIVO / BOCETO</figcaption>
               </figure>
               <figure className="service-real-frame service-real-frame--identity">
                 <img src="/media/brand-studios.webp" alt="Aplicación de la identidad visual original de AIVAN STUDIOS" loading="lazy" />
@@ -76,7 +76,7 @@ export default function ServiceExplorer() {
               </figure>
             </div>
           ) : (
-            <img className="service-detail-cover service-detail-cover--authentic" src={current.image} alt="Rodaje del equipo con cámara, luces y una persona frente a cámara" loading="lazy" />
+            <img className="service-detail-cover service-detail-cover--authentic" src={current.image} alt="Producción audiovisual: cámara profesional y equipo preparando una grabación en oficina" loading="lazy" />
           )}
           <div className="service-detail-visual-top"><span>ARCHIVO AIVAN / {current.code}</span><span>{current.name}</span></div>
         </div>
@@ -85,7 +85,7 @@ export default function ServiceExplorer() {
           <h3>{current.headline}</h3>
           <p>{current.copy}</p>
           <div className="service-detail-tags">{current.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-          <div className="service-detail-footer"><a href="#galeria">Explorar referencias visuales <span aria-hidden="true">↗</span></a><small>Material original · sin imágenes generadas</small></div>
+          <div className="service-detail-footer"><a href="#galeria">Explorar referencias visuales <span aria-hidden="true">↗</span></a><small>Imágenes seleccionadas para el estudio</small></div>
         </div>
       </div>
     </div>

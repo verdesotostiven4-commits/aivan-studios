@@ -1,0 +1,64 @@
+/* Only the two user-selected services images and AIBRAND composition.
+   Keeps the service picker, all original text, AIPACKS and carousels unchanged. */
+
+/* Give the identity tile enough room to show the studio's mark in full. */
+.service-detail-visual--brand .service-real-composition--brand {
+  grid-template-columns:minmax(0,1.38fr) minmax(0,1fr);
+  gap:8px;
+  padding:8px;
+}
+.service-detail-visual--brand .service-real-frame--process img {
+  object-fit:cover;
+  object-position:center 49%;
+  padding:0;
+  filter:brightness(.97) contrast(1.025) saturate(.96);
+}
+.service-detail-visual--brand .service-real-frame--identity {
+  padding:0;
+  background:#504094;
+  overflow:hidden;
+}
+.service-detail-visual--brand .service-real-frame--identity img {
+  display:block;
+  width:100%;
+  height:100%;
+  padding:0;
+  margin:0;
+  object-fit:cover;
+  object-position:center;
+  filter:none;
+}
+.service-detail-visual--brand .service-real-frame--identity figcaption {
+  color:#fff;
+}
+/* Keep top-right AIBRAND label readable over the colorful identity artwork. */
+.service-detail-visual--brand .service-detail-visual-top > span:last-child {
+  padding:5px 8px;
+  border-radius:7px;
+  background:rgba(10,10,17,.48);
+  backdrop-filter:blur(4px);
+}
+.service-detail-visual--prod .service-detail-cover--authentic {
+  object-fit:cover;
+  object-position:center 50%;
+  filter:brightness(.97) contrast(1.02) saturate(.98);
+}
+@media(max-width:850px){
+  .service-detail-visual--brand .service-real-composition--brand {
+    grid-template-columns:minmax(0,1.28fr) minmax(0,1fr);
+  }
+}
+@media(max-width:600px){
+  .service-detail-visual--brand .service-real-composition--brand {
+    grid-template-columns:minmax(0,1.18fr) minmax(0,1fr);
+    gap:5px;
+    padding:6px;
+  }
+  .service-detail-visual--brand .service-real-frame--identity img{
+    padding:0;
+    object-fit:cover;
+  }
+  .service-detail-visual--brand .service-real-frame--process img{
+    object-position:50% 53%;
+  }
+}
