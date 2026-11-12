@@ -24,6 +24,8 @@ jobs:
       - name: Install image processing tools
         run: |
           python -m pip install "Pillow==11.3.0"
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
           ffmpeg -version | head -n 1
       - name: Fetch user-approved six images and three original videos
         env:
