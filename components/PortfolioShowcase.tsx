@@ -21,6 +21,8 @@ function formatIndex(index: number) {
 export default function PortfolioShowcase() {
   const [selected, setSelected] = useState<number | null>(null);
   const [active, setActive] = useState(0);
+  const [canScrollBack, setCanScrollBack] = useState(false);
+  const [canScrollForward, setCanScrollForward] = useState(true);
   const railRef = useRef<HTMLUListElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -88,6 +90,8 @@ export default function PortfolioShowcase() {
     if (!first) return;
     const distance = first.getBoundingClientRect().width + (Number.parseFloat(getComputedStyle(rail).columnGap) || 18);
     setActive(Math.max(0, Math.min(inspiration.length - 1, Math.round(rail.scrollLeft / distance))));
+    setCanScrollBack(rail.scrollLeft > 4);
+    setCanScrollForward(rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 4);
   };
 
   const modal = current && (
@@ -155,8 +159,8 @@ export default function PortfolioShowcase() {
           <p>DESLIZA PARA EXPLORAR <span aria-hidden="true">→</span></p>
           <div>
             <span className="portfolio-flat-pagination" aria-live="polite">{formatIndex(active)} / {String(inspiration.length).padStart(2, "0")}</span>
-            <button type="button" aria-label="Desplazar galería a la izquierda" onClick={() => moveRail(-1)} disabled={active === 0}>←</button>
-            <button type="button" aria-label="Desplazar galería a la derecha" onClick={() => moveRail(1)} disabled={active >= inspiration.length - 1}>→</button>
+            <button type="button" aria-label="Desplazar galería a la izquierda" onClick={() => moveRail(-1)} disabled={!canScrollBack}>←</button>
+            <button type="button" aria-label="Desplazar galería a la derecha" onClick={() => moveRail(1)} disabled={!canScrollForward}>→</button>
           </div>
         </div>
       </div>
