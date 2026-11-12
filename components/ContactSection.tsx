@@ -56,7 +56,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
   const [emailIconError, setEmailIconError] = useState(false);
 
   return (
-    <section className="contact-section contact-section--editorial" id="contacto" aria-labelledby="contact-title">
+    <section className="contact-section contact-section--editorial" id="contacto" aria-labelledby="contact-brief-title">
       <div className="contact-ambient" aria-hidden="true" />
       <div className="contact-shell contact-shell--editorial">
         <div className="contact-editorial-copy" data-reveal>
