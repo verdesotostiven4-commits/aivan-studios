@@ -4,14 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Wordmark from "./Wordmark";
 import { HeroFlipWord } from "./BrandMotion";
 
-// Fotografías editoriales de muestra: reemplazar por material aprobado de AIVAN.
+// Fotografías originales proporcionadas por el equipo AIVAN; copias WebP locales optimizadas.
 const scenes = [
-  { id: "set", photo: "8089662", position: "center 48%" },
-  { id: "crew", photo: "36287813", position: "center 46%" },
-  { id: "camera", photo: "32439173", position: "center 50%" },
+  { id: "studio", src: "/media/hero-studio.webp", position: "center 48%" },
+  { id: "production", src: "/media/hero-production.webp", position: "center 48%" },
+  { id: "galapagos", src: "/media/hero-location.webp", position: "center 45%" },
 ] as const;
-const photoUrl = (id: string, size: number) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${size}`;
 
 type IntroStage = "opening" | "exit" | "done";
 
@@ -133,9 +131,7 @@ export default function CinematicHero() {
           {scenes.map((scene, index) => (
             <img
               key={scene.id}
-              src={photoUrl(scene.photo, 1800)}
-              srcSet={`${photoUrl(scene.photo, 900)} 900w, ${photoUrl(scene.photo, 1500)} 1500w, ${photoUrl(scene.photo, 2200)} 2200w`}
-              sizes="100vw"
+              src={scene.src}
               className={`cinema-photo${current === index && loaded[index] ? " is-current" : ""}`}
               style={{ objectPosition: scene.position }}
               alt=""

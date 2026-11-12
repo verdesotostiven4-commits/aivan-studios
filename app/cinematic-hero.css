@@ -17,7 +17,7 @@ html.cinema-intro-active{overflow:hidden}
 @keyframes brandCurtain{to{transform:translateY(-101%)}}
 .cinematic-hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:100svh;overflow:hidden;background:#0b0b0d;color:white}
 .cinema-backdrops,.cinema-shade{position:absolute;inset:0;pointer-events:none}
-.cinema-backdrops{z-index:0;background:#151519 url("https://images.pexels.com/photos/8089662/pexels-photo-8089662.jpeg?auto=compress&cs=tinysrgb&w=1200") center/cover no-repeat}
+.cinema-backdrops{z-index:0;background:#151519 url("/media/hero-studio.webp") center/cover no-repeat}
 .cinema-photo{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;opacity:0;transform:scale(1.055);filter:grayscale(1) contrast(1.12) brightness(.78);transition:opacity 1.65s ease}
 .cinema-photo.is-current{opacity:1;animation:cinemaDrift 12s ease-in-out both}
 @keyframes cinemaDrift{to{transform:scale(1.14) translate3d(1%,-.7%,0)}}

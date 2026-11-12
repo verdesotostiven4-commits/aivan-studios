@@ -1,0 +1,23 @@
+/* AIVAN / authentic studio content, without changing existing brand animations. */
+.aivan-team-editorial{max-width:1312px;margin:clamp(52px,7vw,94px) auto 0;display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:end;gap:clamp(30px,5vw,78px)}
+.aivan-team-heading{padding-bottom:22px}
+.aivan-team-heading .micro-label{font-size:10px;letter-spacing:.17em;color:#8d607e}
+.aivan-team-heading h3{font-size:clamp(41px,4.7vw,76px);line-height:.98;letter-spacing:-.067em;font-weight:670;margin:20px 0 24px;text-wrap:balance}
+.aivan-team-heading h3 em{font-family:Georgia,serif;font-weight:400;color:#ae4484}
+.aivan-team-heading>p:last-child{font-size:clamp(14px,1.15vw,17px);color:#67626d;line-height:1.65;max-width:480px}
+.aivan-team-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.aivan-team-card{margin:0;min-width:0;position:relative;overflow:hidden;aspect-ratio:.79;border-radius:26px;background:#d2d1d2;isolation:isolate}
+.aivan-team-card:after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,rgba(8,8,12,.7));pointer-events:none;z-index:1}
+.aivan-team-card img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 24%;transition:transform .65s cubic-bezier(.2,.7,.2,1)}
+.aivan-team-card:hover img{transform:scale(1.035)}
+.aivan-team-card figcaption{position:absolute;z-index:2;left:22px;right:15px;bottom:21px;color:#fff;display:grid;gap:7px}
+.aivan-team-card figcaption span{font-size:9px;letter-spacing:.18em;font-weight:780;color:rgba(255,255,255,.78)}
+.aivan-team-card figcaption strong{font-size:clamp(17px,1.75vw,26px);font-weight:650;letter-spacing:-.04em;line-height:1.1}
+.service-detail-brand .service-detail-cover{object-position:center}
+.service-detail-mark .service-detail-cover{object-position:center 46%}
+.service-detail-prod .service-detail-cover{object-position:center}
+.service-detail-packs .service-detail-cover{object-position:center}
+@media(max-width:1050px){.aivan-team-editorial{grid-template-columns:1fr;gap:23px}.aivan-team-heading h3{max-width:700px}.aivan-team-cards{max-width:790px}}
+@media(max-width:760px){.aivan-team-editorial{margin-top:58px}.aivan-team-cards{gap:10px}.aivan-team-card{border-radius:17px;aspect-ratio:.79}.aivan-team-card figcaption{left:12px;bottom:15px;right:8px;gap:4px}.aivan-team-card figcaption span{font-size:7px}.aivan-team-card figcaption strong{font-size:clamp(14px,4.2vw,20px)}}
+@media(max-width:390px){.aivan-team-card figcaption span{font-size:6.5px}.aivan-team-card figcaption strong{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.aivan-team-card img{transition:none}.aivan-team-card:hover img{transform:none}}

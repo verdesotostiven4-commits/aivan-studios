@@ -49,6 +49,23 @@ export default function Home() {
           </div>
           <AvatarShowcase />
         </div>
+        <div className="aivan-team-editorial" aria-labelledby="aivan-team-title" data-reveal>
+          <div className="aivan-team-heading">
+            <p className="micro-label">PERSONAS DETRÁS DE AIVAN</p>
+            <h3 id="aivan-team-title">Ideas con personas <em>reales.</em></h3>
+            <p>El trabajo empieza por escuchar, observar y crear en equipo. Conoce a quienes forman parte de AIVAN STUDIOS.</p>
+          </div>
+          <div className="aivan-team-cards">
+            <figure className="aivan-team-card">
+              <img src="/media/alexander-portrait.webp" alt="Retrato de Alexander Castillo, del equipo AIVAN" loading="lazy" width="950" height="950" />
+              <figcaption><span>01 / EQUIPO AIVAN</span><strong>Alexander Castillo</strong></figcaption>
+            </figure>
+            <figure className="aivan-team-card">
+              <img src="/media/andrea-portrait.webp" alt="Retrato de Andrea Segura, del equipo AIVAN" loading="lazy" width="950" height="950" />
+              <figcaption><span>02 / EQUIPO AIVAN</span><strong>Andrea Segura</strong></figcaption>
+            </figure>
+          </div>
+        </div>
         {/* FEATURE ARCHIVE: FinchSignature / PINZÓN / HUEVO / CASCARÓN /
             FINCH EVOLUTION / CRECIMIENTO / ECLOSIÓN. Preserved in
             components/BrandMotion.tsx and app/globals.css.
