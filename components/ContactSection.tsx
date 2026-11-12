@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import BriefForm from "./BriefForm";
 
 /** Approved custom gradient WhatsApp icon provided by the studio. */
 const WHATSAPP_ICON_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgFJMLspsTRLe2aBl94MZ9zkNjs3iSsjGM5-pn79WXFFDHYs5GtIIiqZbj-ab-tn3pxGr04Jj99qeiP7eR0fyobsNXau3Zv5vBqtiEIkmp1XyMn0SuY7A-9alVUbNjEGtutYxLGF829za_2yC8UctYrwv1I2t291MqXw9zmL7NO1jvKNh7du1NOiS6Sa6o/s1600/image.png";
@@ -111,6 +112,15 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             </span>
             <span className="contact-editorial-arrow"><ArrowSymbol /></span>
           </a>
+        </div>
+        <div className="contact-brief-integrated" id="brief" aria-labelledby="contact-brief-title">
+          <div className="contact-brief-intro" data-reveal>
+            <p className="micro-label">PRIMER CONTACTO</p>
+            <h3 id="contact-brief-title">Tú conoces tu negocio.<br /><em>Nosotros te ayudamos a encontrar el siguiente paso.</em></h3>
+            <p>Cuéntanos qué haces y qué te gustaría mejorar. Con esta información podremos conocer tu situación y preparar una conversación más útil para tu negocio.</p>
+            <span>Un brief breve, claro y privado. Tu información llega directamente al equipo de AIVAN.</span>
+          </div>
+          <BriefForm />
         </div>
       </div>
     </section>
