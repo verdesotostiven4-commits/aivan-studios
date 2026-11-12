@@ -1,0 +1,65 @@
+name: Import approved AIBRAND and AIPROD images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-approved-services.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aivan-approved-services
+  cancel-in-progress: false
+
+jobs:
+  import-approved-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: true
+      - run: python -m pip install "Pillow==11.3.0"
+      - name: Download user-selected images (do not regenerate)
+        env:
+          APPROVED_SKETCH_URL: "https://at.adobe.com/90mzGqmb01IqCFp8"
+          APPROVED_PRODUCTION_URL: "https://at.adobe.com/eTJRXWJOtn1kYmYx"
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/aivan-approved public/media
+          curl --fail --location --retry 3 --silent --show-error "$APPROVED_SKETCH_URL" --output /tmp/aivan-approved/sketch.png
+          curl --fail --location --retry 3 --silent --show-error "$APPROVED_PRODUCTION_URL" --output /tmp/aivan-approved/production.png
+          python - <<'PY'
+          from PIL import Image, ImageOps
+          from pathlib import Path
+          photos = [
+              ('sketch', (1122,1402), 'public/media/brand-sketch-approved.webp'),
+              ('production', (1672,941), 'public/media/production-studio-approved.webp'),
+          ]
+          for stem, shape, destination in photos:
+              source=Path('/tmp/aivan-approved')/f'{stem}.png'
+              with Image.open(source) as original:
+                  original.load()
+                  if original.size != shape:
+                      raise RuntimeError(f'Unexpected source dimensions {stem}: {original.size}; expected {shape}')
+                  rgba=ImageOps.exif_transpose(original).convert('RGB')
+                  rgba.save(destination,'WEBP',quality=93,method=6)
+              with Image.open(destination) as check:
+                  check.verify()
+              bytesize=Path(destination).stat().st_size
+              if bytesize < 100000:
+                  raise RuntimeError(f'Bad output: {destination} ({bytesize} bytes)')
+              print('Approved original preserved:',destination,bytesize)
+          PY
+      - name: Commit web-ready versions of approved user images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/brand-sketch-approved.webp public/media/production-studio-approved.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(services): import exact user-approved sketch and production images"
+            git push origin HEAD:main
+          fi
