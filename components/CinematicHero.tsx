@@ -152,18 +152,19 @@ export default function CinematicHero() {
         <div className="cinema-copy">
           <div className="cinema-eyebrow">AIVAN STUDIOS <span /> GALÁPAGOS, ECUADOR</div>
           <h1>
-            <span className="cinema-line cinema-line--white">Nacimos para</span>
+            <span className="cinema-line cinema-line--white">Tu negocio no necesita</span>
+            <span className="cinema-line cinema-line--white">un cambio. Necesita</span>
             <span className="cinema-line cinema-line--color"><HeroFlipWord text="evolucionar." /></span>
           </h1>
-          <p className="cinema-lead">Desde Galápagos, creamos marcas, contenido y experiencias que se adaptan, conectan y dejan huella.</p>
+          <p className="cinema-lead">Impulsamos negocios y marcas de Galápagos con estrategia, branding y producción audiovisual, creando soluciones que responden a lo que realmente necesitan.</p>
           <div className="cinema-actions">
-            <a href="#aivan" className="cinema-cta">
-              <span>Conoce AIVAN</span>
+            <a href="#brief" className="cinema-cta">
+              <span>Analizar mi negocio</span>
               <span className="cinema-cta-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>
             </a>
-            <span className="cinema-manifesto"><i aria-hidden="true" /> Estudio<br /> Creador × Rebelde</span>
+            <a className="cinema-secondary-cta" href="#servicios">Explorar servicios <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div className="cinema-counter" aria-label={`Fotografía ${current + 1} de ${scenes.length}`}>
