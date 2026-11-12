@@ -1,0 +1,102 @@
+name: Import AIVAN hero photos and video clips
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-aivan-hero-2026.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aivan-hero-import-2026
+  cancel-in-progress: false
+
+jobs:
+  import-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: true
+      - name: Install image processing tools
+        run: |
+          python -m pip install "Pillow==11.3.0"
+          ffmpeg -version | head -n 1
+      - name: Fetch user-approved six images and three original videos
+        env:
+          IMAGE_01: "https://at.adobe.com/B93fAMOoMUfRlPdc"
+          IMAGE_02: "https://at.adobe.com/YdEKlBEpHVqgJHOp"
+          IMAGE_03: "https://at.adobe.com/CQuBGsRwzHmzylxG"
+          IMAGE_04: "https://at.adobe.com/90DYJnKgdQpYiuga"
+          IMAGE_05: "https://at.adobe.com/qhZdbA7jF79qOwNY"
+          IMAGE_06: "https://at.adobe.com/ziXKydyeXZqY8g5O"
+          VIDEO_01: "https://at.adobe.com/wTCFfYJ2e3FHSls4"
+          VIDEO_02: "https://at.adobe.com/UBRT58KlybN1oH52"
+          VIDEO_03: "https://at.adobe.com/3ulC7UrB0W3LIcX6"
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/aivan-hero-source public/media
+          for num in 01 02 03 04 05 06; do
+            var="IMAGE_${num}"
+            curl --fail --location --retry 3 --max-time 120 --silent --show-error "${!var}" -o "/tmp/aivan-hero-source/${num}.png"
+          done
+          for num in 01 02 03; do
+            var="VIDEO_${num}"
+            curl --fail --location --retry 3 --max-time 300 --silent --show-error "${!var}" -o "/tmp/aivan-hero-source/v${num}.mp4"
+          done
+      - name: Export professional 16:9 web-ready photos
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          sources = [
+            ("01","plaza"),
+            ("02","studio-presenter"),
+            ("03","brand-atelier"),
+            ("04","studio-camera"),
+            ("05","food-production"),
+            ("06","coastal-shoot"),
+          ]
+          for num, stem in sources:
+              raw=Path(f"/tmp/aivan-hero-source/{num}.png")
+              with Image.open(raw) as im:
+                  im=ImageOps.exif_transpose(im).convert("RGB")
+                  if im.width < 1500 or im.height < 840:
+                      raise RuntimeError(f"Unexpected image dimensions: {raw} {im.size}")
+                  im.thumbnail((1600,900), Image.Resampling.LANCZOS)
+                  output=Path(f"public/media/hero-2026-{stem}.webp")
+                  im.save(output, "WEBP", quality=84, method=6)
+              with Image.open(output) as check:
+                  check.verify()
+              print(stem, output.stat().st_size, "bytes")
+          PY
+      - name: Cut lightweight muted cinematic background clips
+        run: |
+          set -euo pipefail
+          clips=("planning" "color-grading" "creative-sketching")
+          for index in 01 02 03; do
+            case "$index" in
+              01) name=planning; start=1 ;;
+              02) name=color-grading; start=4 ;;
+              03) name=creative-sketching; start=8 ;;
+            esac
+            ffmpeg -hide_banner -nostdin -loglevel error -y \
+              -ss "$start" -i "/tmp/aivan-hero-source/v${index}.mp4" \
+              -t 7 -an -vf "scale=1280:-2:flags=lanczos,fps=24,format=yuv420p" \
+              -c:v libx264 -preset medium -crf 26 -movflags +faststart \
+              "public/media/hero-2026-${name}.mp4"
+            ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 "public/media/hero-2026-${name}.mp4"
+          done
+      - name: Commit all nine optimized assets
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/hero-2026-*.webp public/media/hero-2026-*.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(hero): add six approved shots and three video clips"
+            git push origin HEAD:main
+          fi
