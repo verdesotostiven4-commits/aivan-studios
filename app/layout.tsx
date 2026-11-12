@@ -17,6 +17,7 @@ import "./crm-panel-polish.css";
 import "./aivan-media-integration.css";
 import "./aivan-content-corrections.css";
 import "./aivan-editorial-qa.css";
+import "./aivan-authentic-media.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://aivan-studios.vercel.app"),

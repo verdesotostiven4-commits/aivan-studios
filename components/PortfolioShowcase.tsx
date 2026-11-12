@@ -5,12 +5,12 @@ import CircularCarousel from "./CircularCarousel";
 
 // Selección real del proceso creativo y la identidad del estudio; no se presenta como portafolio de clientes.
 export const inspiration = [
-  { src: "/media/hero-studio.webp", alt: "Cámara de producción en una grabación de entrevista", title: "Detrás de cámara", subtitle: "AIPROD · Rodaje", description: "Preparación de cámara, luz y composición durante una producción audiovisual." },
-  { src: "/media/production-food-shot.webp", alt: "Grabación de contenido gastronómico con un teléfono en soporte", title: "Contenido con intención", subtitle: "AIMARK · Contenido", description: "Una mirada a la producción de contenido para comunicar productos y experiencias." },
-  { src: "/media/brand-studios.webp", alt: "Identidad gráfica multicolor de AIVAN STUDIOS", title: "Identidad AIVAN", subtitle: "AIBRAND · Identidad propia", description: "Exploración de la identidad visual del estudio: tipografía y color como parte del sistema de marca." },
-  { src: "/media/production-interview.webp", alt: "Set de entrevista con cámara e iluminación", title: "Cada toma importa", subtitle: "AIPROD · Entrevistas", description: "Organización de una producción con iluminación, cámara y puesta en escena." },
-  { src: "/media/marketing-food-bts.webp", alt: "Persona realizando la grabación de un plato de comida", title: "Comunicar desde lo real", subtitle: "AIMARK · Producción de contenido", description: "Trabajo detrás de cámaras para mostrar un producto con claridad y atractivo." },
-  { src: "/media/hero-production.webp", alt: "Set de producción audiovisual y equipo en estudio", title: "Crear en equipo", subtitle: "AIPROD · Proceso", description: "Producción audiovisual realizada con preparación técnica y colaboración." },
+  { src: "/media/brand-sketch-process.webp", alt: "Mano dibujando una ilustración en una libreta, fotograma de un vídeo original", title: "Todo empieza con un boceto", subtitle: "AIBRAND · Proceso creativo", description: "Un momento real de dibujo y exploración visual del material compartido por el equipo." },
+  { src: "/media/marketing-food-bts.webp", alt: "Persona grabando contenido gastronómico con teléfono y trípode", title: "Preparar la historia", subtitle: "AIMARK · Detrás de cámaras", description: "Preparación de una toma gastronómica con equipo y luz natural." },
+  { src: "/media/hero-production.webp", alt: "Grabación de una entrevista con cámara, luces y un equipo de producción", title: "El rodaje", subtitle: "AIPROD · Producción", description: "Registro auténtico de una jornada de grabación con iluminación y cámara." },
+  { src: "/media/production-food-shot.webp", alt: "Plano cercano de un teléfono capturando un plato de comida", title: "El detalle importa", subtitle: "AIMARK · Contenido", description: "Composición del encuadre para comunicar un producto gastronómico." },
+  { src: "/media/brand-studios.webp", alt: "Versión de la identidad gráfica de AIVAN STUDIOS", title: "Nuestra identidad", subtitle: "AIBRAND · Marca propia", description: "Una muestra de los recursos gráficos que identifican al estudio." },
+  { src: "/media/production-interview.webp", alt: "Set de producción con cámara, iluminación y persona frente a cámara", title: "Crear con intención", subtitle: "AIPROD · Detrás de cámara", description: "Montaje real del set durante una producción audiovisual." },
 ];
 
 export default function PortfolioShowcase() {
@@ -44,7 +44,7 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Seis miradas al estudio. Desliza y toca una imagen para conocerla.</span>
+          <span>Seis registros originales de diseño y producción. Desliza para explorar.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>

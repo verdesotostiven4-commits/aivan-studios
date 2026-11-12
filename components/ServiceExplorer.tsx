@@ -8,8 +8,7 @@ const offerings = [
     headline: "La marca empieza por lo que eres.",
     copy: "Desarrollamos identidad y sistemas visuales que hacen que una marca se reconozca, se ordene y crezca con coherencia.",
     tags: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones", "Afiches técnicos"],
-    image: "/media/brand-studios.webp",
-    previews: ["/media/brand-symbol.webp", "/media/brand-studios.webp"],
+    image: "/media/brand-sketch-process.webp",
   },
   {
     code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo",
@@ -17,15 +16,13 @@ const offerings = [
     copy: "Conectamos estrategia, comunidad y contenido para que la comunicación tenga un propósito claro y una ruta de crecimiento.",
     tags: ["Asesoría estratégica", "Diagnóstico de marca", "Gestión de redes", "Estrategia de contenidos"],
     image: "/media/marketing-food-bts.webp",
-    previews: ["/media/production-food-shot.webp", "/media/hero-location.webp"],
   },
   {
     code: "03", id: "prod", name: "AIPROD", label: "Producción audiovisual",
     headline: "Historias que merecen ser vistas.",
     copy: "Fotografía, vídeo, edición y motion con una intención detrás de cada encuadre, sonido y transición.",
     tags: ["Fotografía profesional", "Producción de contenido", "Edición audiovisual", "Motion graphics"],
-    image: "/media/production-interview.webp",
-    previews: ["/media/hero-studio.webp", "/media/hero-production.webp"],
+    image: "/media/hero-production.webp",
   },
 ] as const;
 
@@ -50,34 +47,45 @@ export default function ServiceExplorer() {
         </div>
       </div>
       <div className={`service-detail service-detail-${current.id}`} id="service-detail" role="region" aria-label={`Detalles de ${current.name}`} key={current.id}>
-        <div className="service-detail-visual">
+        <div className={`service-detail-visual service-detail-visual--${current.id}`}>
           {current.id === "brand" ? (
-            <div className="service-brand-composition" aria-label="Estudio gráfico de la identidad de AIVAN">
-              <div className="service-brand-composition-head"><span>IDENTIDAD DE MARCA</span><span>ESTUDIO 01 / 03</span></div>
-              <div className="service-brand-showcase">
-                <div className="service-brand-symbol-card"><img src="/media/brand-symbol.webp" alt="Isotipo de AIVAN sobre degradado original" loading="lazy" /></div>
-                <div className="service-brand-word-card">
-                  <span className="service-brand-overline">ESTRATEGIA + DISEÑO</span>
-                  <strong>Una marca<br /><em>con dirección.</em></strong>
-                  <span className="service-brand-footline">SISTEMA VISUAL · COLOR · IDENTIDAD</span>
-                </div>
+            <div className="service-real-composition service-real-composition--brand">
+              <figure className="service-real-frame service-real-frame--process">
+                <img src="/media/brand-sketch-process.webp" alt="Boceto de ilustración en desarrollo, extraído de un vídeo original del equipo" loading="lazy" />
+                <figcaption>PROCESO CREATIVO / BOCETO REAL</figcaption>
+              </figure>
+              <figure className="service-real-frame service-real-frame--identity">
+                <img src="/media/brand-studios.webp" alt="Aplicación de la identidad visual original de AIVAN STUDIOS" loading="lazy" />
+                <figcaption>IDENTIDAD DEL ESTUDIO</figcaption>
+              </figure>
+            </div>
+          ) : current.id === "mark" ? (
+            <div className="service-real-composition service-real-composition--mark">
+              <div className="service-real-story">
+                <span>ESTRATEGIA + CONTENIDO</span>
+                <strong>Ideas que se convierten en imágenes.</strong>
+                <small>Proceso real · producción gastronómica</small>
               </div>
-              <div className="service-brand-palette" aria-label="Paleta gráfica de AIVAN"><i/><i/><i/><i/></div>
+              <figure className="service-real-frame service-real-frame--portrait">
+                <img src="/media/marketing-food-bts.webp" alt="Preparación y grabación real de contenido gastronómico" loading="lazy" />
+                <figcaption>PREPARACIÓN</figcaption>
+              </figure>
+              <figure className="service-real-frame service-real-frame--portrait">
+                <img src="/media/production-food-shot.webp" alt="Teléfono grabando un plato de comida durante una producción" loading="lazy" />
+                <figcaption>CAPTURA</figcaption>
+              </figure>
             </div>
           ) : (
-            <img className="service-detail-cover" src={current.image} alt={`Escena de producción del estudio asociada a ${current.name}`} loading="lazy" />
+            <img className="service-detail-cover service-detail-cover--authentic" src={current.image} alt="Rodaje del equipo con cámara, luces y una persona frente a cámara" loading="lazy" />
           )}
-          <div className="service-detail-visual-top"><span>ESTUDIO AIVAN / {current.code}</span><span>{current.name}</span></div>
-          {current.id !== "brand" && <div className="service-detail-miniatures">
-            {current.previews.map((url, index) => <img key={url} src={url} alt={`Vista de material visual ${index + 1} para ${current.name}`} loading="lazy" />)}
-          </div>}
+          <div className="service-detail-visual-top"><span>ARCHIVO AIVAN / {current.code}</span><span>{current.name}</span></div>
         </div>
         <div className="service-detail-info">
           <div className="service-detail-heading"><span>{current.label}</span><strong>{current.code} / 03</strong></div>
           <h3>{current.headline}</h3>
           <p>{current.copy}</p>
           <div className="service-detail-tags">{current.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-          <div className="service-detail-footer"><a href="#galeria">Explorar referencias visuales <span aria-hidden="true">↗</span></a><small>Referencias visuales del equipo</small></div>
+          <div className="service-detail-footer"><a href="#galeria">Explorar referencias visuales <span aria-hidden="true">↗</span></a><small>Material original · sin imágenes generadas</small></div>
         </div>
       </div>
     </div>

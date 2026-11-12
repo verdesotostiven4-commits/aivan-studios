@@ -1,0 +1,52 @@
+/* AIVAN - Original studio imagery, no simulated projects or faces.
+   Keeps every portrait in an intentional frame rather than cropping it to a banner. */
+.service-detail-visual{height:clamp(260px,22vw,318px);background:#17171b;isolation:isolate}
+.service-detail-visual:after{z-index:1;opacity:.32;pointer-events:none}
+.service-detail-cover--authentic{object-fit:cover;object-position:center 48%;filter:brightness(.9) contrast(1.04) saturate(.88)}
+.service-real-composition{height:100%;width:100%;position:relative;display:grid;gap:8px;padding:8px;overflow:hidden}
+.service-real-frame{min-width:0;min-height:0;position:relative;margin:0;overflow:hidden;border-radius:14px;background:#26252b}
+.service-real-frame img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.service-real-frame:hover img{transform:scale(1.025)}
+.service-real-frame figcaption{position:absolute;z-index:2;left:14px;right:9px;bottom:10px;color:#fff;background:rgba(10,10,14,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);padding:8px 10px;border-radius:8px;font-size:9px;letter-spacing:.13em;line-height:1.3;font-weight:750;max-width:max-content}
+.service-detail-visual--brand .service-detail-visual-top{display:flex}
+.service-real-composition--brand{grid-template-columns:minmax(0,1.62fr) minmax(0,.88fr);background:#1d1c22}
+.service-real-composition--brand .service-real-frame--process img{object-position:center 44%;filter:contrast(1.04)}
+.service-real-composition--brand .service-real-frame--identity{background:#f8f7f5}
+.service-real-composition--brand .service-real-frame--identity img{object-fit:contain;padding:17px;filter:none}
+.service-real-composition--brand .service-real-frame--identity figcaption{color:#fff}
+.service-real-composition--mark{grid-template-columns:minmax(0,1.23fr) minmax(0,.72fr) minmax(0,.72fr);background:linear-gradient(118deg,#201c24 5%,#292029 56%,#17181b)}
+.service-real-composition--mark .service-real-story{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;min-width:0;position:relative;color:#fff;padding:38px clamp(10px,1.7vw,23px) 27px;gap:13px}
+.service-real-composition--mark .service-real-story>span{font-size:9px;color:#e6b6ce;letter-spacing:.14em;font-weight:750}
+.service-real-composition--mark .service-real-story strong{font-size:clamp(21px,2.3vw,32px);line-height:1.13;letter-spacing:-.045em;max-width:330px}
+.service-real-composition--mark .service-real-story small{color:#c3bdc4;font-size:10px;line-height:1.4}
+.service-real-composition--mark .service-real-frame--portrait img{object-position:center 37%}
+.service-real-composition--mark .service-real-frame--portrait:last-child img{object-position:center 43%}
+.service-real-composition--mark .service-real-frame figcaption{font-size:8px;left:8px;bottom:9px;padding:6px 7px}
+.service-real-composition--mark .service-real-frame--portrait{border:1px solid rgba(255,255,255,.13)}
+/* The transparent photo overlays previously made the team photos look like anonymous stock. */
+.service-detail-visual--mark:after,.service-detail-visual--brand:after{opacity:.15}
+.cinematic-hero .cinema-photo{filter:grayscale(1) contrast(1.02) brightness(1.08)}
+.cinematic-hero .cinema-shade{background:linear-gradient(90deg,rgba(4,4,7,.78),rgba(5,5,8,.56) 46%,rgba(5,5,8,.18) 100%),linear-gradient(0deg,rgba(0,0,0,.35),transparent 50%)}
+/* Gallery retains its circular motion; all imagery now comes from AIVAN-shared material. */
+.portfolio-showcase .portfolio-disclaimer{max-width:940px;margin-left:auto;margin-right:auto}
+@media(max-width:850px){
+  .service-real-composition--brand{grid-template-columns:1.5fr 1fr}
+  .service-real-composition--mark{grid-template-columns:1fr .68fr .68fr}
+  .service-real-composition--mark .service-real-story strong{font-size:clamp(20px,3.8vw,29px)}
+}
+@media(max-width:600px){
+  .service-detail-visual{height:240px}
+  .service-real-composition{gap:5px;padding:6px}
+  .service-real-frame{border-radius:9px}
+  .service-real-frame figcaption{left:7px;bottom:7px;font-size:7px;padding:5px 6px;letter-spacing:.05em}
+  .service-real-composition--brand{grid-template-columns:minmax(0,1.36fr) minmax(0,.9fr)}
+  .service-real-composition--brand .service-real-frame--identity img{padding:8px}
+  .service-real-composition--mark{grid-template-columns:minmax(0,1.0fr) minmax(0,.85fr) minmax(0,.85fr)}
+  .service-real-composition--mark .service-real-story{padding:40px 7px 18px;gap:9px}
+  .service-real-composition--mark .service-real-story strong{font-size:clamp(16px,4.4vw,22px)}
+  .service-real-composition--mark .service-real-story>span{font-size:7px}
+  .service-real-composition--mark .service-real-story small{font-size:8px}
+  .service-real-composition--mark .service-real-frame figcaption{display:none}
+  .service-detail-visual-top{left:15px;right:15px;top:14px;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.service-real-frame img{transition:none}.service-real-frame:hover img{transform:none}}
