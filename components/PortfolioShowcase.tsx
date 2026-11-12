@@ -6,12 +6,12 @@ import CircularCarousel from "./CircularCarousel";
 
 // Selección real del proceso creativo y la identidad del estudio; no se presenta como portafolio de clientes.
 export const inspiration = [
-  { src: "/media/brand-sketch-process.webp", alt: "Boceto original hecho a lápiz, mostrado en el video del proceso creativo del estudio", title: "Primero, una idea", subtitle: "AIBRAND · Del papel a la marca", description: "Un fotograma auténtico del proceso de ilustración compartido por el equipo." },
-  { src: "/media/gallery-authentic-mascot.webp", alt: "Pantalla original con la ilustración de una tortuga verde vestida con sudadera morada", title: "Una identidad cobra vida", subtitle: "AIBRAND · Ilustración digital", description: "Captura original del proceso de desarrollo digital de una mascota ilustrada." },
-  { src: "/media/gallery-authentic-levid.webp", alt: "Pantalla real con la investigación de color para una identidad gráfica de LeVid Galápagos", title: "Color con intención", subtitle: "AIBRAND · Dirección visual", description: "Material de diseño y exploración cromática procedente del vídeo original del estudio." },
-  { src: "/media/gallery-authentic-bmdance.webp", alt: "Pantalla del equipo con distintas variantes del diseño de identidad BM Dance Academy", title: "Probar, diseñar, refinar", subtitle: "AIBRAND · Variantes gráficas", description: "Diferentes aproximaciones visuales registradas en un archivo de proceso creativo." },
-  { src: "/media/marketing-food-bts.webp", alt: "Persona grabando contenido gastronómico con teléfono montado en trípode", title: "La historia tras el contenido", subtitle: "AIMARK · Detrás de cámaras", description: "Fotografía del proceso de grabación de contenido gastronómico en una locación real." },
-  { src: "/media/hero-production.webp", alt: "Set real de producción audiovisual con cámara e iluminación", title: "El valor de cada toma", subtitle: "AIPROD · Rodaje", description: "Material original de una sesión de grabación con iluminación y cámara." },
+  { src: "/media/gallery-idea-vertical.webp", alt: "Recreación editorial de un boceto de mascota en papel cuadriculado y lápiz", title: "Primero, una idea", subtitle: "AIBRAND · Del papel a la marca", description: "Visual editorial basado en referencias del proceso de bocetaje del equipo." },
+  { src: "/media/gallery-mascot-vertical.webp", alt: "Representación visual de una ilustración digital de tortuga verde con sudadera morada", title: "Una identidad cobra vida", subtitle: "AIBRAND · Ilustración digital", description: "Representación editorial de una mascota ilustrada en una pantalla de diseño." },
+  { src: "/media/gallery-levid-vertical.webp", alt: "Representación editorial de una pantalla de diseño con la identidad LeVid Galápagos y sus colores", title: "Color con intención", subtitle: "AIBRAND · Dirección visual", description: "Composición editorial de una identidad gráfica con referencias cromáticas." },
+  { src: "/media/gallery-bmdance-vertical.webp", alt: "Composición editorial con variantes de la identidad BM Dance Academy", title: "Probar, diseñar, refinar", subtitle: "AIBRAND · Variantes gráficas", description: "Representación visual de distintas variantes de una identidad de marca." },
+  { src: "/media/gallery-food-vertical.webp", alt: "Composición editorial de grabación gastronómica con teléfono y trípode", title: "La historia tras el contenido", subtitle: "AIMARK · Detrás de cámaras", description: "Composición editorial basada en referencias de producción gastronómica." },
+  { src: "/media/gallery-production-vertical.webp", alt: "Recreación editorial de un set de grabación con cámara e iluminación", title: "El valor de cada toma", subtitle: "AIPROD · Rodaje", description: "Recreación editorial de una producción audiovisual con cámara e iluminación." },
 ];
 
 export default function PortfolioShowcase() {
@@ -75,7 +75,7 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Seis registros auténticos del proceso creativo. Desliza para explorar.</span>
+          <span>Seis visuales editoriales basados en referencias creativas. Desliza para explorar.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>
@@ -84,7 +84,7 @@ export default function PortfolioShowcase() {
           preset="cylinder"
           intro="rise"
           cardWidth={275}
-          aspectRatio={0.86}
+          aspectRatio={0.8}
           gap={30}
           speed={11}
           autoplay="drift"
@@ -97,7 +97,7 @@ export default function PortfolioShowcase() {
           onItemClick={(_item: unknown, index: number) => openDetail(index)}
         />
       </div>
-      <p className="portfolio-disclaimer">Archivo de procesos y material original proporcionado por el equipo. Las imágenes de diseños no implican una atribución comercial ni sustituyen los casos de estudio autorizados.</p>
+      <p className="portfolio-disclaimer">Galería editorial basada en referencias compartidas por el equipo. Algunas piezas son recreaciones visuales, no fotografías documentales ni casos comerciales acreditados.</p>
 
       {current && typeof document !== "undefined" && createPortal(
         <div className="portfolio-modal-overlay portfolio-modal-overlay--polished" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>
@@ -116,7 +116,7 @@ export default function PortfolioShowcase() {
                 <span className="portfolio-modal-kicker">{current.subtitle}</span>
                 <h3 id="portfolio-modal-title">{current.title}</h3>
                 <p id="portfolio-modal-description">{current.description}</p>
-                <p className="portfolio-modal-note">Material original compartido por el equipo AIVAN. No se atribuye a un proyecto comercial sin autorización.</p>
+                <p className="portfolio-modal-note">Visual editorial basado en referencias del equipo AIVAN. No constituye una fotografía documental ni la atribución de un proyecto comercial.</p>
               </div>
               <div className="portfolio-modal-actions">
                 <a href="#brief" onClick={() => setSelected(null)}>Crear algo juntos <span aria-hidden="true">↗</span></a>
