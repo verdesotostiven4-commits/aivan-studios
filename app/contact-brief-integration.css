@@ -1,0 +1,27 @@
+/* Keep the full interactive brief within the single Contacto destination. */
+.contact-section--editorial .contact-shell--editorial .contact-brief-integrated{
+  grid-column:1/-1;scroll-margin-top:118px;min-width:0;display:grid;
+  grid-template-columns:minmax(0,.74fr) minmax(0,1.26fr);
+  align-items:start;gap:clamp(25px,5vw,72px);width:100%;
+  margin-top:clamp(45px,5vw,80px);padding-top:clamp(55px,6vw,85px);
+  border-top:1px solid rgba(60,45,64,.16);
+}
+.contact-brief-intro{min-width:0;position:sticky;top:120px}
+.contact-brief-intro .micro-label{color:#846079}
+.contact-brief-intro h3{color:#141316;margin:17px 0 25px;font-size:clamp(38px,4.5vw,73px);line-height:.99;letter-spacing:-.065em;font-weight:710}
+.contact-brief-intro h3 em{font-family:Georgia,serif;font-weight:400;color:#bd4c88}
+.contact-brief-intro>p:not(.micro-label){font-size:clamp(14px,1.1vw,17px);color:#55515c;line-height:1.7;max-width:560px}
+.contact-brief-intro>span{display:block;margin-top:40px;padding-top:20px;border-top:1px solid rgba(45,37,45,.15);font-size:12px;color:#77717b;line-height:1.55;max-width:510px}
+.contact-brief-integrated .brief-form{min-width:0;box-shadow:0 18px 70px rgba(31,23,37,.08)}
+@media(max-width:1000px){
+  .contact-section--editorial .contact-shell--editorial .contact-brief-integrated{grid-template-columns:1fr;gap:22px}
+  .contact-brief-intro{position:static}
+  .contact-brief-intro h3{max-width:760px}
+  .contact-brief-intro>span{margin-top:18px}
+}
+@media(max-width:600px){
+  .contact-section--editorial .contact-shell--editorial .contact-brief-integrated{margin-top:40px;padding-top:44px;scroll-margin-top:65px}
+  .contact-brief-intro h3{font-size:clamp(37px,9.6vw,49px);margin-bottom:17px}
+  .contact-brief-intro>p:not(.micro-label){font-size:14px}
+  .contact-brief-integrated .brief-form{padding:19px;border-radius:24px}
+}
