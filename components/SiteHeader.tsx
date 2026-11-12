@@ -6,9 +6,7 @@ import BrandAsset from "./BrandAsset";
 const links = [
   ["Qué es AIVAN", "#aivan"],
   ["Servicios", "#servicios"],
-  ["Acompañamientos", "#aipacks"],
   ["Nuestro método", "#proceso"],
-  ["Brief", "#brief"],
   ["Contacto", "#contacto"],
 ] as const;
 
