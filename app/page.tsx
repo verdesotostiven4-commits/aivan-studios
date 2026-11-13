@@ -161,28 +161,13 @@ export default function Home() {
       </section>
 
       <FooterVideo />
-      <footer className="site-footer aivan-signature-footer">
-        <a className="footer-brand-link" href="#inicio" aria-label="AIVAN — Volver al inicio">
-          <BrandAsset brand="solo" />
-        </a>
-        <p>Creatividad, estrategia y producción desde Galápagos.</p>
+      <footer className="site-footer aivan-signature-footer aivan-final-footer">
+        <p>© {new Date().getFullYear()} AIVAN STUDIOS · Galápagos, Ecuador.</p>
         <nav aria-label="Enlaces del pie">
           <a href="#servicios">Servicios</a><a href="#proceso">Proceso</a>
-          <a href="#contacto">Contacto</a>
-          <a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
+          <a href="#contacto">Contacto</a><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
         </nav>
-        <div className="footer-signatures" aria-label="Créditos de creación">
-          <div className="footer-signature footer-signature--kiubo">
-            <span className="footer-signature-caption">Creado por</span>
-            <BrandAsset brand="kiubo" />
-          </div>
-          <span className="footer-signature-divider" aria-hidden="true" />
-          <div className="footer-signature footer-signature--stiven">
-            <span className="footer-signature-caption">Identidad creativa</span>
-            <BrandAsset brand="bystiven" />
-            <span className="footer-signature-name">byStiven</span>
-          </div>
-        </div>
+        <a className="aivan-footer-top" href="#inicio">Volver arriba ↑</a>
       </footer>
     </main>
   );

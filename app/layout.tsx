@@ -22,6 +22,7 @@ import "./aivan-media-final.css";
 import "./aivan-gallery-modal-polish.css";
 import "./aivan-team-portrait-polish.css";
 import "./aivan-service-images-approved.css";
+import "./aivan-footer-final.css";
 import "./aivan-hero-2026.css";
 
 export const metadata: Metadata = {

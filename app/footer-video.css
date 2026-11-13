@@ -25,7 +25,7 @@
 }
 .aivan-footer-video-media.is-ready { opacity: 1; }
 /* No duplicated logo blocks: the existing footer is the fallback only. */
-.aivan-footer-video.is-playing + .site-footer.aivan-signature-footer { display: none; }
+.aivan-footer-video.is-playing + .site-footer.aivan-signature-footer { display: grid; }
 @media (max-width: 760px) {
   .aivan-footer-video-frame {
     /* Reduce the footer height on phones without shrinking the whole image. */
@@ -39,5 +39,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .aivan-footer-video { display:none; }
-  .aivan-footer-video + .site-footer.aivan-signature-footer { display: flex; }
+  .aivan-footer-video + .site-footer.aivan-signature-footer { display: grid; }
 }
