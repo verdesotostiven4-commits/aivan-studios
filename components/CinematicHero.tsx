@@ -198,7 +198,9 @@ export default function CinematicHero() {
                 muted
                 playsInline
                 loop
-                preload="metadata"
+                preload="none"
+                disablePictureInPicture
+                tabIndex={-1}
                 aria-hidden="true"
                 onLoadedMetadata={() => setLoaded((values) => values[index] ? values : values.map((value, i) => i === index ? true : value))}
                 onError={() => setFailed((values) => values.map((value, i) => i === index ? true : value))}
