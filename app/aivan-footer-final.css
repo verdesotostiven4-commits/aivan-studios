@@ -240,3 +240,24 @@
   .aivan-footer-video--redesigned .aivan-footer-video-media{display:none}
   .aivan-footer-video--redesigned .aivan-footer-video-brand{transition:none}
 }
+
+/* The user explicitly requested CSS-native footer instead of the old
+   pre-rendered video. The motion is a lightweight gradient only. */
+.aivan-footer-video--redesigned .aivan-footer-video-animated-wash {
+  position:absolute;
+  z-index:-2;
+  inset:-20%;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 70% 48%,rgba(255,196,146,.65),transparent 47%),
+    radial-gradient(ellipse at 23% 60%,rgba(113,120,150,.36),transparent 45%),
+    radial-gradient(ellipse at 53% 12%,rgba(248,233,204,.63),transparent 50%);
+  animation:aivanFooterAmbient 22s ease-in-out infinite alternate;
+}
+@keyframes aivanFooterAmbient{
+  from{transform:translate3d(-1.5%,1%,0) scale(1)}
+  to{transform:translate3d(2%,-2%,0) scale(1.07)}
+}
+@media(prefers-reduced-motion:reduce){
+  .aivan-footer-video--redesigned .aivan-footer-video-animated-wash{animation:none}
+}
