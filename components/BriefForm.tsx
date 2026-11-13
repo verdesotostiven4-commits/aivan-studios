@@ -6,8 +6,7 @@ import BrandServicePicker from "./BrandServicePicker";
 // Always submit through our own first-party API route; no public env required.
 const submitUrl = "/api/brief";
 
-const steps = ["Negocio", "Reto", "Objetivo", "Contacto"];
-const networks = ["Instagram", "Facebook", "TikTok", "LinkedIn", "YouTube", "Otra"];
+const steps = ["Tu negocio", "Lo que necesitas", "Contacto"];
 
 type FormDataState = {
   businessName: string; industry: string; productFocus: string; challenge: string; service: string;
@@ -45,19 +44,16 @@ export default function BriefForm() {
     if (state === "error") setState("idle");
   }
 
-  function toggleNetwork(value: string) {
-    const key = value.toLowerCase();
-    update("networks", form.networks.includes(key) ? form.networks.filter((item) => item !== key) : [...form.networks, key]);
-  }
-
   function validationMessage() {
     if (step === 0) {
       if (form.businessName.trim().length < 2) return "Escribe el nombre del negocio para continuar.";
       if (form.industry.trim().length < 2) return "Cuéntanos brevemente a qué se dedica el negocio.";
     }
-    if (step === 1 && form.challenge.trim().length < 6) return "Cuéntanos un poco más sobre el reto principal.";
-    if (step === 2 && form.goal.trim().length < 6) return "Cuéntanos qué resultado te gustaría conseguir.";
-    if (step === 3) {
+    if (step === 1) {
+      if (form.challenge.trim().length < 6) return "Cuéntanos un poco más sobre la situación que quieres mejorar.";
+      if (form.goal.trim().length < 6) return "Cuéntanos qué resultados buscas.";
+    }
+    if (step === 2) {
       if (form.name.trim().length < 2) return "Escribe tu nombre para que sepamos con quién hablar.";
       if (!form.email.trim() && !form.phone.trim()) return "Déjanos al menos un correo o un número de WhatsApp.";
       if (form.email.trim() && !emailPattern.test(form.email.trim())) return "Revisa el correo: parece que falta algo.";
@@ -126,36 +122,27 @@ export default function BriefForm() {
 
       <div className="brief-stage" key={step} ref={stageRef}>
         {step === 0 && <>
-          <div className="brief-question"><p className="micro-label">EMPECEMOS POR LO REAL</p><h3>¿Qué negocio estamos intentando hacer crecer?</h3></div>
+          <div className="brief-question"><p className="micro-label">EMPECEMOS POR CONOCERTE</p><h3>Cuéntanos sobre tu negocio.</h3></div>
           <div className="form-grid two">
             <Field label="Nombre del negocio"><input value={form.businessName} onChange={(e) => update("businessName", e.target.value)} placeholder="Ej. Café del Puerto" autoComplete="organization" maxLength={120} required /></Field>
             <Field label="¿A qué se dedica?"><input value={form.industry} onChange={(e) => update("industry", e.target.value)} placeholder="Restaurante, hotel, turismo…" maxLength={120} required /></Field>
-            <Field label="¿Qué quieres impulsar ahora?"><input value={form.productFocus} onChange={(e) => update("productFocus", e.target.value)} placeholder="Un servicio, producto, nueva etapa…" maxLength={220} /></Field>
-            <Field label="Web o red principal" hint="Opcional"><input value={form.website} onChange={(e) => update("website", e.target.value)} placeholder="instagram.com/tu-negocio" inputMode="url" autoComplete="url" maxLength={220} /></Field>
+            <Field label="¿Qué producto o servicio quieres impulsar?"><input value={form.productFocus} onChange={(e) => update("productFocus", e.target.value)} placeholder="Un servicio, producto, nueva etapa…" maxLength={220} /></Field>
           </div>
         </>}
 
         {step === 1 && <>
-          <div className="brief-question"><p className="micro-label">SIN ADIVINAR</p><h3>¿Qué está frenando a tu marca hoy?</h3></div>
-          <Field label="Cuéntanos el reto principal"><textarea value={form.challenge} onChange={(e) => update("challenge", e.target.value)} placeholder="No sé qué publicar, mi marca no representa el negocio, necesito una estrategia…" rows={5} maxLength={900} required /></Field>
-          <div className="form-grid two compact-grid">
-            <div className="form-field service-choice-field"><span>Área que crees necesitar</span><BrandServicePicker value={form.service} onChange={(value) => update("service", value)} /></div>
-            <Field label="Presupuesto / rango" hint="Opcional"><input value={form.budget} onChange={(e) => update("budget", e.target.value)} placeholder="Ej. $300–$600 / por definir" maxLength={80} /></Field>
-          </div>
+          <div className="brief-question"><p className="micro-label">QUEREMOS ENTENDERTE</p><h3>¿Qué te gustaría mejorar de tu negocio?</h3></div>
+          <Field label="Cuéntanos tu situación"><textarea value={form.challenge} onChange={(e) => update("challenge", e.target.value)} placeholder="Cuéntanos qué sucede y qué crees que podría mejorar…" rows={4} maxLength={900} required /></Field>
+          <Field label="¿Qué resultados buscas?"><textarea value={form.goal} onChange={(e) => update("goal", e.target.value)} placeholder="Por ejemplo, comunicar mejor el valor de tu marca o presentar un nuevo servicio…" rows={4} maxLength={900} required /></Field>
+          <div className="form-field service-choice-field"><span>¿Qué tipo de ayuda estás buscando?</span><BrandServicePicker value={form.service} onChange={(value) => update("service", value)} /></div>
         </>}
 
         {step === 2 && <>
-          <div className="brief-question"><p className="micro-label">LA META IMPORTA</p><h3>Si esto funciona, ¿qué debería cambiar?</h3></div>
-          <Field label="¿Qué te gustaría lograr?"><textarea value={form.goal} onChange={(e) => update("goal", e.target.value)} placeholder="Quiero verme más profesional, vender mejor, ordenar mi comunicación, lanzar una nueva marca…" rows={5} maxLength={900} required /></Field>
-          <div className="network-field"><span>Redes que usa tu negocio</span><div>{networks.map((network) => { const key = network.toLowerCase(); const active = form.networks.includes(key); return <button className={active ? "active" : ""} type="button" key={network} aria-pressed={active} onClick={() => toggleNetwork(network)}>{network}{active ? " ✓" : ""}</button>; })}</div></div>
-        </>}
-
-        {step === 3 && <>
-          <div className="brief-question"><p className="micro-label">ÚLTIMO PASO</p><h3>¿Con quién hablamos cuando terminemos de revisar?</h3></div>
+          <div className="brief-question"><p className="micro-label">ÚLTIMO PASO</p><h3>¿Cómo podemos contactarte?</h3></div>
           <div className="form-grid two">
-            <Field label="Tu nombre"><input value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Nombre y apellido" autoComplete="name" maxLength={120} required /></Field>
+            <Field label="Nombre y apellido"><input value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Nombre y apellido" autoComplete="name" maxLength={120} required /></Field>
             <Field label="Ciudad"><input value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Puerto Ayora, Quito…" autoComplete="address-level2" maxLength={120} /></Field>
-            <Field label="Correo"><input value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="tu@negocio.com" type="email" inputMode="email" autoComplete="email" maxLength={160} /></Field>
+            <Field label="Correo electrónico"><input value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="tu@negocio.com" type="email" inputMode="email" autoComplete="email" maxLength={160} /></Field>
             <Field label="WhatsApp / teléfono"><input value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+593 …" inputMode="tel" autoComplete="tel" maxLength={40} /></Field>
           </div>
           <label className="hp-field" aria-hidden="true">Website<input tabIndex={-1} autoComplete="off" value={form.companyWebsite} onChange={(e) => update("companyWebsite", e.target.value)} /></label>

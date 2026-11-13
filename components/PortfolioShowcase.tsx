@@ -75,7 +75,7 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Seis visuales editoriales basados en referencias creativas. Desliza para explorar.</span>
+          <span>Referencias visuales de branding, diseño y producción audiovisual.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>
@@ -97,7 +97,7 @@ export default function PortfolioShowcase() {
           onItemClick={(_item: unknown, index: number) => openDetail(index)}
         />
       </div>
-      <p className="portfolio-disclaimer">Galería editorial basada en referencias compartidas por el equipo. Algunas piezas son recreaciones visuales, no fotografías documentales ni casos comerciales acreditados.</p>
+      <p className="portfolio-disclaimer">Galería conceptual con fotografías de inspiración. Los proyectos oficiales de AIVAN se incorporarán próximamente. Algunas imágenes son recreaciones editoriales, no fotografías documentales.</p>
 
       {current && typeof document !== "undefined" && createPortal(
         <div className="portfolio-modal-overlay portfolio-modal-overlay--polished" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }}>

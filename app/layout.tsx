@@ -24,6 +24,7 @@ import "./aivan-team-portrait-polish.css";
 import "./aivan-service-images-approved.css";
 import "./aivan-footer-final.css";
 import "./aivan-hero-2026.css";
+import "./aivan-textual-alignment.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://aivan-studios.vercel.app"),

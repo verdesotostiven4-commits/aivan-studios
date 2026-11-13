@@ -62,7 +62,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
         <div className="contact-editorial-copy" data-reveal>
           <div className="contact-editorial-kicker"><span>CONTACTO DIRECTO</span><i aria-hidden="true" /></div>
           <h2 id="contact-title">¿Tienes alguna duda? <span>Hablemos.</span></h2>
-          <p className="contact-editorial-lead">Si tienes preguntas sobre nuestros servicios o necesitas información adicional, también puedes comunicarte con nosotros directamente.</p>
+          <p className="contact-editorial-lead">Si tienes preguntas sobre nuestros servicios o necesitas información adicional, puedes comunicarte con nosotros directamente.</p>
           <div className="contact-editorial-benefits" aria-label="Ventajas del contacto directo">
             <div><BenefitIcon type="fast" /><span>Respuesta<br/>rápida</span></div>
             <div><BenefitIcon type="people" /><span>Atención<br/>directa</span></div>
@@ -118,7 +118,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             <p className="micro-label">PRIMER CONTACTO</p>
             <h3 id="contact-brief-title"><span>Tú conoces tu negocio.</span><span className="contact-brief-promise">Nosotros te ayudamos a encontrar el siguiente paso.</span></h3>
             <p>Cuéntanos qué haces y qué te gustaría mejorar. Con esta información podremos conocer tu situación y preparar una conversación más útil para tu negocio.</p>
-            <span>Un brief breve, claro y privado. Tu información llega directamente al equipo de AIVAN.</span>
+            <span>Completa este breve formulario para conocer tu situación, comprender tus objetivos y preparar una primera conversación con mayor claridad.</span>
           </div>
           <BriefForm />
         </div>

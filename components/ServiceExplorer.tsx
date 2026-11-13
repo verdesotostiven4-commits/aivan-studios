@@ -4,23 +4,23 @@ import { useState } from "react";
 
 const offerings = [
   {
-    code: "01", id: "brand", name: "AIBRAND", label: "Identidad & diseño",
-    headline: "La marca empieza por lo que eres.",
-    copy: "Desarrollamos identidad y sistemas visuales que hacen que una marca se reconozca, se ordene y crezca con coherencia.",
+    code: "01", id: "brand", name: "AIBRAND", label: "Branding y diseño",
+    headline: "Una identidad que se reconoce y se recuerda.",
+    copy: "Construimos identidades de marca que reflejan el valor de tu negocio, generan confianza y te distinguen de la competencia.",
     tags: ["Identidad de marca", "Diseños publicitarios", "Ilustraciones", "Afiches técnicos"],
     image: "/media/brand-sketch-approved.webp",
   },
   {
     code: "02", id: "mark", name: "AIMARK", label: "Marketing creativo",
-    headline: "Ideas que saben a dónde van.",
-    copy: "Conectamos estrategia, comunidad y contenido para que la comunicación tenga un propósito claro y una ruta de crecimiento.",
+    headline: "Que tu contenido tenga un propósito, no solo presencia.",
+    copy: "Contamos el lado creativo de tu negocio conectando con las emociones y necesidades reales de tu comprador.",
     tags: ["Asesoría estratégica", "Diagnóstico de marca", "Gestión de redes", "Estrategia de contenidos"],
     image: "/media/marketing-food-bts.webp",
   },
   {
     code: "03", id: "prod", name: "AIPROD", label: "Producción audiovisual",
     headline: "Historias que merecen ser vistas.",
-    copy: "Fotografía, vídeo, edición y motion con una intención detrás de cada encuadre, sonido y transición.",
+    copy: "Creamos fotografías y producciones audiovisuales que resaltan el valor de tus productos, servicios y experiencias con calidad e intención.",
     tags: ["Fotografía profesional", "Producción de contenido", "Edición audiovisual", "Motion graphics"],
     image: "/media/production-studio-approved.webp",
   },

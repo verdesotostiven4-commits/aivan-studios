@@ -1,0 +1,32 @@
+/* Editorial alignment with the approved AIVAN textual document.
+   Scoped additions only; preserves the original site, hero and carousel. */
+.human-belief{
+  max-width:36rem;
+  margin:1.25rem 0 .85rem;
+  color:#a9477c;
+  font-size:clamp(.82rem,.9vw,.95rem);
+  line-height:1.55;
+  letter-spacing:.015em;
+  font-weight:680;
+}
+.method-takeaways{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(16px,2.8vw,42px);
+  margin:27px auto 0;
+  padding:clamp(20px,2.75vw,36px);
+  border-top:1px solid rgba(41,38,48,.14);
+}
+.method-takeaways p{
+  max-width:610px;
+  font-size:clamp(14px,1.28vw,17px);
+  line-height:1.72;
+  color:#625e66;
+  margin:0;
+}
+.method-takeaways p:nth-child(2){color:#302c36;font-weight:570}
+.aipack-plans-intro h3{overflow-wrap:normal}
+.brief-stage .service-choice-field{margin-top:18px}
+@media(max-width:740px){
+  .method-takeaways{grid-template-columns:1fr;gap:16px;padding:20px 0 6px}
+}

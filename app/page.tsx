@@ -41,7 +41,8 @@ export default function Home() {
           <div className="human-copy">
             <p className="micro-label">QUÉ ES AIVAN</p>
             <h2>No solo creamos.<br /><span className="liquid-word">Damos dirección</span> a tu marca.</h2>
-            <p>Somos un estudio creativo y estratégico nacido en Galápagos. Vivimos como emprendedores, profesionales y negocios locales que saben algo más que contenido: una identidad clara y una mejor forma de comunicar el valor de lo que ofrecen.</p>
+            <p>Somos un estudio creativo y estratégico nacido en Galápagos. Vimos cómo emprendedores, profesionales y negocios locales necesitaban algo más que contenido: una identidad clara y una mejor forma de comunicar el valor de lo que ofrecen.</p>
+            <p className="human-belief">Rechazamos la creación sin un fin claro.</p>
             <a className="human-cta" href="#servicios">Conoce cómo trabaja AIVAN <span aria-hidden="true">→</span></a>
             <div className="human-values" aria-label="Pilares de AIVAN">
               <span>ESTRATEGIA</span><i /> <span>CREATIVIDAD</span><i /> <span>PRODUCCIÓN</span><i /> <span>RESULTADOS</span>
@@ -147,6 +148,10 @@ export default function Home() {
             <strong>ESTRATEGIA · CONTEXTO · DIRECCIÓN · PROPÓSITO</strong>
             <p>Antes de crear, identificamos qué mejorar y cómo integrar branding, marketing y producción audiovisual con un objetivo común.</p>
           </article>
+        </div>
+        <div className="method-takeaways" data-reveal>
+          <p>Más publicaciones no corrigen una marca poco clara, una mala experiencia de compra o una oferta que no comunica su valor.</p>
+          <p>Por eso, antes de crear, identificamos qué mejorar y cómo integrar branding, marketing y producción audiovisual con un objetivo común.</p>
         </div>
       </section>
 
