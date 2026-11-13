@@ -261,3 +261,10 @@
 @media(prefers-reduced-motion:reduce){
   .aivan-footer-video--redesigned .aivan-footer-video-animated-wash{animation:none}
 }
+
+/* All visual credits and links remain visible when reduced-motion is enabled.
+   The old video-based footer stylesheet hid this entire section. */
+@media(prefers-reduced-motion:reduce) {
+  .aivan-footer-video--redesigned { display:block !important; }
+  .aivan-footer-video--redesigned .aivan-footer-video-frame { display:block; }
+}
