@@ -24,6 +24,8 @@ jobs:
           persist-credentials: true
       - name: Install image utilities
         run: python -m pip install 'Pillow==11.3.0'
+      - name: Install FFmpeg (not preinstalled on this runner)
+        run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
       - name: Download, optimize, and validate approved original media
         env:
           IMG01_URL: "https://at.adobe.com/v27LemzBl6y2F4BQ"
