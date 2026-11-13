@@ -112,8 +112,7 @@ export default function CinematicHero() {
     });
   }, [current, heroReady, inView, reduced, failed]);
 
-  // Every visit starts at scene 01. A slide is shown for a full interval,
-  // then the sequence loops 01 -> 02 -> 03 -> 01 without getting stuck.
+  // Escenas automáticas, sin contadores, barras, botones, rótulos ni pistas sobre la fotografía.
   useEffect(() => {
     if (reduced || !heroReady || !inView) return;
     const timer = window.setInterval(() => {
@@ -224,7 +223,7 @@ export default function CinematicHero() {
         </div>
         <div className="cinema-shade" aria-hidden="true" />
         <div className="cinema-copy">
-          <div className="cinema-eyebrow">AIVAN STUDIOS <span /> GALÁPAGOS, ECUADOR</div>
+          <div className="cinema-eyebrow">GALÁPAGOS, ECUADOR</div>
           <h1>
             <span className="cinema-line cinema-line--white">Tu negocio no necesita</span>
             <span className="cinema-line cinema-line--white">un cambio. Necesita</span>
@@ -241,24 +240,7 @@ export default function CinematicHero() {
             <a className="cinema-secondary-cta" href="#servicios">Explorar servicios <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className="cinema-counter" aria-label={`Escena ${current + 1} de ${scenes.length}`}>
-          <strong>{String(current + 1).padStart(2, "0")}</strong><span /><small>{String(scenes.length).padStart(2, "0")}</small>
-          <div className="cinema-slide-select" aria-label="Elegir escena de portada">
-            {scenes.map((scene, index) => (
-              <button
-                type="button"
-                key={scene.id}
-                className={index === current ? "is-active" : ""}
-                aria-label={`Ver escena ${index + 1}`}
-                aria-current={index === current ? "true" : undefined}
-                disabled={!loaded[index] || failed[index]}
-                onClick={() => setCurrent(index)}
-              />
-            ))}
-          </div>
-        </div>
-        <span className="cinema-scene-caption" aria-hidden="true">{scenes[current].caption}</span>
-        <span className="cinema-scroll-hint" aria-hidden="true">DESLIZA PARA EXPLORAR <span>↓</span></span>
+
       </section>
     </>
   );
