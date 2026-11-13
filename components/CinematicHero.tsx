@@ -9,15 +9,15 @@ import { HeroFlipWord } from "./BrandMotion";
 // por el equipo y tres clips de proceso, silenciosos y optimizados para web.
 // Las imágenes son piezas visuales seleccionadas; los videos son clips de apoyo.
 const scenes = [
-  { id: "studio", kind: "image", src: "/media/hero-2026-studio-camera.webp", position: "center 50%", mobile: "68% center", caption: "AIPROD · EN EL SET" },
-  { id: "portrait", kind: "image", src: "/media/hero-2026-studio-presenter.webp", position: "center 50%", mobile: "64% center", caption: "AIPROD · PRODUCCIÓN" },
-  { id: "planning", kind: "video", src: "/media/hero-2026-planning.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "58% center", caption: "ESTRATEGIA · PLANIFICACIÓN" },
-  { id: "branding", kind: "image", src: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "58% center", caption: "AIBRAND · DISEÑO" },
-  { id: "editing", kind: "video", src: "/media/hero-2026-color-grading.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "55% center", caption: "AIPROD · POSPRODUCCIÓN" },
-  { id: "plaza", kind: "image", src: "/media/hero-2026-plaza.webp", position: "center 50%", mobile: "54% center", caption: "AIPROD · EN GALÁPAGOS" },
-  { id: "food", kind: "image", src: "/media/hero-2026-food-production.webp", position: "center 50%", mobile: "66% center", caption: "AIPROD · GASTRONOMÍA" },
-  { id: "sketch", kind: "video", src: "/media/hero-2026-creative-sketching.mp4", poster: "/media/hero-2026-brand-atelier.webp", position: "center 50%", mobile: "55% center", caption: "AIBRAND · IDEAS EN PROCESO" },
-  { id: "coast", kind: "image", src: "/media/hero-2026-coastal-shoot.webp", position: "center 50%", mobile: "52% center", caption: "AIPROD · HISTORIAS DE ISLAS" },
+  { id: "studio", kind: "image", src: "/media/hero-scene-01.webp", position: "center 50%", mobile: "68% center", caption: "AIPROD · EN EL SET" },
+  { id: "portrait", kind: "image", src: "/media/hero-scene-02.webp", position: "center 50%", mobile: "64% center", caption: "AIPROD · PRODUCCIÓN" },
+  { id: "planning", kind: "video", src: "/media/hero-scene-07.mp4", poster: "/media/hero-scene-07-poster.webp", position: "center 50%", mobile: "58% center", caption: "ESTRATEGIA · PLANIFICACIÓN" },
+  { id: "branding", kind: "image", src: "/media/hero-scene-03.webp", position: "center 50%", mobile: "58% center", caption: "AIBRAND · DISEÑO" },
+  { id: "editing", kind: "video", src: "/media/hero-scene-08.mp4", poster: "/media/hero-scene-08-poster.webp", position: "center 50%", mobile: "55% center", caption: "AIPROD · POSPRODUCCIÓN" },
+  { id: "plaza", kind: "image", src: "/media/hero-scene-04.webp", position: "center 50%", mobile: "54% center", caption: "AIPROD · EN GALÁPAGOS" },
+  { id: "food", kind: "image", src: "/media/hero-scene-05.webp", position: "center 50%", mobile: "66% center", caption: "AIPROD · GASTRONOMÍA" },
+  { id: "sketch", kind: "video", src: "/media/hero-scene-09.mp4", poster: "/media/hero-scene-09-poster.webp", position: "center 50%", mobile: "55% center", caption: "AIBRAND · IDEAS EN PROCESO" },
+  { id: "coast", kind: "image", src: "/media/hero-scene-06.webp", position: "center 50%", mobile: "52% center", caption: "AIPROD · HISTORIAS DE ISLAS" },
 ] as const;
 
 type IntroStage = "opening" | "exit" | "done";
