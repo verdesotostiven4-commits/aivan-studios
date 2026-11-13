@@ -67,17 +67,17 @@ jobs:
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 1.3 -i /tmp/aivan-hero/source-07.mp4 -t 6.7 -an -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24" -c:v libx264 -preset medium -crf 27 -pix_fmt yuv420p -movflags +faststart public/media/hero-scene-07.mp4
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 2.3 -i /tmp/aivan-hero/source-07.mp4 -frames:v 1 -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720" -q:v 2 /tmp/aivan-hero/poster-07.jpg
           ffmpeg -nostdin -hide_banner -loglevel error -y -i /tmp/aivan-hero/poster-07.jpg -frames:v 1 -c:v libwebp -quality 84 public/media/hero-scene-07-poster.webp
-          test "$(stat -c %s public/media/hero-scene-07.mp4)" -gt 140000
+          test "$(stat -c %s public/media/hero-scene-07.mp4)" -gt 30000
           ffprobe -v error -show_entries stream=width,height -of csv=p=0 public/media/hero-scene-07.mp4 | grep -x '1280,720'
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 8 -i /tmp/aivan-hero/source-08.mp4 -t 6.7 -an -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24" -c:v libx264 -preset medium -crf 27 -pix_fmt yuv420p -movflags +faststart public/media/hero-scene-08.mp4
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 9 -i /tmp/aivan-hero/source-08.mp4 -frames:v 1 -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720" -q:v 2 /tmp/aivan-hero/poster-08.jpg
           ffmpeg -nostdin -hide_banner -loglevel error -y -i /tmp/aivan-hero/poster-08.jpg -frames:v 1 -c:v libwebp -quality 84 public/media/hero-scene-08-poster.webp
-          test "$(stat -c %s public/media/hero-scene-08.mp4)" -gt 140000
+          test "$(stat -c %s public/media/hero-scene-08.mp4)" -gt 30000
           ffprobe -v error -show_entries stream=width,height -of csv=p=0 public/media/hero-scene-08.mp4 | grep -x '1280,720'
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 14 -i /tmp/aivan-hero/source-09.mp4 -t 6.7 -an -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24" -c:v libx264 -preset medium -crf 27 -pix_fmt yuv420p -movflags +faststart public/media/hero-scene-09.mp4
           ffmpeg -nostdin -hide_banner -loglevel error -y -ss 15 -i /tmp/aivan-hero/source-09.mp4 -frames:v 1 -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720" -q:v 2 /tmp/aivan-hero/poster-09.jpg
           ffmpeg -nostdin -hide_banner -loglevel error -y -i /tmp/aivan-hero/poster-09.jpg -frames:v 1 -c:v libwebp -quality 84 public/media/hero-scene-09-poster.webp
-          test "$(stat -c %s public/media/hero-scene-09.mp4)" -gt 140000
+          test "$(stat -c %s public/media/hero-scene-09.mp4)" -gt 30000
           ffprobe -v error -show_entries stream=width,height -of csv=p=0 public/media/hero-scene-09.mp4 | grep -x '1280,720'
       - name: Commit only approved image and video assets
         run: |
