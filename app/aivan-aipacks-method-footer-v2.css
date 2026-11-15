@@ -469,3 +469,19 @@
     width:min(100%,145px);
   }
 }
+
+
+/* The official KIUBO image contains mostly light-coloured lettering.
+   A dark neutral presentation plate restores contrast without editing the logo. */
+.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
+  background:linear-gradient(135deg,#26222d,#312734);
+  border:1px solid rgba(86,63,84,.5);
+  box-shadow:0 10px 25px rgba(39,29,44,.10);
+}
+.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child .aivan-footer-minimal-label {
+  color:#e8d5e4;
+}
+.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child .aivan-brand-asset-image{
+  opacity:1;
+  filter:contrast(1.2) saturate(1.08);
+}

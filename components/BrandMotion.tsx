@@ -353,6 +353,9 @@ export function StatementMaskReveal() {
         node.classList.remove("is-scroll-preview");
         if (!engagedRef.current) engageFromAnywhere(pointer.x, pointer.y);
         else setTargetFromPointer(pointer.x, pointer.y);
+        // The hover reveal should be visible immediately as a fixed mouse
+        // enters the panel while scrolling. The probe still follows smoothly.
+        node.classList.add("is-mask-active");
         return;
       }
       if (engagedRef.current) releaseLens();
