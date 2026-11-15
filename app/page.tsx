@@ -10,7 +10,7 @@ import ServiceExplorer from "@/components/ServiceExplorer";
 import AipackPlans from "@/components/AipackPlans";
 import BrandAsset from "@/components/BrandAsset";
 import FooterVideo from "@/components/FooterVideo";
-import { BridgeSequence, FinchSignature, FlipFadeWord, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal } from "@/components/BrandMotion";
 
 // The original animated finch is intentionally archived, not deleted.
 const ENABLE_FINCH_SIGNATURE = false;
@@ -111,22 +111,15 @@ export default function Home() {
       <section className="process-section" id="proceso">
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">NUESTRO MÉTODO</p><h2>De entender tu negocio<br />a crear con propósito.</h2></div>
-          <div className="process-intro-copy"><p>Cada proyecto sigue un proceso claro. Conocemos tu negocio, identificamos qué necesita mejorar y desarrollamos soluciones que tienen una razón de ser.</p><TypingSignal text="conocer → analizar → direccionar → crear → evolucionar" /></div>
+          <div className="process-intro-copy"><p>Cada proyecto sigue un proceso claro. Conocemos tu negocio, identificamos qué necesita mejorar y desarrollamos soluciones que tienen una razón de ser.</p></div>
         </div>
         <div className="process-rail" data-reveal>
           {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
         </div>
-        <div className="method-duality" data-reveal>
-          <article className="method-duality-surface">
-            <span>LO QUE SE VE</span>
-            <h3>No empezamos publicando.</h3>
-            <p>Publicar más no significa tener un negocio con dirección clara.</p>
-          </article>
-          <article className="method-duality-depth">
-            <span>LO QUE HAY DETRÁS</span>
-            <h3>Empezamos entendiendo.</h3>
-            <strong>ESTRATEGIA · CONTEXTO · DIRECCIÓN · PROPÓSITO</strong>
-            </article>
+        <div className="statement method-reveal-embed" data-reveal>
+          <div className="statement-inner">
+            <StatementMaskReveal />
+          </div>
         </div>
         <div className="method-takeaways" data-reveal>
           <p>Más publicaciones no corrigen una marca poco clara, una mala experiencia de compra o una oferta que no comunica su valor.</p>

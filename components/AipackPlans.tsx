@@ -20,14 +20,14 @@ export default function AipackPlans() {
   return (
     <div className="aipack-plans" id="aipacks" aria-labelledby="aipack-plans-heading" data-reveal>
       <div className="aipack-plans-intro">
-        <div><p className="micro-label">AIPACKS</p><h3 id="aipack-plans-heading">Las tres especialidades.<br /><span>En un solo acompañamiento.</span></h3></div>
+        <div className="aipack-intro-brand"><p className="aipack-brand-word" aria-hidden="true">AIPACKS<span>.</span></p><h3 id="aipack-plans-heading">Las tres especialidades.<br /><span>En un solo acompañamiento.</span></h3></div>
         <p>Integramos branding, marketing creativo y producción audiovisual en paquetes de acompañamiento que mantienen tu marca activa, coherente y con dirección.</p>
       </div>
       <div className="aipack-plans-grid">
-        {plans.map((plan, index) => (
-          <article className={`aipack-plan aipack-plan--${plan.name.toLowerCase()}${index === 1 ? " is-featured" : ""}`} key={plan.name}>
+        {plans.map((plan) => (
+          <article className={`aipack-plan aipack-plan--${plan.name.toLowerCase()}${plan.name === "ULTRA" ? " is-featured" : ""}`} key={plan.name}>
             <div className="aipack-plan-top"><span>{plan.eyebrow}</span><span>{plan.name === "MINI" ? "14 DÍAS" : "MENSUAL"}</span></div>
-            {plan.name === "ULTRA" && <p className="aipack-plan-difference">Incluye gestión mensual de redes</p>}
+            {plan.name === "ULTRA" && <p className="aipack-plan-difference"><span aria-hidden="true">✦</span> LA OPCIÓN MÁS COMPLETA · Gestión mensual de redes</p>}
             <div><h4>{plan.label}</h4><p>{plan.ideal}</p></div>
             <div className="aipack-plan-includes"><span>¿QUÉ INCLUYE?</span><ul>{plan.includes.map((item) => <li key={item}>{item}</li>)}</ul></div>
             <a className="aipack-plan-cta" href="#brief">Consultar {plan.name} <span aria-hidden="true">↗</span></a>
