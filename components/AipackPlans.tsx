@@ -1,17 +1,17 @@
 const plans = [
   {
-    code: "01", name: "MINI", eyebrow: "AIPACK MINI", label: "Inicia o renueva tu presencia digital.",
-    ideal: "Para emprendimientos que comienzan en redes sociales o necesitan ordenar su imagen y comunicación.",
+    code: "01", name: "MINI", eyebrow: "AIPACK MINI", label: "Empieza con dirección.",
+    ideal: "Para marcas que empiezan o quieren ordenar su imagen y sus redes.",
     includes: ["Estrategia de contenido", "1 reel", "2 diseños publicitarios", "Branding básico predeterminado", "Optimización de perfil", "Asesoría y orientación continua"],
   },
   {
-    code: "02", name: "PRO", eyebrow: "AIPACK PRO", label: "Dale estrategia al contenido de tu negocio.",
-    ideal: "Para negocios que ya publican, pero necesitan comunicar mejor su valor y generar oportunidades comerciales.",
+    code: "02", name: "PRO", eyebrow: "AIPACK PRO", label: "Estrategia para crecer.",
+    ideal: "Para negocios que ya publican y quieren comunicar mejor su valor.",
     includes: ["Estrategia de contenidos", "4 reels", "4 diseños de publicaciones", "Tarjeta digital tipo Link in Bio", "Branding predeterminado", "Optimización de perfil", "Asesoría y orientación continua"],
   },
   {
-    code: "03", name: "ULTRA", eyebrow: "AIPACK ULTRA", label: "Contenido y gestión para tu presencia digital.",
-    ideal: "Para negocios que buscan una presencia digital establecida, con mejor comunicación comercial y delegar la gestión de sus redes sociales.",
+    code: "03", name: "ULTRA", eyebrow: "AIPACK ULTRA", label: "Una marca en movimiento.",
+    ideal: "Para negocios que quieren delegar la gestión de redes y mantener una presencia constante.",
     includes: ["Estrategia básica de contenidos", "4 reels", "4 diseños de publicaciones", "Gestión mensual de redes sociales", "Recopilación y reutilización de clips existentes", "Optimización de perfil", "Asesoría y orientación continua"],
   },
 ] as const;

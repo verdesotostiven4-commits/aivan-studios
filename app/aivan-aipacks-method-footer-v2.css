@@ -346,3 +346,40 @@
 @media(prefers-reduced-motion:reduce) {
   .aivan-footer-video--minimal .aivan-footer-minimal-brand{transition:none}
 }
+
+/* Compact final tier rhythm: preserve all inclusions, shorten only explanatory copy. */
+#aipacks .aipack-plan {padding:clamp(18px,1.5vw,21px)}
+#aipacks .aipack-plan-top {margin-bottom:clamp(12px,1vw,15px)}
+#aipacks .aipack-plan h4 {
+  font-size:clamp(23px,1.85vw,27px);
+  line-height:1.1;
+  margin-bottom:7px;
+}
+#aipacks .aipack-plan>div>p {
+  font-size:clamp(11px,.89vw,12px);
+  line-height:1.42;
+}
+#aipacks .aipack-plan-includes {
+  margin:clamp(12px,1vw,15px) 0 clamp(12px,1vw,15px);
+  padding-top:12px;
+}
+#aipacks .aipack-plan-includes>span {margin-bottom:8px}
+#aipacks .aipack-plan-includes ul {gap:5px}
+#aipacks .aipack-plan-includes li {
+  font-size:clamp(10.5px,.86vw,11.5px);
+  line-height:1.32;
+  grid-template-columns:13px minmax(0,1fr);
+  gap:5px;
+}
+#aipacks .aipack-plan--ultra.is-featured .aipack-plan-difference {
+  margin:0 0 9px;
+  padding:5px 7px;
+}
+@media(max-width:700px){
+  #aipacks .aipack-plan {padding:19px}
+  #aipacks .aipack-plan-top {margin-bottom:12px}
+  #aipacks .aipack-plan h4 {font-size:24px;margin-bottom:6px}
+  #aipacks .aipack-plan-includes {margin:12px 0 15px;padding-top:12px}
+  #aipacks .aipack-plan-includes ul {gap:5px}
+  #aipacks .aipack-plan-includes li {font-size:11px;line-height:1.3}
+}
