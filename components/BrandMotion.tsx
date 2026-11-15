@@ -191,6 +191,10 @@ export function StatementMaskReveal() {
   const orbRef = useRef<HTMLSpanElement>(null);
   const frameRef = useRef<number | null>(null);
   const returnTimerRef = useRef<number | null>(null);
+  // Last viewport position lets the lens react when scrolling moves the
+  // panel underneath a stationary cursor. No mouse movement is required.
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const scrollSyncRef = useRef<number | null>(null);
   const engagedRef = useRef(false);
   const lensLiveRef = useRef(false);
   const currentRef = useRef({ x: 50, y: 50 });
@@ -251,17 +255,6 @@ export function StatementMaskReveal() {
       returnTimerRef.current = null;
     }, 720);
   };
-
-  useEffect(() => {
-    if (!finePointer || reduced || !inView) return;
-
-    const closeOnScroll = () => {
-      if (engagedRef.current) releaseLens();
-    };
-
-    window.addEventListener("scroll", closeOnScroll, { passive: true });
-    return () => window.removeEventListener("scroll", closeOnScroll);
-  }, [finePointer, reduced, inView]);
 
   useEffect(() => () => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
@@ -330,16 +323,85 @@ export function StatementMaskReveal() {
     }
 
     engagedRef.current = true;
-    node.classList.remove("is-returning");
+    node.classList.remove("is-returning", "is-scroll-preview");
     node.classList.add("is-pointer-active");
     setTargetFromPointer(clientX, clientY);
   };
 
+  // Recalculate with the cursor fixed in the viewport while the page scrolls.
+  // When the pointer is elsewhere, a smaller travelling preview signals that
+  // this area is interactive, without replacing the full hover animation.
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || !inView || reduced) return;
+
+    const syncViewport = () => {
+      scrollSyncRef.current = null;
+      const rect = node.getBoundingClientRect();
+      const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const pointer = lastPointerRef.current;
+      const hovered = finePointer && !!pointer &&
+        pointer.x >= rect.left && pointer.x <= rect.right &&
+        pointer.y >= rect.top && pointer.y <= rect.bottom;
+
+      if (visible <= 0 || rect.width <= 0 || rect.height <= 0) {
+        node.classList.remove("is-scroll-preview");
+        if (engagedRef.current) releaseLens();
+        return;
+      }
+      if (hovered && pointer) {
+        node.classList.remove("is-scroll-preview");
+        if (!engagedRef.current) engageFromAnywhere(pointer.x, pointer.y);
+        else setTargetFromPointer(pointer.x, pointer.y);
+        return;
+      }
+      if (engagedRef.current) releaseLens();
+
+      if (finePointer && !touchExpanded &&
+        visible >= Math.min(rect.height, window.innerHeight) * 0.24) {
+        const progress = Math.max(0, Math.min(1,
+          (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
+        node.style.setProperty("--mask-x", `${33 + progress * 42}%`);
+        node.style.setProperty("--mask-y", `${59 - progress * 20}%`);
+        node.classList.add("is-scroll-preview");
+      } else {
+        node.classList.remove("is-scroll-preview");
+      }
+    };
+
+    const queueSync = () => {
+      if (scrollSyncRef.current !== null) return;
+      scrollSyncRef.current = window.requestAnimationFrame(syncViewport);
+    };
+    const recordPointer = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+      lastPointerRef.current = { x: event.clientX, y: event.clientY };
+      queueSync();
+    };
+    window.addEventListener("pointermove", recordPointer, { passive: true });
+    window.addEventListener("scroll", queueSync, { passive: true });
+    window.addEventListener("resize", queueSync, { passive: true });
+    queueSync();
+
+    return () => {
+      window.removeEventListener("pointermove", recordPointer);
+      window.removeEventListener("scroll", queueSync);
+      window.removeEventListener("resize", queueSync);
+      if (scrollSyncRef.current !== null) {
+        window.cancelAnimationFrame(scrollSyncRef.current);
+        scrollSyncRef.current = null;
+      }
+      node.classList.remove("is-scroll-preview");
+    };
+  }, [finePointer, reduced, inView, touchExpanded]);
+
   const handlePointerEnter = (event: React.PointerEvent<HTMLDivElement>) => {
+    lastPointerRef.current = { x: event.clientX, y: event.clientY };
     engageFromAnywhere(event.clientX, event.clientY);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    lastPointerRef.current = { x: event.clientX, y: event.clientY };
     if (!finePointer || reduced) return;
     if (!engagedRef.current) {
       engageFromAnywhere(event.clientX, event.clientY);

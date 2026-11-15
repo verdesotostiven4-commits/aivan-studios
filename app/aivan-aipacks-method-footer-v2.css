@@ -383,3 +383,89 @@
   #aipacks .aipack-plan-includes ul {gap:5px}
   #aipacks .aipack-plan-includes li {font-size:11px;line-height:1.3}
 }
+
+
+/* 2026-11-14 refinement: no period, smaller lettering and safe optical
+   breathing room so the last S never gets cut by the gradient/text mask. */
+#aipacks .aipack-intro-brand { min-width:0; overflow:visible; }
+#aipacks .aipack-brand-word {
+  display:inline-block;
+  box-sizing:border-box;
+  width:max-content;
+  max-width:100%;
+  margin:0;
+  padding:0 .14em .105em .018em;
+  font-size:clamp(64px,8.35vw,124px);
+  line-height:1;
+  letter-spacing:-.075em;
+  white-space:nowrap;
+  overflow:visible;
+  text-wrap:nowrap;
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+@media(max-width:1050px){
+  #aipacks .aipack-brand-word {font-size:clamp(61px,8.5vw,102px)}
+}
+@media(max-width:700px){
+  #aipacks .aipack-brand-word {font-size:clamp(55px,13vw,86px)}
+}
+@media(max-width:385px){
+  #aipacks .aipack-brand-word {font-size:clamp(51px,13vw,61px)}
+}
+
+/* A visitor scrolling through the reveal sees the dark layer moving before
+   having to wiggle the mouse. The existing full-sized cursor lens still wins. */
+@media(hover:hover) and (pointer:fine) {
+  #proceso .statement-mask.is-scroll-preview:not(.is-pointer-active){
+    --mask-radius:clamp(110px,12vw,148px);
+  }
+  #proceso .statement-mask.is-scroll-preview:not(.is-pointer-active) .statement-mask-reveal{
+    transition:clip-path .12s ease-out,-webkit-clip-path .12s ease-out!important;
+  }
+  #proceso .statement-mask.is-scroll-preview:not(.is-pointer-active) .statement-orb {
+    opacity:.27;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #proceso .statement-mask.is-scroll-preview{--mask-radius:140vmax}
+}
+
+/* Original KIUBO wordmark is preserved, but no longer visually lost on
+   the light footer. More room, contrast and a quiet frame, not a redraw. */
+.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
+  border-radius:14px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(55,41,56,.08);
+  padding:13px 16px;
+  margin:-13px -16px;
+}
+.aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset {
+  display:block;
+  width:min(100%,190px);
+  max-width:100%;
+  opacity:1;
+}
+.aivan-footer-video--minimal .aivan-footer-minimal-kiubo img {
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:78px;
+  object-fit:contain;
+  object-position:left center;
+  filter:contrast(1.18) saturate(1.12);
+}
+@media(max-width:700px){
+  .aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
+    padding:10px 9px;
+    margin:-10px -9px;
+  }
+  .aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset {
+    width:min(100%,165px);
+  }
+}
+@media(max-width:385px){
+  .aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset {
+    width:min(100%,145px);
+  }
+}
