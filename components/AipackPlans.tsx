@@ -25,8 +25,9 @@ export default function AipackPlans() {
       </div>
       <div className="aipack-plans-grid">
         {plans.map((plan, index) => (
-          <article className={`aipack-plan${index === 1 ? " is-featured" : ""}`} key={plan.name}>
+          <article className={`aipack-plan aipack-plan--${plan.name.toLowerCase()}${index === 1 ? " is-featured" : ""}`} key={plan.name}>
             <div className="aipack-plan-top"><span>{plan.eyebrow}</span><span>{plan.name === "MINI" ? "14 DÍAS" : "MENSUAL"}</span></div>
+            {plan.name === "ULTRA" && <p className="aipack-plan-difference">Incluye gestión mensual de redes</p>}
             <div><h4>{plan.label}</h4><p>{plan.ideal}</p></div>
             <div className="aipack-plan-includes"><span>¿QUÉ INCLUYE?</span><ul>{plan.includes.map((item) => <li key={item}>{item}</li>)}</ul></div>
             <a className="aipack-plan-cta" href="#brief">Consultar {plan.name} <span aria-hidden="true">↗</span></a>

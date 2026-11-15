@@ -10,7 +10,7 @@ import ServiceExplorer from "@/components/ServiceExplorer";
 import AipackPlans from "@/components/AipackPlans";
 import BrandAsset from "@/components/BrandAsset";
 import FooterVideo from "@/components/FooterVideo";
-import { BridgeSequence, FinchSignature, FlipFadeWord, StatementMaskReveal, TypingSignal } from "@/components/BrandMotion";
+import { BridgeSequence, FinchSignature, FlipFadeWord, TypingSignal } from "@/components/BrandMotion";
 
 // The original animated finch is intentionally archived, not deleted.
 const ENABLE_FINCH_SIGNATURE = false;
@@ -18,8 +18,8 @@ const ENABLE_FINCH_SIGNATURE = false;
 const processSteps = [
   ["01", "Conocemos", "Escuchamos tu historia, conocemos tu negocio y entendemos sus objetivos y desafíos."],
   ["02", "Analizamos", "Evaluamos tu marca, la experiencia de tus clientes y las oportunidades de mejora."],
-  ["03", "Direccionamos", "Definimos las prioridades y las soluciones que tu negocio necesita antes de crear."],
-  ["04", "Creamos", "Desarrollamos identidad, estrategia y contenido según la dirección establecida."],
+  ["03", "Direccionamos", "Definimos las prioridades y soluciones que tu negocio necesita antes de crear."],
+  ["04", "Creamos", "Desarrollamos la identidad, estrategia y contenido según la dirección establecida."],
   ["05", "Evolucionamos contigo", "Acompañamos la implementación, evaluamos los avances y ajustamos lo necesario."],
 ];
 
@@ -79,17 +79,6 @@ export default function Home() {
         )}
       </section>
 
-      <section className="statement" id="enfoque">
-        <div className="statement-inner" data-reveal>
-          <p className="micro-label">NUESTRA FORMA DE TRABAJAR</p>
-          <StatementMaskReveal />
-          <div className="statement-copy">
-            <p>Una marca puede tener fotos bonitas y seguir sin decir nada. Puede publicar todos los días y seguir sin tener dirección. AIVAN existe para ordenar primero la idea y construir después la ejecución.</p>
-            <p>Así branding, marketing y audiovisual dejan de competir entre sí y empiezan a empujar el mismo negocio.</p>
-          </div>
-        </div>
-      </section>
-
       <section className="services-section" id="servicios">
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Tres especialidades.<br />Una sola dirección.</h2></div>
@@ -127,15 +116,6 @@ export default function Home() {
         <div className="process-rail" data-reveal>
           {processSteps.map(([n, title, copy]) => <article key={n}><span className="process-number">{n}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
         </div>
-        <div className="method-creative-stage" data-reveal>
-          <div className="method-creative-copy">
-            <p className="micro-label">UN EQUIPO QUE CREA CONTIGO</p>
-            <h3>Las ideas toman forma <em>en movimiento.</em></h3>
-            <p>La estrategia, el diseño y la producción se conectan en cada proyecto. Explora las ilustraciones interactivas del universo creativo de AIVAN.</p>
-            <span>TOCA LA ILUSTRACIÓN PARA DESCUBRIR OTRA ESCENA ↗</span>
-          </div>
-          <AvatarShowcase />
-        </div>
         <div className="method-duality" data-reveal>
           <article className="method-duality-surface">
             <span>LO QUE SE VE</span>
@@ -146,15 +126,22 @@ export default function Home() {
             <span>LO QUE HAY DETRÁS</span>
             <h3>Empezamos entendiendo.</h3>
             <strong>ESTRATEGIA · CONTEXTO · DIRECCIÓN · PROPÓSITO</strong>
-            <p>Antes de crear, identificamos qué mejorar y cómo integrar branding, marketing y producción audiovisual con un objetivo común.</p>
-          </article>
+            </article>
         </div>
         <div className="method-takeaways" data-reveal>
           <p>Más publicaciones no corrigen una marca poco clara, una mala experiencia de compra o una oferta que no comunica su valor.</p>
           <p>Por eso, antes de crear, identificamos qué mejorar y cómo integrar branding, marketing y producción audiovisual con un objetivo común.</p>
         </div>
+        <div className="method-creative-stage" data-reveal>
+          <div className="method-creative-copy">
+            <p className="micro-label">UN EQUIPO QUE CREA CONTIGO</p>
+            <h3>Las ideas toman forma <em>en movimiento.</em></h3>
+            <p>La estrategia, el diseño y la producción se conectan en cada proyecto. Explora las ilustraciones interactivas del universo creativo de AIVAN.</p>
+            <span>TOCA LA ILUSTRACIÓN PARA DESCUBRIR OTRA ESCENA ↗</span>
+          </div>
+          <AvatarShowcase />
+        </div>
       </section>
-
 
       <PortfolioShowcase />
 

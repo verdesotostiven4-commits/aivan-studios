@@ -59,6 +59,15 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
     <section className="contact-section contact-section--editorial" id="contacto" aria-labelledby="contact-brief-title">
       <div className="contact-ambient" aria-hidden="true" />
       <div className="contact-shell contact-shell--editorial">
+        <div className="contact-brief-integrated" id="brief" aria-labelledby="contact-brief-title">
+          <div className="contact-brief-intro" data-reveal>
+            <p className="micro-label">PRIMER CONTACTO</p>
+            <h3 id="contact-brief-title"><span>Tú conoces tu negocio.</span><span className="contact-brief-promise">Nosotros te ayudamos a encontrar el siguiente paso.</span></h3>
+            <p>Cuéntanos qué haces y qué te gustaría mejorar. Con esta información podremos conocer tu situación y preparar una conversación más útil para tu negocio.</p>
+            <span>Completa este breve formulario para conocer tu situación, comprender tus objetivos y preparar una primera conversación con mayor claridad.</span>
+          </div>
+          <BriefForm />
+        </div>
         <div className="contact-editorial-copy" data-reveal>
           <div className="contact-editorial-kicker"><span>CONTACTO DIRECTO</span><i aria-hidden="true" /></div>
           <h2 id="contact-title">¿Tienes alguna duda? <span>Hablemos.</span></h2>
@@ -113,15 +122,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             <span className="contact-editorial-arrow"><ArrowSymbol /></span>
           </a>
         </div>
-        <div className="contact-brief-integrated" id="brief" aria-labelledby="contact-brief-title">
-          <div className="contact-brief-intro" data-reveal>
-            <p className="micro-label">PRIMER CONTACTO</p>
-            <h3 id="contact-brief-title"><span>Tú conoces tu negocio.</span><span className="contact-brief-promise">Nosotros te ayudamos a encontrar el siguiente paso.</span></h3>
-            <p>Cuéntanos qué haces y qué te gustaría mejorar. Con esta información podremos conocer tu situación y preparar una conversación más útil para tu negocio.</p>
-            <span>Completa este breve formulario para conocer tu situación, comprender tus objetivos y preparar una primera conversación con mayor claridad.</span>
-          </div>
-          <BriefForm />
-        </div>
+
       </div>
     </section>
   );
