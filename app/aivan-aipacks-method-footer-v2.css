@@ -455,7 +455,7 @@
   max-height:78px;
   object-fit:contain;
   object-position:left center;
-  filter:contrast(1.18) saturate(1.12);
+  filter:none;
 }
 @media(max-width:700px){
   .aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
@@ -481,6 +481,15 @@
 }
 .aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset-image {
   opacity:1;
-  filter:grayscale(.48) brightness(.50) contrast(1.35);
+  filter:none;
   transform:none;
+}
+
+
+/* KIUBO uses the exact original transparent artwork with the new charcoal
+   lettering outline baked into the asset. No panel and no image filters. */
+.aivan-footer-video--minimal .aivan-footer-minimal-kiubo img,
+.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child .aivan-brand-asset-image {
+  filter:none!important;
+  opacity:1;
 }
