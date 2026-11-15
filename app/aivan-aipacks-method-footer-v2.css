@@ -434,11 +434,13 @@
 /* Original KIUBO wordmark is preserved, but no longer visually lost on
    the light footer. More room, contrast and a quiet frame, not a redraw. */
 .aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
-  border-radius:14px;
-  background:rgba(255,255,255,.62);
-  border:1px solid rgba(55,41,56,.08);
-  padding:13px 16px;
-  margin:-13px -16px;
+  /* An unboxed editorial credit, consistent with byStiven. */
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  padding:0;
+  margin:0;
 }
 .aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset {
   display:block;
@@ -457,8 +459,8 @@
 }
 @media(max-width:700px){
   .aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
-    padding:10px 9px;
-    margin:-10px -9px;
+    padding:0;
+    margin:0;
   }
   .aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset {
     width:min(100%,165px);
@@ -471,17 +473,14 @@
 }
 
 
-/* The official KIUBO image contains mostly light-coloured lettering.
-   A dark neutral presentation plate restores contrast without editing the logo. */
-.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child {
-  background:linear-gradient(135deg,#26222d,#312734);
-  border:1px solid rgba(86,63,84,.5);
-  box-shadow:0 10px 25px rgba(39,29,44,.10);
-}
+/* KIUBO has pale lettering in its original transparent image. A quiet
+   charcoal-toned rendering gives it legibility on the shared footer surface,
+   without a separate box, background, shadow card, or altered asset file. */
 .aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child .aivan-footer-minimal-label {
-  color:#e8d5e4;
+  color:#7e747e;
 }
-.aivan-footer-video--minimal .aivan-footer-minimal-credit:first-child .aivan-brand-asset-image{
+.aivan-footer-video--minimal .aivan-footer-minimal-kiubo .aivan-brand-asset-image {
   opacity:1;
-  filter:contrast(1.2) saturate(1.08);
+  filter:grayscale(.48) brightness(.50) contrast(1.35);
+  transform:none;
 }
