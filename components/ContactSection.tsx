@@ -101,7 +101,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             <span className="contact-editorial-card-body">
               <span className="contact-editorial-eyebrow">WHATSAPP</span>
               <strong>{phone}</strong>
-              <span className="contact-editorial-description">Escríbenos y conversemos sobre tu proyecto.</span>
+              <span className="contact-editorial-description">Hablemos por WhatsApp ↗</span>
             </span>
             <span className="contact-editorial-arrow"><ArrowSymbol /></span>
           </a>
@@ -117,7 +117,7 @@ export default function ContactSection({ whatsappHref, emailHref, email, phone }
             <span className="contact-editorial-card-body">
               <span className="contact-editorial-eyebrow">CORREO</span>
               <strong>{email}</strong>
-              <span className="contact-editorial-description">Cuéntanos tu idea y te responderemos pronto.</span>
+              <span className="contact-editorial-description">Enviar un correo ↗</span>
             </span>
             <span className="contact-editorial-arrow"><ArrowSymbol /></span>
           </a>

@@ -20,7 +20,7 @@ export default function AipackPlans() {
   return (
     <div className="aipack-plans" id="aipacks" aria-labelledby="aipack-plans-heading" data-reveal>
       <div className="aipack-plans-intro">
-        <div className="aipack-intro-brand"><p className="aipack-brand-word" aria-label="AIPACKS">AIPACKS</p><h3 id="aipack-plans-heading">Las tres especialidades.<br /><span>En un solo acompañamiento.</span></h3></div>
+        <div className="aipack-intro-brand"><p className="aipack-brand-word" aria-label="AIPACKS">AIPACKS</p><h3 id="aipack-plans-heading">Las tres especialidades<br /><span>en un solo acompañamiento.</span></h3></div>
         <p>Integramos branding, marketing creativo y producción audiovisual en paquetes de acompañamiento que mantienen tu marca activa, coherente y con dirección.</p>
       </div>
       <div className="aipack-plans-grid">

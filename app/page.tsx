@@ -82,7 +82,7 @@ export default function Home() {
       <section className="services-section" id="servicios">
         <div className="section-intro" data-reveal>
           <div><p className="micro-label">CÓMO TE PODEMOS AYUDAR</p><h2>Tres especialidades.<br />Una sola dirección.</h2></div>
-          <p>AIVAN tiene tres áreas creativas y una solución que las integra: AIPACKS. Cada negocio necesita una combinación diferente.</p>
+          <p>AIVAN no tiene cuatro áreas. Tiene tres áreas creativas y una solución que las integra: AIPACKS.</p>
         </div>
         <ServiceExplorer />
       </section>

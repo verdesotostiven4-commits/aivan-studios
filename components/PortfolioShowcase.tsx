@@ -75,7 +75,6 @@ export default function PortfolioShowcase() {
         </div>
         <div>
           <p>Una selección de referencias visuales que exploran diferentes posibilidades del branding, el diseño y la producción audiovisual.</p>
-          <span>Referencias visuales de branding, diseño y producción audiovisual.</span>
         </div>
       </div>
       <div className="portfolio-carousel-wrap portfolio-arrival" data-reveal>

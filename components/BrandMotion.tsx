@@ -435,7 +435,7 @@ export function StatementMaskReveal() {
       <div className="statement-mask-base" aria-hidden="true">
         <span className="statement-mask-kicker">LO QUE SE VE</span>
         <h2>No empezamos<br />publicando.</h2>
-        <p>Una marca puede estar activa y aun así no tener una dirección clara.</p>
+        <p>Publicar más no significa tener un negocio con dirección clara.</p>
       </div>
 
       <div className="statement-mask-reveal" aria-hidden="true">
