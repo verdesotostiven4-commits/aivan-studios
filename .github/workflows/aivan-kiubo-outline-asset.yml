@@ -1,4 +1,4 @@
-name: Import faithful KIUBO dark-outline asset
+name: Import KIUBO artwork supplied by the owner
 on:
   push:
     branches: [main]
@@ -8,59 +8,38 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: aivan-kiubo-outline
+  group: aivan-kiubo-owner-artwork
   cancel-in-progress: false
 jobs:
-  asset:
+  install-logo:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: true
-      - name: Prepare original transparent KIUBO image
+      - name: Copy the exact user-uploaded transparent KIUBO PNG
         env:
-          KIUBO_SOURCE: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjMPzLxtwjw2WbsM5EvbM8oefC2bBQvnO-f72mtQKcRrlQD927iTvCGMDV44CV9WS-2OU5jbfZGXEvQ6ctopDe55Vj5RHQ1jTK98x3VFo1SvbGpNMUJYWhBswESoWi4fBuFR1Wj3w3jxMHgGD7LrBk0FTLsvJAFNaO-HajuCfMJULT4YF0E6mDvmZosNdM/s1600/image.png"
+          USER_KIUBO_IMAGE_URL: "https://at.adobe.com/65n8eIJ1sXahlQP8"
         run: |
           set -euo pipefail
-          mkdir -p /tmp/kiubo public/media
-          curl --fail --location --retry 3 --silent --show-error "$KIUBO_SOURCE" -o /tmp/kiubo/kiubo-original.png
-          python -m pip install --disable-pip-version-check 'Pillow==11.3.0'
-      - name: Add a fine charcoal outline behind original lettering
+          mkdir -p public/media
+          curl --location --fail --retry 5 --retry-delay 2 --silent --show-error "$USER_KIUBO_IMAGE_URL" -o public/media/kiubo-user-upload.png
+          echo 'a389ffc6c90800c10738e9a1cd452bb225da1c3f8175361316a73246089efbbb  public/media/kiubo-user-upload.png' | sha256sum --check
+          file public/media/kiubo-user-upload.png
+      - name: Replace KIUBO asset reference, without altering the picture
         run: |
-          python - <<'PY'
-          from PIL import Image, ImageFilter, ImageChops
-          from pathlib import Path
-          im=Image.open('/tmp/kiubo/kiubo-original.png').convert('RGBA')
-          if im.size!=(1600,533): raise RuntimeError(f'Unexpected original KIUBO image shape: {im.size}')
-          w,h=im.size
-          alpha=im.getchannel('A')
-          base=alpha.point(lambda v:255 if v>50 else 0)
-          def ring(box,size,opacity):
-              mask=Image.new('L',(w,h),0)
-              mask.paste(base.crop(box),box)
-              halo=mask.filter(ImageFilter.MaxFilter(size))
-              border=ImageChops.subtract(halo,mask)
-              return border.point(lambda v:round(v*opacity))
-          # Exclude the mascot: color, shape, lettering and transparency stay untouched.
-          word=ring((585,64,1545,392),19,.86)
-          caption=ring((560,388,1545,516),9,.82)
-          stroke=ImageChops.lighter(word,caption)
-          layer=Image.new('RGBA',(w,h),(19,19,25,0))
-          layer.putalpha(stroke)
-          final=Image.alpha_composite(layer,im)
-          path=Path('public/media/kiubo-original-outlined.png')
-          final.save(path,optimize=True)
-          final2=Image.open(path).convert('RGBA')
-          assert final2.size==(1600,533) and final2.getchannel('A').getbbox()
-          print('Faithful KIUBO asset:',path,path.stat().st_size,'bytes')
-          PY
-      - name: Commit KIUBO asset to main
+          set -euo pipefail
+          grep -F 'kiubo: "/media/kiubo-original-outlined.png",' components/BrandAsset.tsx
+          sed -i 's|kiubo: "/media/kiubo-original-outlined.png",|kiubo: "/media/kiubo-user-upload.png",|' components/BrandAsset.tsx
+          grep -F 'kiubo: "/media/kiubo-user-upload.png",' components/BrandAsset.tsx
+      - name: Commit the exact PNG and website replacement
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add public/media/kiubo-original-outlined.png
+          git add public/media/kiubo-user-upload.png components/BrandAsset.tsx
           if ! git diff --cached --quiet; then
-            git commit -m 'assets(kiubo): preserve exact logo with dark text outlines'
+            git commit -m 'assets(kiubo): replace footer logo with owner-provided transparent PNG'
             git push origin HEAD:main
           fi
