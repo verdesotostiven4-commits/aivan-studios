@@ -493,3 +493,14 @@
   filter:none!important;
   opacity:1;
 }
+
+
+/* Editorial PDF QA: the word "especialidades" must fit on 320–374px phones,
+   preserving the approved phrase without clipping or horizontal scrolling. */
+@media (max-width:374px) {
+  #servicios .section-intro h2 {
+    font-size:clamp(32px,10vw,38px);
+    line-height:1.02;
+    overflow-wrap:normal;
+  }
+}
