@@ -8,7 +8,7 @@ import Wordmark from "./Wordmark";
 export const BRAND_ASSETS = {
   studio: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhBp4D3e1FhI_4pT97oopnTHikQTX7PZ-pAAz9R84RnOYyxy7g4bJhItzNAQ4OvnVSLSlKCnA35Qof5CWpUgp-j_hKIUUcbLh-BWydfaGTVgf381jKYf2rTNFWtpsCY_1qgEfqX6-a7A5DkfAmTe_IOUua1jktDeRoq77Vk0M7Fr_KsCACUhb03-wMbjMk/s1600/image.png",
   solo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsp49R8nFKBC6Lg3HAQIa89oGFzalXtVDJtOyF7vwvbxgD44_d14_LBjXSGbfH1jarCtrwPEb19IYH_CMzE02E7tpSrgJvCHuoLg_f-UCfO7nD2tpTACvmF_mAWqsb2gOn7BvF4_jplxPwyYkR9IeNBHhMJt8SQYrmFuKDlnSfEj03MlUC8binQm3JG9g/s1600/image.png",
-  kiubo: "/media/kiubo-original-outlined.png",
+  kiubo: "/media/kiubo-user-upload.png",
   bystiven: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsK3cjkgtaJPYV_ziNbra2moCDmuWqThsBMQgoIJY8gPwdDEYgpnB4d6SBxJ9npwiL7oaqUSHMZJw4RX-c_bxHSaNxaKTb2TDUkMWg5jmYmkerKY-GsJQRnGTtpWWiB1kz8nXd1r2GUecBCXYTi739u2BPonp1yO77n1wYigXpbZHe_YnHpsUF48rMtKc/s1600/image.png",
 } as const;
 
